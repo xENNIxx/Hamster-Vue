@@ -36,7 +36,7 @@ export default {
   methods: {
     // TestURL: https://gorest.co.in/public/v2/users
     async clickevent(event) {
-      
+      const link= this.hostname + 'login'
 
       axios.defaults.withCredentials=true;
       var data = JSON.stringify({
@@ -45,10 +45,10 @@ export default {
       });
        
       console.log(data);
-      console.log(this.link);
+      console.log(link);
       var config = {
         method: "post",
-        url: "http://10.0.0.13:8080",
+        url: link,
         headers: {
           "Access-Control-Allow-Origin" : "*",
           "Content-Type": "application/json",
