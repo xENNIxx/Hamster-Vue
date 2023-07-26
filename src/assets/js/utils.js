@@ -23,5 +23,5 @@ export function getPlayerDirection(direction){
 }
 
 export function checkValue(value){
-    return ["", NaN, undefined].includes(value)
+    return ["", NaN, undefined].includes(value) //??
 }

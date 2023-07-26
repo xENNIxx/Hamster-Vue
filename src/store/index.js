@@ -1,7 +1,6 @@
 import { createStore as CreateStoreVuex } from 'vuex'
 import auth from './modules/auth.js'
-import createdPersistedState from 'vuex-persistedstate'
-import * as Cookies from 'js-cookie'
+
 
 const MIN_INACTIVITY = 5000;
 export const createStore = (app) => {
@@ -21,6 +20,7 @@ export const createStore = (app) => {
           let res = fetch(app.config.globalProperties.hostname + "login")
           res.then(response => {
             if(response.status != 200){
+              console.log("Logout (Timeout)")
               this.dispatch("auth/logout")
             }
           })
@@ -43,12 +43,6 @@ export const createStore = (app) => {
     },
     modules: {
       auth
-    },
-    plugins: [
-      /*createdPersistedState({
-        getState: (key) => Cookies.getJSON(key),
-        setState: (key, state) => Cookies.set(key, state, {expires: 3, secure: true})
-      })*/
-    ]
+    }
   })
 } 

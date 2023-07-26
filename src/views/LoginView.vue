@@ -9,6 +9,7 @@
           <input v-model="username" type="text" placeholder="Username/E-Mail" class="dark:bg-gray-900 dark:border-gray-700 border-gray-300 rounded-lg border p-2"/>
           <input v-model="password" type="password" placeholder="Password" class="dark:bg-gray-900 dark:border-gray-700 border-gray-300 rounded-lg border p-2"/>
           <button @click="clickevent" class="text-center rounded-lg border p-2 dark:bg-gray-900 dark:border-gray-700 border-gray-300 dark:active:bg-slate-600 active:bg-gray-300" v-text="name"></button>
+          <p :class="{'text-red-600': hasError, 'text-green-600': !hasError}">{{ errorText }}</p>
         </div>
       </div>
     </div>
@@ -20,7 +21,6 @@
 import axios from "axios";
 
 const https = require("https");
-
 export default {
   name: "LoginView",
 
@@ -29,6 +29,8 @@ export default {
       get: "",
       username: "",
       password: "",
+      errorText:"",
+      hasError: false,
     };
   },
   props: {
@@ -44,6 +46,13 @@ export default {
   methods: {
     // TestURL: https://gorest.co.in/public/v2/users
     async clickevent(event) {
+      if (this.checkValue(this.username) || this.checkValue(this.password)){
+        this.hasError = true
+        this.errorText = "Bitte Username/Password eingeben!"
+        return
+      }
+      this.hasError = false
+      this.errorText = ""
       const link = this.hostname + "login";
 
       axios.defaults.withCredentials = true;
@@ -53,7 +62,7 @@ export default {
       });
 
       console.log(data);
-      console.log(link);
+
       var config = {
         method: "post",
         url: link,
@@ -68,13 +77,19 @@ export default {
       };
 
       axios(config)
-        .then(function (response) {
+        .then((response) =>{
+          this.hasError = false
+          this.errorText = "Eingeloggt!";
+          console.log("eingeloggt")
+          
           return JSON.stringify(response.data);
         })
         .then((json) => this.checkLogin(json))
-        .catch(function (error) {
-          console.log(JSON.stringify(error.data));
-        });
+        .catch((error) => {
+            this.hasError = true
+            this.errorText = "Fehler beim Login!";
+            console.log(JSON.stringify(error.data));
+          });
     },
     checkLogin(json) {
       this.get = json;
