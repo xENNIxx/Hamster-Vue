@@ -1,7 +1,13 @@
+<script setup>
+import Darkmode from './components/DarkmodeItem.vue'
+
+</script>
+
 <template>
-  <nav class="text-center">
+  <Darkmode/>
+  <nav class="text-center text-xl p-3 dark:bg-slate-800 dark:text-white bg-white">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/login">Login</router-link>
   </nav>
   <router-view/>
 </template>

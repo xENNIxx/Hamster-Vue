@@ -1,12 +1,10 @@
 import {createApp} from 'vue'
-import App from './App.vue'
-import './registerServiceWorker'
-import router from './router'
 import { createStore } from './store'
-import './assets/tailwind.css'
-
 import { checkValue } from './assets/js/utils'
-
+import App from './App.vue'
+import router from './router'
+import './assets/tailwind.css'
+import './registerServiceWorker'
 
 const app = createApp(App)
 
