@@ -14,7 +14,7 @@ const rootApp = app.use(store)
 
 const HOSTNAME = "http://localhost:8080/api/"
 app.config.globalProperties.hostname = HOSTNAME
-app.config.globalProperties.checkValue = checkValue // für was genau??? 
+app.config.globalProperties.checkValue = checkValue
 
 app.config.globalProperties.entity_symbols = Object.freeze({
     PLAYER: ">",
