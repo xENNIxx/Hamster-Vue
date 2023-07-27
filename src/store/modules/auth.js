@@ -18,7 +18,10 @@ const state = {
     },
     logout({ commit }) {
       commit('SET_LOGGED_IN', false)
-    }
+    },
+    register({ commit }) {
+      commit('SET_LOGGED_IN', true)
+    },
   }
   
   export default {
