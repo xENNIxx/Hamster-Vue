@@ -1,7 +1,6 @@
 import { createStore as CreateStoreVuex } from 'vuex'
 import auth from './modules/auth.js'
 
-
 const MIN_INACTIVITY = 5000;
 export const createStore = (app) => {
   return CreateStoreVuex({
@@ -16,15 +15,14 @@ export const createStore = (app) => {
     },
     mutations: {
       updateInteraction(state) {
-        if(Date.now() - state.lastInteraction > MIN_INACTIVITY){
+        /*if(Date.now() - state.lastInteraction > MIN_INACTIVITY){
           let res = fetch(app.config.globalProperties.hostname + "login")
           res.then(response => {
             if(response.status != 200){
-              console.log("Logout (Timeout)")
               this.dispatch("auth/logout")
             }
           })
-        }
+        }*/
         state.lastInteraction = Date.now()
         state.isInactive = false
       },
