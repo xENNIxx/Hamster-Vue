@@ -9,17 +9,20 @@ import Darkmode from './components/DarkmodeItem.vue'
     <router-link to="/">Home </router-link> 
     <router-link v-if="!isLoggedIn" to="/login">| Login |</router-link> 
     <router-link v-if="!isLoggedIn" to="/register"> Register</router-link>
+    <RestButton v-if="isLoggedIn" name="Logout" :link="this.hostname + 'logout'" method="get" @onResponse="logOutResponse($event)"></RestButton>
   </nav>
+
   <router-view/>
 </template>
 
 
 <script>
-
+import RestButton from "./components/RestButton.vue"
 
 export default {
+  
   components: {
-    
+    RestButton
   },
   computed: {
     isLoggedIn(){
