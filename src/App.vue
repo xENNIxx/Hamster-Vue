@@ -10,7 +10,7 @@ import Darkmode from './components/DarkmodeItem.vue'
     <router-link v-if="!isLoggedIn" to="/login">| Login |</router-link> 
     <router-link v-if="!isLoggedIn" to="/register"> Register</router-link>
     <!-- this.hostname = http://localhost:8080/api/ -->
-    <RestButton  v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @onResponse="logOutResponse($event)"/>
+    <RestButton v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
     
   
   </nav>
@@ -42,12 +42,10 @@ export default {
       this.$store.commit('updateInteraction')
     },
     logOutResponse(e){
-      if(e == '""'){
-        console.log('response_log')
-        this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
-        this.$router.push('/login'); //Anwendung wird zu bestimmter route navigiert
-      }
-      console.log('response_out')
+      this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
+      this.$router.push('/login'); //Anwendung wird zu bestimmter route navigiert
+      console.log(e)
+      console.log(`logged in: ${this.isLoggedIn}`)
     }
   },
   mounted(){
