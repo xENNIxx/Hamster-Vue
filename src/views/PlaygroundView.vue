@@ -1,7 +1,5 @@
 <template>
     <div class="playground-wrapper">
-        
-        <h1>{{hello}}</h1>
         <div class="flex-container">
             <div>
                 <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)"/>
@@ -11,7 +9,10 @@
                 <button class="btn" @click="cleanField">Cleanup</button>
                 <button class="btn" @click="reset">Reset Field</button>
             </div>
-            <GroundEditorVue @submitted="submitCode($event)"/>
+            <div class="inline-flex">
+                <TapRow @click="putCodeIntoEditor"/>
+                <GroundEditorVue @submitted="submitCode($event)"/>
+            </div>
         </div>
     </div>
 </template>
@@ -19,21 +20,24 @@
 <script>
 // import CodeEditor from '../components/RichEditor.vue'
 // import CodeEditor from '../components/Editor/MonacoEditor.vue'
+
 import GroundEditorVue from '@/components/editors/GroundEditor.vue'
 import PlaygroundTerritorySelectorVue from '@/components/PlaygroundTerritorySelector.vue'
-import Game from '../assets/js/Game.js' 
+import TapRow from "@/components/TapRow.vue"
+import Game from '../assets/js/Game.js'
 import {request_} from '../assets/js/Request.js'
+
 export default {
 components: {
     GroundEditorVue,
-    PlaygroundTerritorySelectorVue
+    PlaygroundTerritorySelectorVue,
+    TapRow
 },
 props : {
     
 },
 data() {
     return {
-        hello : "Welcome to the Playground",
         terrain : {
             dimension : { 
                 width: 10,
@@ -62,6 +66,11 @@ mounted() {
     console.info("loaded game object")
 },
 methods : {
+    putCodeIntoEditor() {
+
+
+
+    },
     start(){
         this.game.handleResponse({0: '12', 1: '1', 2: '2', 3: '2', 4: '1', 5: '2', 6: '2', finished: 'working'})
     },
