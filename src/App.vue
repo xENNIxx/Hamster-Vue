@@ -4,15 +4,21 @@ import Darkmode from './components/DarkmodeItem.vue'
 </script>
 
 <template>
-  <Darkmode/>
-  <nav class="text-center text-xl p-3 dark:bg-slate-800 dark:text-white bg-white">
-    <router-link to="/">Home </router-link>
-    <router-link v-if="!isLoggedIn" to="/login">| Login |</router-link> 
-    <router-link v-if="!isLoggedIn" to="/register"> Register</router-link>
-    <!-- this.hostname = http://localhost:8080/api/ -->
-    <RestButton v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
-    
   
+  <Darkmode/>
+  <!-- this.hostname = http://localhost:8080/api/ -->
+  <RestButton class="left-0 fixed p-1 dark:bg-slate-800 dark:text-white" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
+
+  <nav class="text-center text-xl p-3 dark:bg-slate-800 dark:text-white bg-white">
+    <!-- immer verfügbare Reiter -->
+    <router-link to="/">Home </router-link>
+
+    <!-- Reiter für uneingeloggten User -->
+    <router-link v-if="!isLoggedIn" to="/login">| Login |</router-link>
+    <router-link v-if="!isLoggedIn" to="/register"> Register</router-link>
+        
+    <!-- Reiter für eingeloggten User -->
+    <router-link v-if="isLoggedIn" to="/playground">| Playground |</router-link>
   </nav>
 
   <router-view/>
