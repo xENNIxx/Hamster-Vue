@@ -21,7 +21,7 @@
 // import CodeEditor from '../components/Editor/MonacoEditor.vue'
 import GroundEditorVue from '@/components/editors/GroundEditor.vue'
 import PlaygroundTerritorySelectorVue from '@/components/PlaygroundTerritorySelector.vue'
-import Game from '../assets/js/Game.js'
+import Game from '../assets/js/Game.js' 
 import {request_} from '../assets/js/Request.js'
 export default {
 components: {
@@ -104,7 +104,7 @@ methods : {
         this.game.createEntityObj(e)
         this.loaded_terrain_obj = e
     },
-    async submitCode(e){        
+    async submitCode(e){ 
         for(let prop in this.loaded_terrain_obj){
             if(prop != 'program'){
                 e.hamster[prop] = this.loaded_terrain_obj[prop]
@@ -125,3 +125,36 @@ methods : {
 }
 }
 </script>
+
+<style lang="scss">
+//diese styles nicht löschen
+.playground-wrapper {
+    position: relative;
+    height: 100%;
+
+}
+
+
+.flex-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-evenly
+}
+.start-btn {
+    margin-top: 1rem;
+}
+
+.btn {
+    margin-inline: .5rem;
+}
+
+.editor {
+    width: 600px;
+    height: 800px;
+}
+
+</style>

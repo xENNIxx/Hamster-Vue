@@ -60,3 +60,16 @@
     }
   }
 </script>
+<style>
+    
+    .ͼ15, .cm-editor {
+        height: clamp(250px, 35vh, 500px);
+        width: clamp(450px, 45vw, 750px);
+        text-align: left;
+    } 
+
+    .ͼ1.cm-editor {
+      border: 1px solid black;
+    }
+
+</style>
