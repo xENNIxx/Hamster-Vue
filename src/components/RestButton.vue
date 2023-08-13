@@ -1,7 +1,7 @@
 
 <template>
   <div class="text-center">
-    <button @click="clickevent()" class="text-center rounded-lg border p-2 dark:bg-gray-900 dark:border-gray-700 border-gray-300 dark:active:bg-slate-600 active:bg-gray-300" v-text="name"></button>
+    <button @click="clickevent()" class="text-center rounded-lg border p-2 dark:bg-gray-900 dark:border-gray-700 border-gray-300 dark:active:bg-slate-600 active:bg-gray-300">{{ name }}</button>
     <!--<p>{{ get }}</p>-->
   </div>
 </template>

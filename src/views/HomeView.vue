@@ -12,6 +12,9 @@ export default {
   name: 'HomeView',
   components: {
     RestButton,
+  },
+  methods: {
+    
   }
 }
 </script>

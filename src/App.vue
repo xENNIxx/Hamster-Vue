@@ -6,10 +6,13 @@ import Darkmode from './components/DarkmodeItem.vue'
 <template>
   <Darkmode/>
   <nav class="text-center text-xl p-3 dark:bg-slate-800 dark:text-white bg-white">
-    <router-link to="/">Home </router-link> 
+    <router-link to="/">Home </router-link>
     <router-link v-if="!isLoggedIn" to="/login">| Login |</router-link> 
     <router-link v-if="!isLoggedIn" to="/register"> Register</router-link>
-    <RestButton v-if="isLoggedIn" name="Logout" :link="this.hostname + 'logout'" method="get" @onResponse="logOutResponse($event)"></RestButton>
+    <!-- this.hostname = http://localhost:8080/api/ -->
+    <RestButton  v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @onResponse="logOutResponse($event)"/>
+    
+  
   </nav>
 
   <router-view/>
@@ -31,7 +34,7 @@ export default {
   },
   data(){
     return {
-      gameBuilder_Switches: [],
+      //gameBuilder_Switches: [],
     }
   },
   methods: {
@@ -40,9 +43,11 @@ export default {
     },
     logOutResponse(e){
       if(e == '""'){
-        this.$store.dispatch('auth/logout')
-        this.$router.push("/")
+        console.log('response_log')
+        this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
+        this.$router.push('/login'); //Anwendung wird zu bestimmter route navigiert
       }
+      console.log('response_out')
     }
   },
   mounted(){
