@@ -19,18 +19,23 @@
 <script>
 /* eslint-disable */
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 const https = require("https");
 export default {
   name: "LoginView",
 
+  computed: {
+    getUsername: mapGetters(['getUsername']),
+    getPassword: mapGetters(['getPassword'])
+  },
   data() {
     return {
       get: "",
-      username: "",
-      password: "",
+      username: getUsername,
+      password: getPassword,
       errorText:"",
-      hasError: false,
+      hasError: false
     };
   },
   props: {
