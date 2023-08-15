@@ -1,6 +1,7 @@
 // index.js
 import { createStore as CreateStoreVuex } from 'vuex';
 import auth from './modules/auth.js';
+import inputData from './modules/inputData.js';
 import createdPersistedState from 'vuex-persistedstate';
 import Cookies from 'js-cookie';
 
@@ -32,7 +33,7 @@ export const createStore = (app) => {
       },
       setInactivity(state) {
         state.isInactive = true;
-      },
+      }
     },
     actions: {
       checkInactivity({ commit, state }) {
@@ -45,6 +46,7 @@ export const createStore = (app) => {
     },
     modules: {
       auth,
+      inputData
     },
     plugins: [
       createdPersistedState({

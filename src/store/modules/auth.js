@@ -1,10 +1,10 @@
 
 const state = {
-  isLoggedIn: false,
+  isLoggedIn: false
 };
 
 const getters = {
-  isLoggedIn: (state) => state.isLoggedIn,
+  isLoggedIn: (state) => state.isLoggedIn
 };
 
 const mutations = {

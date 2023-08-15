@@ -10,6 +10,7 @@ import Darkmode from './components/DarkmodeItem.vue'
   <RestButton class="left-0 fixed p-1 dark:bg-slate-800 dark:text-white" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
   <!-- soll backend infos schicken - gibt aber noch fehler -->
   <!-- <RestButton class="left-20 fixed p-1 dark:bg-slate-800 dark:text-white" v-if="isLoggedIn" name="Save" :method="post" data="backEndData"/> -->
+  <button class="left-20 fixed p-1 dark:bg-slate-800 dark:text-white" @click="onClick">click me</button>
   <nav class="text-center text-xl p-3 dark:bg-slate-800 dark:text-white bg-white">
     <!-- immer verfügbare Reiter -->
     <router-link to="/">Home </router-link>
@@ -30,18 +31,22 @@ import Darkmode from './components/DarkmodeItem.vue'
 import RestButton from "./components/RestButton.vue"
 
 export default {
-  
+
+  data(){
+    return {
+      //gameBuilder_Switches: [],
+      username: this.getUsername,
+    }
+  },
   components: {
     RestButton
   },
   computed: {
     isLoggedIn(){
       return this.$store.getters['auth/isLoggedIn']
-    }
-  },
-  data(){
-    return {
-      //gameBuilder_Switches: [],
+    },
+    getUsername() {
+      return this.$store.getters['auth/username']
     }
   },
   methods: {
@@ -53,6 +58,9 @@ export default {
       this.$router.push('/login'); //Anwendung wird zu bestimmter route navigiert
       console.log(e)
       console.log(`logged in: ${this.isLoggedIn}`)
+    },
+    onClick() {
+      console.log(this.username)
     }
   },
   mounted(){
