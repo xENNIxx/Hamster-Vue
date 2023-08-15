@@ -52,8 +52,6 @@ export default {
       this.$router.push('/login'); //Anwendung wird zu bestimmter route navigiert
       console.log(e)
       console.log(`logged in: ${this.isLoggedIn}`)
-      console.log(`username: ${this.$store.dispatch('inputData/getUsername')}`)
-      //TODO: löscht den Inhalt der Inputfelder
     }
   },
   mounted(){
