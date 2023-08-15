@@ -8,7 +8,8 @@ import Darkmode from './components/DarkmodeItem.vue'
   <Darkmode/>
   <!-- this.hostname = http://localhost:8080/api/ -->
   <RestButton class="left-0 fixed p-1 dark:bg-slate-800 dark:text-white" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
-  <RestButton class="left-20 fixed p-1 dark:bg-slate-800 dark:text-white" v-if="isLoggedIn" name="Save" :method="post" data="backEndData"/>
+  <!-- soll backend infos schicken - gibt aber noch fehler -->
+  <!-- <RestButton class="left-20 fixed p-1 dark:bg-slate-800 dark:text-white" v-if="isLoggedIn" name="Save" :method="post" data="backEndData"/> -->
   <nav class="text-center text-xl p-3 dark:bg-slate-800 dark:text-white bg-white">
     <!-- immer verfügbare Reiter -->
     <router-link to="/">Home </router-link>
