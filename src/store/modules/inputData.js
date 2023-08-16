@@ -1,11 +1,11 @@
 
 const state = {
-    username: 'herbert',
+    username: 'herbert'
     //password: ''
 };
 
 const getters = {
-    username: (state) => state.username,
+    username: state => state.username,
     //password: (state) => state.password
 };
 

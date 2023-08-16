@@ -1,15 +1,20 @@
 
 const state = {
-  isLoggedIn: false
+  isLoggedIn: false,
+  oasch: false
 };
 
 const getters = {
-  isLoggedIn: (state) => state.isLoggedIn
+  isLoggedIn: (state) => state.isLoggedIn,
+  oasch: (state) => state.oasch
 };
 
 const mutations = {
   SET_LOGGED_IN(state, value) {
     state.isLoggedIn = value;
+  },
+  SET_USERNAME(state, value) {
+    state.oasch = value;
   },
 };
 
@@ -28,6 +33,10 @@ const actions = {
     if (state.isLoggedIn) {
       commit('SET_LOGGED_IN', true);
     }
+  },
+
+  eini({ commit }) {
+    commit('SET_USERNAME', true);
   },
 };
 
