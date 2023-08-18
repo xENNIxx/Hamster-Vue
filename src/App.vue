@@ -28,7 +28,9 @@ import Darkmode from './components/DarkmodeItem.vue'
 
 
 <script>
-import { mapGetters } from 'vuex'
+//import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex';
+//import { mapGetters } from 'vuex'
 import RestButton from "./components/RestButton.vue"
 
 export default {
@@ -39,21 +41,19 @@ export default {
     },
     getUsername() {
       return this.$store.getters['inputData/username']
-    },
-    oasch() {
-      return this.$store.getters['auth/oasch']
     }
   },
   data(){
     return {
       //gameBuilder_Switches: [],
-      username: this.getUsername,
+      username: '',
     }
   },
   components: {
     RestButton
   },
   methods: {
+
     updateInteraction() {
       this.$store.commit('updateInteraction')
     },
@@ -61,22 +61,24 @@ export default {
       this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
       this.$router.push('/login'); //Anwendung wird zu bestimmter route navigiert
       console.log(e)
-      console.log(`logged in: ${this.isLoggedIn} + ${this.oasch}`)
+      console.log(`logged in: ${this.isLoggedIn}`)
     },
     onClick() {
-      this.$store.dispatch('auth/eini')
-      console.log(this.oasch)
+      //console.log(`before: ${this.getUsername}`);
+      const testv = 'it works';
+      this.$store.dispatch('inputData/setUsername', testv);
+      //console.log(`after: ${this.getUsername}`);
     }
   },
   mounted(){
     window.addEventListener('mousemove', this.updateInteraction);
     window.addEventListener('keydown', this.updateInteraction);
     this.$store.dispatch('checkInactivity');
-    console.log(this.getUsername);
   },
   beforeUnmount(){
     window.removeEventListener('mousemove', this.updateInteraction);
     window.removeEventListener('keydown', this.updateInteraction);
+
   }
 }
 </script>
