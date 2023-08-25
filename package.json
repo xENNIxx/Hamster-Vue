@@ -33,5 +33,17 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "vue-cli-plugin-tailwind": "~3.0.0"
-  }
+  },
+  "description": "## Project setup ``` npm install ```",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xENNIxx/Hamster-Vue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xENNIxx/Hamster-Vue/issues"
+  },
+  "homepage": "https://github.com/xENNIxx/Hamster-Vue#readme"
 }
