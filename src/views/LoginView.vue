@@ -2,13 +2,13 @@
   <section>
     <div class="flex flex-col items-center justify-center">
       <div
-        class="w-1/3 mt-44 bg-base-200 rounded-lg shadow p-5 "
+        class="w-1/3 mt-44 bg-base-200 card-body card shadow p-5 "
       >
         <h1 class="text-center text-xl">Login</h1>
         <div class="m-5 flex flex-col items-center justify-center gap-5">
-          <input v-model="username" type="text" placeholder="Username/E-Mail" class="border-base-300 rounded-lg border p-2"/>
-          <input v-model="password" type="password" placeholder="Password" class="border-base-300 rounded-lg border p-2"/>
-          <button @click="clickevent" class="text-center text-secondary-content rounded-lg border p-2 border-base-300 bg-secondary active:bg-secondary-focus" v-text="name"></button>
+          <input v-model="username" type="text" placeholder="Username/E-Mail" class="input"/>
+          <input v-model="password" type="password" placeholder="Password" class="input"/>
+          <button @click="clickevent" class="btn btn-secondary" v-text="name"></button>
           <p :class="{'text-error': hasError, 'text-success': !hasError}">{{ errorText }}</p>
         </div>
       </div>
