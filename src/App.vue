@@ -3,22 +3,21 @@
   <!-- this.hostname = http://localhost:8080/api/ -->
   <!-- soll backend infos schicken - gibt aber noch fehler -->
  <!-- <button class="right-20 fixed p-1 bg-secondary" @click="onClick">click me</button>-->
-  <nav class="bg-secondary flex flex-wrap justify-center">
+  <nav class="bg-secondary flex justify-center p-3 max-h-13">
     <div class="text-center text-xl ">
     <!-- immer verfügbare Reiter -->
-    <router-link  to="/" class="mx-5">Home </router-link>
+    <router-link  to="/" class="m-5">Home </router-link>
 
     <!-- Reiter für uneingeloggten User -->
-    <router-link v-if="!isLoggedIn" class="mx-5" to="/login"> Login </router-link>
-    <router-link v-if="!isLoggedIn" class="mx-5" to="/register"> Register</router-link>
+    <router-link v-if="!isLoggedIn" class="m-5" to="/login"> Login </router-link>
+    <router-link v-if="!isLoggedIn" class="m-5" to="/register"> Register</router-link>
         
     <!-- Reiter für eingeloggten User -->
-    <router-link v-if="isLoggedIn" class="mx-5" to="/playground"> Playground </router-link>
-    <router-link v-if="isLoggedIn" class="mx-5" to="/courses"> Courses </router-link>
+    <router-link v-if="isLoggedIn" class="m-5" to="/playground"> Playground </router-link>
+    <router-link v-if="isLoggedIn" class="m-5" to="/courses"> Courses </router-link>
 
-    <RestButton class="h-full" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
     </div>
-    <select data-choose-theme class="right-10 fixed">
+    <select data-choose-theme class="right-5 fixed btn btn-sm">
       <option value="light">light</option>
       <option value="dark">dark</option>
       <option value="cyberpunk">cyberpunk</option>
@@ -26,6 +25,8 @@
       <option value="aqua">aqua</option>
       <option value="halloween">halloween</option>
     </select>
+    <RestButton class="btn btn-sm right-40 fixed" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
+
   </nav>
 
   
