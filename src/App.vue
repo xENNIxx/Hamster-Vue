@@ -1,7 +1,7 @@
 
 <template>
   <!-- this.hostname = http://localhost:8080/api/ -->
-  <RestButton class="left-0 fixed p-1 bg-secondary" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
+  <RestButton class="right-0 fixed p-1 bg-secondary" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
   <!-- soll backend infos schicken - gibt aber noch fehler -->
   <button class="left-20 fixed p-1 bg-secondary" @click="onClick">click me</button>
   <nav class="text-center text-xl p-3 bg-secondary">

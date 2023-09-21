@@ -8,7 +8,7 @@
         <div class="m-5 flex flex-col items-center justify-center gap-5">
           <input v-model="username" type="text" placeholder="Username/E-Mail" class="border-base-300 rounded-lg border p-2"/>
           <input v-model="password" type="password" placeholder="Password" class="border-base-300 rounded-lg border p-2"/>
-          <button @click="clickevent" class="text-center text-accent-content rounded-lg border p-2 border-base-300 bg-accent active:bg-accent-focus" v-text="name"></button>
+          <button @click="clickevent" class="text-center text-secondary-content rounded-lg border p-2 border-base-300 bg-secondary active:bg-secondary-focus" v-text="name"></button>
           <p :class="{'text-error': hasError, 'text-success': !hasError}">{{ errorText }}</p>
         </div>
       </div>
