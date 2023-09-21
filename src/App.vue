@@ -22,6 +22,7 @@
       <option value="cyberpunk">cyberpunk</option>
       <option value="valentine">valentine</option>
       <option value="aqua">aqua</option>
+      <option value="halloween">halloween</option>
     </select>
   </nav>
   

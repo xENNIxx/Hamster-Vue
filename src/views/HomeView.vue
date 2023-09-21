@@ -1,7 +1,7 @@
 <template>
   <div class="dark:text-white">
     <div class="text-center m-10 text-xl">Hamster</div>
-    <RestButton name="Get all users" :link="this.hostname + 'user/users'" method="get"/>
+  <!--  <RestButton name="Get all users" :link="this.hostname + 'user/users'" method="get"/>-->
   </div>
 </template>
 

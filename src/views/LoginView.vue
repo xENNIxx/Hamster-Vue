@@ -1,15 +1,15 @@
 <template>
-  <section class= "dark:text-white">
+  <section>
     <div class="flex flex-col items-center justify-center">
       <div
-        class="w-1/3 mt-44 bg-white rounded-lg shadow dark:border p-5 dark:bg-gray-800 dark:border-gray-700"
+        class="w-1/3 mt-44 bg-base-200 rounded-lg shadow p-5 "
       >
         <h1 class="text-center text-xl">Login</h1>
         <div class="m-5 flex flex-col items-center justify-center gap-5">
-          <input v-model="username" type="text" placeholder="Username/E-Mail" class="dark:bg-gray-900 dark:border-gray-700 border-gray-300 rounded-lg border p-2"/>
-          <input v-model="password" type="password" placeholder="Password" class="dark:bg-gray-900 dark:border-gray-700 border-gray-300 rounded-lg border p-2"/>
-          <button @click="clickevent" class="text-center rounded-lg border p-2 dark:bg-gray-900 dark:border-gray-700 border-gray-300 dark:active:bg-slate-600 active:bg-gray-300" v-text="name"></button>
-          <p :class="{'text-red-600': hasError, 'text-green-600': !hasError}">{{ errorText }}</p>
+          <input v-model="username" type="text" placeholder="Username/E-Mail" class="border-base-300 rounded-lg border p-2"/>
+          <input v-model="password" type="password" placeholder="Password" class="border-base-300 rounded-lg border p-2"/>
+          <button @click="clickevent" class="text-center text-accent-content rounded-lg border p-2 border-base-300 bg-accent active:bg-accent-focus" v-text="name"></button>
+          <p :class="{'text-error': hasError, 'text-success': !hasError}">{{ errorText }}</p>
         </div>
       </div>
     </div>
