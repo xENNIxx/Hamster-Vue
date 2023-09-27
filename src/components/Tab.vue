@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Button>{{ title }}</Button>
+        <Button class="p-2">{{ title }}</Button>
     </div>
 </template>
 

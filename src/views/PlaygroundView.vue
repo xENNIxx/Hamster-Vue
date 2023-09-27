@@ -9,8 +9,13 @@
                 <button class="btn" @click="cleanField">Cleanup</button>
                 <button class="btn" @click="reset">Reset Field</button>
             </div>
+            <nav class="flex justify-center p-3 max-h-13">
+                <Tab>tab1</Tab>
+                <Tab>tab2</Tab>
+                <Tab>tab3</Tab>
+                <Tab>tab4</Tab>
+            </nav>
             <div class="inline-flex">
-                <TapRow @click="putCodeIntoEditor"/>
                 <GroundEditorVue @submitted="submitCode($event)"/>
             </div>
         </div>
@@ -23,15 +28,15 @@
 
 import GroundEditorVue from '@/components/editors/GroundEditor.vue'
 import PlaygroundTerritorySelectorVue from '@/components/PlaygroundTerritorySelector.vue'
-import TapRow from "@/components/TapRow.vue"
 import Game from '../assets/js/Game.js'
 import {request_} from '../assets/js/Request.js'
+import Tab from '../components/Tab.vue'
 
 export default {
 components: {
     GroundEditorVue,
     PlaygroundTerritorySelectorVue,
-    TapRow
+    Tab
 },
 props : {
     
@@ -53,7 +58,7 @@ data() {
         },
         field_attribute: 'data-playground-field-',
         loaded_terrain_obj: {
-            type: Object
+            type: Object 
         }
     }
 },
