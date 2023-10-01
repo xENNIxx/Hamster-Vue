@@ -10,13 +10,12 @@
                 <button class="btn" @click="reset">Reset Field</button>
             </div>
             <nav class="flex justify-center p-3 max-h-13">
-                <Tab>tab1</Tab>
-                <Tab>tab2</Tab>
-                <Tab>tab3</Tab>
-                <Tab>tab4</Tab>
+                <TabRow></TabRow>
             </nav>
-            <div class="inline-flex">
+            <!-- class="inline-flex" -->
+            <div>
                 <GroundEditorVue @submitted="submitCode($event)"/>
+                hier
             </div>
         </div>
     </div>
@@ -31,12 +30,14 @@ import PlaygroundTerritorySelectorVue from '@/components/PlaygroundTerritorySele
 import Game from '../assets/js/Game.js'
 import {request_} from '../assets/js/Request.js'
 import Tab from '../components/Tab.vue'
+import TabRow from '../components/TabRow.vue'
 
 export default {
 components: {
     GroundEditorVue,
     PlaygroundTerritorySelectorVue,
-    Tab
+    Tab,
+    TabRow
 },
 props : {
     

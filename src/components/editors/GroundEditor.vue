@@ -1,17 +1,23 @@
 <template>
-    <section>
-        <codemirror
-            v-model="code"
-            :autofocus="true"
-            :indent-with-tab="true"
-            :tab-size="2"
-            :extensions="extensions"
-            @change="updateValue($event)"
-            style="height:100%"
-        />
-        <br>
-        <button class="btn" @click="submitCode">Submit</button>
-    </section>
+  <div>
+    
+          <section>
+            <codemirror
+              v-model="code"
+              :autofocus="true"
+              :indent-with-tab="true"
+              :tab-size="2"
+              :extensions="extensions"
+              @change="updateValue($event)"
+              style="height:100%"
+            />
+            <br>
+            <button class="btn" @click="submitCode">Submit</button>
+          </section>
+
+
+        
+  </div>
 </template>
 
 <script>
@@ -28,6 +34,8 @@
     },
     data(){
         return {
+          tabs: [],
+          tabCounter: 0,
             code:
             `
             void main(){\n\t\n}
@@ -56,6 +64,17 @@
         console.log(this.value)
         // this.$parent.handleServerResponse(await request_(this.hostname + "hamster/defaultTerrain", reqObj, "post"))
         this.$emit('submitted', reqObj)
+      },
+
+      closeTab(x) {
+        for (let i = 0; i < this.tabs.length; i++) {
+          if (this.tabs[i] === x) {
+            this.tabs.splice(i, 1)
+          }
+        }
+      },
+      newTab() {
+        this.tabs.push(this.tabCounter++)
       }
     }
   }

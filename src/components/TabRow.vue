@@ -7,14 +7,15 @@
 
 <script>
 
-import Tap from "@/components/Tap.vue"
+import Tap from "@/components/Tab.vue"
 export default {
     name: "TapRow",
     data() {
         return {
             taps: [
                 {id: 1, title: 'tap1', code: 'main()'},
-                {id: 2, title: 'tap2', code: 'int x'}
+                {id: 2, title: 'tap2', code: 'int'},
+                {id: 3, title: 'tap3', code: 'string'}
             ]
         }
     },
