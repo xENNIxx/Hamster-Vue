@@ -1,26 +1,40 @@
 
 <template>
-    <div class="p-1" v-for="Tap in taps" :key="Tap.id">
-        <Tap :tapTitle=Tap.title :programCode="Tap.code"/>
+    <button class="borderstyle p-2" @click="addTab">+</button>
+    <div class="p-1" v-for="Tab in tabs" :key="Tab.id">
+        <Tab :tabTitle=Tab.title :programCode="Tab.code"/>
     </div>
 </template>
 
 <script>
 
-import Tap from "@/components/Tab.vue"
+import Tab from "@/components/Tab.vue"
+
 export default {
-    name: "TapRow",
+    name: "TabRow",
     data() {
         return {
-            taps: [
-                {id: 1, title: 'tap1', code: 'main()'},
-                {id: 2, title: 'tap2', code: 'int'},
-                {id: 3, title: 'tap3', code: 'string'}
-            ]
+            tabs: [],
+            tabcounter: 0
         }
     },
     components: {
-        Tap
+        Tab
+    },
+    methods: {
+        addTab() {
+            console.log("addTab-Method");
+            this.tabs[this.tabcounter] = "";
+            this.tabcounter++;
+        }
     }
 };
 </script>
+
+<style>
+
+.borderstyle {
+    border: 1px solid green;
+    border-radius: 10px;
+}
+</style>

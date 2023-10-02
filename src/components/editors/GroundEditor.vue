@@ -1,6 +1,5 @@
 <template>
   <div>
-    
           <section>
             <codemirror
               v-model="code"

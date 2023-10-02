@@ -1,25 +1,25 @@
 <template>
     <div>
-        <Button class="p-2">{{ title }}</Button>
+        <Button class="borderstyle p-2">{{ title }}</Button>
     </div>
 </template>
 
 <script>
 export default {
-    name: "Tap",
+    name: "Tab",
     data() {
         return {
-            id: this.tapId,
-            title: this.tapTitle,
+            id: this.tabId,
+            title: this.tabTitle,
             code: this.programCode
         }
     },
     props: {
-        tapId: {
+        tabId: {
             typeof: Int32Array,
             default: 99
         },
-        tapTitle:{
+        tabTitle:{
             typeof: String,
             default: 'title'
         },
@@ -30,3 +30,12 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.borderstyle {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+
+</style>
