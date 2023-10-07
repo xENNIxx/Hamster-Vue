@@ -116,6 +116,46 @@
   </div>
 
   <button @click="clickevent" class="btn btn-secondary">Get Courses</button>
+
+  <div v-for="course in get" class="collapse bg-base-200 collapse-arrow w-auto m-5 shadow-md">
+    <input type="checkbox" />
+    <div class="collapse-title text-xl font-medium">
+      {{course.name}}
+    </div>
+    <div class="collapse-content">
+      <table class="table">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th>Lehrperson</th>
+            <th>Aufgabe</th>
+            <th>Abgabe</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- row 1 -->
+          <tr>
+            <td>
+              <div class="font-bold">
+                must be added...
+              </div>
+            </td>
+            <td>
+              must be added...
+            </td>
+            <td>
+              must be added...
+            </td>
+            <th>
+              <button class="btn btn-success btn-xs">Löse</button>
+            </th>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -141,10 +181,10 @@ export default {
       
       try {
         const response = await axios(config);
-        this.get = JSON.stringify(response.data);
-        console.log(get);
+        this.get = response.data;
+        console.log(response.data);
       } catch (error) {
-        console.log(JSON.stringify(error.data));
+        console.log(error.data);
       }
     }
   },
