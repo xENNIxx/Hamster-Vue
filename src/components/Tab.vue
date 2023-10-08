@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Button class="borderstyle p-2">{{ title }}</Button>
+        <Button class="borderstyle p-2" @click="getCode">{{ this.title }}</Button>
     </div>
 </template>
 
@@ -9,23 +9,17 @@ export default {
     name: "Tab",
     data() {
         return {
-            id: this.tabId,
-            title: this.tabTitle,
-            code: this.programCode
+            id: this.tabIdProp,
+            title: this.tabTitleProp,
+            code: this.tabCodeProb
         }
     },
-    props: {
-        tabId: {
-            typeof: Int32Array,
-            default: 99
-        },
-        tabTitle:{
-            typeof: String,
-            default: 'title'
-        },
-        programCode: {
-            typeof: String,
-            default: 'no code'
+    props:
+        ["tabIdProp", "tabTitleProp", "tabCodeProb"]
+    ,
+    methods: {
+        getCode() {
+            console.log("getCode-method ->" + this.id + "\n" + this.code);
         }
     }
 };
