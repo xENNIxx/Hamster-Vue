@@ -3,8 +3,8 @@
   <!-- this.hostname = http://localhost:8080/api/ -->
   <!-- soll backend infos schicken - gibt aber noch fehler -->
  <!-- <button class="right-20 fixed p-1 bg-secondary" @click="onClick">click me</button>-->
-  <nav class="bg-secondary flex justify-center p-3 max-h-13">
-    <div class="text-center text-xl ">
+  <nav class="bg-primary flex justify-center p-3 max-h-13">
+    <div class="text-center text-primary-content text-xl ">
     <!-- immer verfügbare Reiter -->
     <router-link  to="/" class="m-5">Home </router-link>
 

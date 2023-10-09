@@ -1,17 +1,19 @@
 <template>
-  <div class="flex flex-col items-center justify-center">
-    <button @click="clickevent" class="btn btn-secondary m-5">Get Courses</button>
+  <div class="flex flex-col items-center justify-center" >
+    <button @click="clickevent" @onload="clickevent" class="btn btn-ghost m-5">  
+      <svg class="w-6 h-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 14 3-3m-3 3 3 3m-3-3h16v-3m2-7-3 3m3-3-3-3m3 3H3v3"/>
+    </svg></button>
     <div v-for="course in get" class="collapse bg-base-200 collapse-arrow w-1/2 m-5 shadow-md">
       <input type="checkbox" />
       <div class="collapse-title text-xl font-medium">
-        {{ course.name }}
+        {{ course.course_name }}
       </div>
       <div class="collapse-content">
         <table class="table">
           <!-- head -->
           <thead>
             <tr>
-              <th>Lehrperson</th>
               <th>Aufgabe</th>
               <th>Abgabe</th>
               <th></th>
@@ -19,19 +21,17 @@
           </thead>
           <tbody>
             <!-- row 1 -->
-            <tr>
+            <tr v-for="exercise in course.exercises">
               <td>
                 <div class="font-bold">
-                  must be added...
+                  {{ exercise.exercise_name }}
                 </div>
               </td>
               <td>
                 must be added...
               </td>
-              <td>
-                must be added...
-              </td>
               <th>
+                <button class="btn btn-secondary btn-xs">Details</button>
                 <button class="btn btn-success btn-xs">Löse</button>
               </th>
             </tr>
@@ -40,6 +40,7 @@
         </table>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -53,11 +54,12 @@ export default {
     };
   },
   methods: {
+
     async clickevent() {
       axios.defaults.withCredentials = true;
       var config = {
         method: "get",
-        url: this.hostname + "courses/students/my-courses",
+        url: this.hostname + "courses/students/my-view",
         headers: {
           "Access-Control-Allow-Credentials": true,
         },
@@ -72,6 +74,9 @@ export default {
         console.log(error.data);
       }
     }
+  },
+  beforeMount() {
+   this.clickevent()
   },
 }
 </script>
