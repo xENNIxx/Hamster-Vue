@@ -26,7 +26,7 @@
             <tr v-for="exercise in course.exercises">
               <td>
                 <div class="font-bold">
-                  {{ exercise.exercise_name }}
+                  {{ exercise.name }}
                 </div>
               </td>
               <td>
@@ -34,17 +34,17 @@
               </td>
               <th>
               <!-- ignore checkbox -->
-              <input type="checkbox" :id="exercise.exercise_name" class="modal-toggle" />
+              <input type="checkbox" :id="exercise.name" class="modal-toggle" />
                 <div class="modal">
                   <div class="modal-box">
                     <h3 class="font-bold text-lg">Details</h3>
-                    <p class="py-4">{{exercise.exercise_name}}</p>
+                    <p class="py-4">{{exercise.details}}</p>
                     <div class="modal-action">
-                      <label :for="exercise.exercise_name" class="btn">Close</label>
+                      <label :for="exercise.name" class="btn">Close</label>
                     </div>
                   </div>
                 </div>
-                <label class="btn btn-secondary btn-xs m-5" :for="exercise.exercise_name" >Details</label>
+                <label class="btn btn-secondary btn-xs m-5" :for="exercise.name" >Details</label>
                 <button class="btn btn-success btn-xs">Löse</button>
               </th>
             </tr>
