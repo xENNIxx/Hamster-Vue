@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center">
-    <button @click="clickevent" @onload="clickevent" class="btn btn-ghost m-5">
+    <button @click="refreshData" class="btn btn-ghost m-5">
       <svg class="w-6 h-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
         viewBox="0 0 20 18">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,7 +45,7 @@
                   </div>
                 </div>
                 <label class="btn btn-secondary btn-xs m-5" :for="exercise.name" >Details</label>
-                <button class="btn btn-success btn-xs">Löse</button>
+                <button class="btn btn-success btn-xs" @click="this.$router.push({ name: 'exercise',  query: { exercise: JSON.stringify(exercise) } })">Löse</button>
               </th>
             </tr>
 
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
 
-    async clickevent() {
+    async refreshData() {
       axios.defaults.withCredentials = true;
       var config = {
         method: "get",
@@ -77,7 +77,6 @@ export default {
         },
         withCredentials: true,
       };
-
       try {
         const response = await axios(config);
         this.get = response.data;
@@ -85,10 +84,10 @@ export default {
       } catch (error) {
         console.log(error.data);
       }
-    }
+    },
   },
   beforeMount() {
-    this.clickevent()
+    this.refreshData()
   },
 }
 </script>

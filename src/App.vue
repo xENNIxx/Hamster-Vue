@@ -2,19 +2,19 @@
 <template>
   <!-- this.hostname = http://localhost:8080/api/ -->
   <!-- soll backend infos schicken - gibt aber noch fehler -->
- <!-- <button class="right-20 fixed p-1 bg-secondary" @click="onClick">click me</button>-->
+  <!-- <button class="right-20 fixed p-1 bg-secondary" @click="onClick">click me</button>-->
   <nav class="bg-primary flex justify-center p-3 max-h-13">
     <div class="text-center text-primary-content text-xl ">
-    <!-- immer verfügbare Reiter -->
-    <router-link  to="/" class="m-5">Home </router-link>
+      <!-- immer verfügbare Reiter -->
+      <router-link to="/" class="m-5">Home </router-link>
 
-    <!-- Reiter für uneingeloggten User -->
-    <router-link v-if="!isLoggedIn" class="m-5" to="/login"> Login </router-link>
-    <router-link v-if="!isLoggedIn" class="m-5" to="/register"> Register</router-link>
-        
-    <!-- Reiter für eingeloggten User -->
-    <router-link v-if="isLoggedIn" class="m-5" to="/playground"> Playground </router-link>
-    <router-link v-if="isLoggedIn" class="m-5" to="/courses"> Courses </router-link>
+      <!-- Reiter für uneingeloggten User -->
+      <router-link v-if="!isLoggedIn" class="m-5" to="/login"> Login </router-link>
+      <router-link v-if="!isLoggedIn" class="m-5" to="/register"> Register</router-link>
+
+      <!-- Reiter für eingeloggten User -->
+      <router-link v-if="isLoggedIn" class="m-5" to="/playground"> Playground </router-link>
+      <router-link v-if="isLoggedIn" class="m-5" to="/courses"> Courses </router-link>
 
     </div>
     <select data-choose-theme class="right-5 fixed btn btn-sm">
@@ -25,12 +25,15 @@
       <option value="aqua">aqua</option>
       <option value="halloween">halloween</option>
     </select>
-    <RestButton class="btn btn-sm right-40 fixed" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'" method="get" @click="logOutResponse"/>
+
+    <RestButton class="btn btn-sm right-40 fixed" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'"
+      method="get" @click="logOutResponse" />
+
 
   </nav>
 
-  
-  <router-view/>
+
+  <router-view />
 </template>
 
 
@@ -50,14 +53,14 @@ export default {
     })
   },
   computed: {
-    isLoggedIn(){
+    isLoggedIn() {
       return this.$store.getters['auth/isLoggedIn']
     },
     getUsername() {
       return this.$store.getters['inputData/username']
     }
   },
-  data(){
+  data() {
     return {
       //gameBuilder_Switches: [],
       username: '',
@@ -71,7 +74,7 @@ export default {
     updateInteraction() {
       this.$store.commit('updateInteraction')
     },
-    logOutResponse(e){
+    logOutResponse(e) {
       this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
       this.$router.push('/login'); //Anwendung wird zu bestimmter route navigiert
       console.log(e)
@@ -84,12 +87,12 @@ export default {
       //console.log(`after: ${this.getUsername}`);
     }
   },
-  mounted(){
+  mounted() {
     window.addEventListener('mousemove', this.updateInteraction);
     window.addEventListener('keydown', this.updateInteraction);
     this.$store.dispatch('checkInactivity');
   },
-  beforeUnmount(){
+  beforeUnmount() {
     window.removeEventListener('mousemove', this.updateInteraction);
     window.removeEventListener('keydown', this.updateInteraction);
 
