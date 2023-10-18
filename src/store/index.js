@@ -12,11 +12,16 @@ export const createStore = (app) => {
     state: {
       lastInteraction: Date.now(),
       isInactive: false,
+      exercise: null
     },
     getters: {
       lastInteraction(state) {
         return new Date(state.lastInteraction).toLocaleString();
       },
+      getCurrentExercise(state){
+        return state.exercise;
+      }
+
     },
     mutations: {
       updateInteraction(state) {
@@ -33,6 +38,9 @@ export const createStore = (app) => {
       },
       setInactivity(state) {
         state.isInactive = true;
+      },
+      setExercise(state, ex){
+        state.exercise = ex;
       }
     },
     actions: {

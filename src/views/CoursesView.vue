@@ -45,7 +45,7 @@
                   </div>
                 </div>
                 <label class="btn btn-secondary btn-xs m-5" :for="exercise.name" >Details</label>
-                <button class="btn btn-success btn-xs" @click="this.$router.push({ name: 'exercise',  query: { exercise: JSON.stringify(exercise) } })">Löse</button>
+                <button class="btn btn-success btn-xs" @click="goToExercise(exercise)">Löse</button>
               </th>
             </tr>
 
@@ -85,6 +85,10 @@ export default {
         console.log(error.data);
       }
     },
+    goToExercise(exercise){
+      this.$store.commit('setExercise', exercise)
+      this.$router.push('exercise')
+    }
   },
   beforeMount() {
     this.refreshData()

@@ -41,9 +41,6 @@
 
 import { onMounted } from 'vue'
 import { themeChange } from 'theme-change'
-//import { mapGetters } from 'vuex'
-import { mapActions } from 'vuex';
-//import { mapGetters } from 'vuex'
 import RestButton from "./components/RestButton.vue"
 
 export default {
