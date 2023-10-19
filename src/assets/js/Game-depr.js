@@ -121,12 +121,15 @@ export default class Game{
     createPlayGround() {
         for(let i = 0; i < this.terrain.dimension.size; i++){
             let div = document.createElement("div")
-            div.classList.add("play-field")
+            div.classList.add("border-primary")
             this.playGround.appendChild(div)
         }
+
+
+
         
         if(typeof this.playField == "undefined" || this.playField.length == 0)
-            this.playField = this.playGround.querySelectorAll(".play-field")
+            this.playField = this.playGround.querySelectorAll("border-primary")
     }
 
     handleResponse (response){

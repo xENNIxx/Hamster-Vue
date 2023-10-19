@@ -12,7 +12,8 @@ export const createStore = (app) => {
     state: {
       lastInteraction: Date.now(),
       isInactive: false,
-      exercise: null
+      exercise: null,
+      code: null
     },
     getters: {
       lastInteraction(state) {
@@ -20,6 +21,9 @@ export const createStore = (app) => {
       },
       getCurrentExercise(state){
         return state.exercise;
+      },
+      getCodeFromEditor(state){
+        return state.code
       }
 
     },
@@ -41,6 +45,9 @@ export const createStore = (app) => {
       },
       setExercise(state, ex){
         state.exercise = ex;
+      },
+      setCodeFromEditor(state, c){
+        state.code = c
       }
     },
     actions: {

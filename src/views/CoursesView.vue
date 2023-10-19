@@ -33,18 +33,18 @@
                 01.01.0001
               </td>
               <th>
-              <!-- ignore checkbox -->
-              <input type="checkbox" :id="exercise.name" class="modal-toggle" />
+                <!-- ignore checkbox -->
+                <input type="checkbox" :id="exercise.name" class="modal-toggle" />
                 <div class="modal">
                   <div class="modal-box">
                     <h3 class="font-bold text-lg">Details</h3>
-                    <p class="py-4">{{exercise.details}}</p>
+                    <p class="py-4">{{ exercise.details }}</p>
                     <div class="modal-action">
                       <label :for="exercise.name" class="btn">Close</label>
                     </div>
                   </div>
                 </div>
-                <label class="btn btn-secondary btn-xs m-5" :for="exercise.name" >Details</label>
+                <label class="btn btn-secondary btn-xs m-5" :for="exercise.name">Details</label>
                 <button class="btn btn-success btn-xs" @click="goToExercise(exercise)">Löse</button>
               </th>
             </tr>
@@ -85,7 +85,7 @@ export default {
         console.log(error.data);
       }
     },
-    goToExercise(exercise){
+    goToExercise(exercise) {
       this.$store.commit('setExercise', exercise)
       this.$router.push('exercise')
     }

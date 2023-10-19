@@ -50,7 +50,7 @@
     methods: {
         updateValue(event){
             this.value = event
-            
+            this.$store.commit('setCodeFromEditor', event)
         },
         async submitCode(){
 
