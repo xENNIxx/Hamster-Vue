@@ -23,14 +23,14 @@
           </thead>
           <tbody>
             <!-- row 1 -->
-            <tr v-for="exercise in course.exercises">
-              <td>
+            <tr v-for="exercise in course.exercises" :class="{'bg-opacity-30 bg-red-500': checkDeadline(exercise.deadline)}">
+              <td >
                 <div class="font-bold">
                   {{ exercise.name }}
                 </div>
               </td>
               <td>
-                01.01.0001
+                {{ new Date(exercise.deadline).toLocaleDateString('de-DE') }}
               </td>
               <th>
                 <!-- ignore checkbox -->
@@ -44,11 +44,11 @@
                     </div>
                   </div>
                 </div>
-                <label class="btn btn-secondary btn-xs m-5" :for="exercise.name">Details</label>
+                <label class="btn btn-secondary btn-xs mx-5" :for="exercise.name">Details</label>
                 <button class="btn btn-success btn-xs" @click="goToExercise(exercise)">Löse</button>
               </th>
             </tr>
-
+            
           </tbody>
         </table>
       </div>
@@ -62,7 +62,8 @@ export default {
   name: "CoursesView",
   data() {
     return {
-      get: null
+      get: null,
+      expDeadline: false
     };
   },
   methods: {
@@ -88,6 +89,12 @@ export default {
     goToExercise(exercise) {
       this.$store.commit('setExercise', exercise)
       this.$router.push('exercise')
+    },
+    checkDeadline(date){
+      var now = new Date();
+      now.setHours(0,0,0,0);
+      console.log(new Date(date) < now);
+      return new Date(date) < now;
     }
   },
   beforeMount() {

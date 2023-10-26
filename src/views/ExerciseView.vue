@@ -3,8 +3,10 @@
         <div class="card-body card shadow bg-base-300 w-2/5 items-center">
             <h1 class="text-3xl text-center" v-text="exercise.name"></h1>
             <div v-text="exercise.details" class="text-xl text-center"></div>
-            <button class="btn btn-primary w-1/10 m-3">Abgeben</button>
-            {{ this.$store.state.code }}
+
+            <button class="btn btn-primary w-1/10 m-3" @click="submitTask()">Abgeben</button>
+
+            <!--{{ this.$store.state.code }}-->
         </div>
     </div>
     <div class="playground-wrapper my-10">
@@ -141,6 +143,9 @@ export default {
         //eslint-disable-next-line
         cornChanged(event) {
             alert("CornChanged" + event)
+        },
+        submitTask(){
+            //todo
         }
 
     }
