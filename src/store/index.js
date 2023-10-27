@@ -23,7 +23,7 @@ export const createStore = (app) => {
         return state.exercise;
       },
       getCodeFromEditor(state){
-        return state.code
+        return state.code;
       }
 
     },

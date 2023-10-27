@@ -2,11 +2,18 @@
 <template>
     <button class="borderstyle p-2" @click="addTab">+</button>
     <div class="p-1" v-for="Tab in tabs" :key="Tab.id">
-        <Tab
-            :tabIdProp="tabs[Tab.tabId].tabId" 
-            :tabTitleProp="tabs[Tab.tabId].tabTitle" 
+        <Tab v-if="Tab.tabId == this.externButtonId"
+            @any-event="handelEvent"
+            :tabIdProp="tabs[Tab.tabId].tabId"
+            :tabTitleProp="tabs[Tab.tabId].tabTitle"
             :tabCodeProb="tabs[Tab.tabId].tabCode"
-        />
+            :tabIsActiveProp="true" />
+        <Tab v-else
+            @any-event="handelEvent"
+            :tabIdProp="tabs[Tab.tabId].tabId"
+            :tabTitleProp="tabs[Tab.tabId].tabTitle"
+            :tabCodeProb="tabs[Tab.tabId].tabCode"
+            :tabIsActiveProp="false" />
     </div>
 </template>
 
@@ -19,7 +26,8 @@ export default {
     data() {
         return {
             tabs: [],
-            tabCounter: 0
+            tabCounter: 0,
+            externButtonId: 0
         }
     },
     components: {
@@ -27,10 +35,14 @@ export default {
     },
     methods: {
         addTab() {
-            console.log("addTab-Method");
-            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: "-empty-"})
+            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: "-empty-"});
             this.tabCounter++;
-        }
+            console.log("addTab-Method");
+        },
+        handelEvent(buttonId = '') {
+            this.externButtonId = buttonId;
+            console.log('handelEvent from button ' + this.externButtonId);
+        },
     }
 };
 </script>

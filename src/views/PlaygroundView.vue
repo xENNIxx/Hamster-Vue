@@ -32,7 +32,7 @@ import {request_} from '../assets/js/Request.js'
 import Tab from '../components/Tab.vue'
 import TabRow from '../components/TabRow.vue'
 import RestButton from '../components/RestButton.vue'
-import axios from 'axios'
+import axios from 'axios'  
 
 const https = require("https");
 export default {
