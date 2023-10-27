@@ -8,17 +8,13 @@
                 <button class="btn" @click="print">Print</button>
                 <button class="btn" @click="cleanField">Cleanup</button>
                 <button class="btn" @click="reset">Reset Field</button>
-            </div> 
-            <nav class="flex justify-center p-3 max-h-13">
-                <TabRow />
-            </nav>
+            </div>
             <!-- class="inline-flex" --> 
             <div>
-                <GroundEditorVue @submitted="submitCode($event)"/>
+                <GroundEditorVue @submitted="submitCode($event)" :updatedCode="h" />
             </div>
         </div>
     </div>
-    <RestButton @click="axiosMethod" name="Speichern"/>
 </template>
 
 <script>
@@ -32,7 +28,7 @@ import {request_} from '../assets/js/Request.js'
 import Tab from '../components/Tab.vue'
 import TabRow from '../components/TabRow.vue'
 import RestButton from '../components/RestButton.vue'
-import axios from 'axios'  
+import axios from 'axios'
 
 const https = require("https");
 export default {

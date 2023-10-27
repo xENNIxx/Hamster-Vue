@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Button v-if="isActive" class="borderstyle p-2 bg-red-400" @click="getCode">{{ this.title }}</Button>
-        <Button v-else class="borderstyle p-2" @click="getCode">{{ this.title }}</Button>
+        <button v-if="isActive" class="borderstyle p-2 bg-gray-200" @click="getCode">{{ this.title }}</button>
+        <button v-else class="borderstyle p-2" @click="getCode">{{ this.title }}</button>
     </div>
 </template>
 
@@ -17,15 +17,18 @@ export default {
         }
     },
     props:
-        ["tabIdProp", "tabTitleProp", "tabCodeProb", "tabIsActiveProp"]
+        ["tabIdProp", "tabTitleProp", "tabCodeProb", "tabIsActiveProp", "updatedCode"]
     ,
     emits:
         ['anyEvent']
     ,
     methods: {
         getCode() {
-            this.$emit('anyEvent', this.id);
-            console.log("getCode-method ->" + this.id + "\n" + this.code);
+            //this.code = this.updatedCode;
+            this.$emit('anyEvent', this.id + "#" + this.code);
+            //console.log("getCode-method ->" + this.id + "\n" + this.code);
+            console.log(`code: ${this.code}`);
+            console.log(`updatedCode: ${this.updatedCode}`);
         }
     }
 };

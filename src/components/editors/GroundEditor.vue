@@ -1,6 +1,9 @@
 <template>
   <div>
-          <section>
+        <nav class="flex justify-self-start p-3 max-h-13">
+          <TabRow @any-event="setCodeEvent" :updatedCode="code" />
+        </nav>
+        <section>
             <codemirror
               v-model="code"
               :autofocus="true"
@@ -11,11 +14,12 @@
               style="height:100%"
             />
             <br>
-            <button class="btn" @click="submitCode">Submit</button>
+            <nav>
+              <button class="btn" @click="submitCode">Submit</button>
+              <button class="btn">Save</button>
+            </nav>
+            
           </section>
-
-
-        
   </div>
 </template>
 
@@ -24,35 +28,36 @@
   // import { java } from '@codemirror/lang-java'
   import {javascript} from '@codemirror/lang-javascript'
   // import { oneDark } from '@codemirror/theme-one-dark'
+  import TabRow from '../TabRow.vue'
 
   // Codemirror.
 
   export default {
     components: {
-      Codemirror
+      Codemirror,
+      TabRow
     },
     data(){
         return {
           tabs: [],
           tabCounter: 0,
-            code:
-            `
-            void main(){\n\t\n}
-            
-            `.trim(),
-            extensions: [javascript()],
-            value: ""
+          code: '',
+          extensions: [javascript()],
+          value: ""
         }
     },
     mounted() {
-        this.value = this.code
+        this.value = this.code;
     },
     methods: {
+        setCodeEvent(data = '') {
+          this.code = data;
+        },
         updateValue(event){
             this.value = event
             this.$store.commit('setCodeFromEditor', event)
         },
-        async submitCode(){
+      async submitCode(){
 
         let reqObj = {
           hamster: {
