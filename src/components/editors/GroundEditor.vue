@@ -15,7 +15,7 @@
             />
             <br>
             <nav>
-              <button class="btn" @click="submitCode">Submit</button>
+              <button class="btn" @click="submitCode">Run</button>
               <button class="btn">Save</button>
             </nav>
             
