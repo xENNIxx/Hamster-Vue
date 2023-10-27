@@ -18,10 +18,8 @@ export default {
     name: "TabRow",
     data() {
         return {
-            tabs: [
-                {tabId: 0, tabTitle: "titel1", tabCode: "new code"},
-                {tabId: 1, tabTitle: "titel2", tabCode: "really new code"}
-            ],
+            tabs: [],
+            tabCounter: 0
         }
     },
     components: {
@@ -29,8 +27,9 @@ export default {
     },
     methods: {
         addTab() {
-            console.log("addTab-Method"); 
-
+            console.log("addTab-Method");
+            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: "-empty-"})
+            this.tabCounter++;
         }
     }
 };

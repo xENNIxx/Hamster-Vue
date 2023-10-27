@@ -8,17 +8,17 @@
                 <button class="btn" @click="print">Print</button>
                 <button class="btn" @click="cleanField">Cleanup</button>
                 <button class="btn" @click="reset">Reset Field</button>
-            </div>
+            </div> 
             <nav class="flex justify-center p-3 max-h-13">
-                <TabRow></TabRow>
+                <TabRow />
             </nav>
-            <!-- class="inline-flex" -->
+            <!-- class="inline-flex" --> 
             <div>
                 <GroundEditorVue @submitted="submitCode($event)"/>
-                hier
             </div>
         </div>
     </div>
+    <RestButton @click="axiosMethod" name="Speichern"/>
 </template>
 
 <script>
@@ -31,13 +31,17 @@ import Game from '../assets/js/Game.js'
 import {request_} from '../assets/js/Request.js'
 import Tab from '../components/Tab.vue'
 import TabRow from '../components/TabRow.vue'
+import RestButton from '../components/RestButton.vue'
+import axios from 'axios'
 
+const https = require("https");
 export default {
 components: {
     GroundEditorVue,
     PlaygroundTerritorySelectorVue,
     Tab,
-    TabRow
+    TabRow,
+    RestButton
 },
 props : {
     
@@ -72,6 +76,45 @@ mounted() {
     console.info("loaded game object")
 },
 methods : {
+    axiosMethod() {
+        console.log('testMethod');
+
+        axios.defaults.withCredentials = true;
+        let data = JSON.stringify({
+          first: this.username,
+          second: this.password,
+        });
+
+        let link = this.hostname + 'users';
+
+        var config = {
+          method: "post",
+          url: link,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            Accept: "*/*",
+          },
+          withCredentials: true,
+          httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+          data: data,
+        };
+  
+        axios(config)
+          .then((response) =>{
+            this.hasError = false
+            this.errorText = "brutal!";
+            console.log("brutal")
+            
+            return JSON.stringify(response.data);
+          })
+          .then((json) => this.checkRegistration(json))
+          .catch((error) => {
+              this.hasError = true
+              this.errorText = error.response.data;
+              console.log(JSON.stringify(error.data));
+            });
+    },
     putCodeIntoEditor() {
 
 
