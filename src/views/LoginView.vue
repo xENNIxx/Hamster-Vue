@@ -88,7 +88,7 @@ export default {
         .catch((error) => {
             this.hasError = true
             this.errorText = "Fehler beim Login!";
-            console.log(JSON.stringify(error.data));
+            console.log(error.message);
           });
     },
     checkLogin(json) {

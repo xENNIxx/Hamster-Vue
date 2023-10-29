@@ -4,8 +4,12 @@
             <h1 class="text-3xl text-center" v-text="exercise.name"></h1>
             <div v-text="exercise.details" class="text-xl text-center"></div>
 
-            <button class="btn btn-primary w-1/10 m-3" @click="submitTask()">Abgeben</button>
+            <div class="flex justify-center">
+                <button class="btn btn-primary w-1/10 m-3" @click="saveTask()">Speichern</button>
 
+                <button v-if="!exercise.solution.submitted" class="btn btn-primary w-1/10 m-3" @click="submitTask()">Abgeben</button>
+                <button v-else class="btn btn-secondary w-1/10 m-3" @click="submitTask()">Abgabe rückgängig machen</button>
+            </div>
             <!--{{ this.$store.state.code }}-->
         </div>
     </div>
@@ -38,6 +42,10 @@ import Game from '../assets/js/Game.js'
 import { request_ } from '../assets/js/Request.js'
 import Tab from '../components/Tab.vue'
 import TabRow from '../components/TabRow.vue'
+import axios from "axios";
+
+
+const https = require("https");
 
 export default {
     components: {
@@ -72,12 +80,24 @@ export default {
         }
     },
     beforeMount() {
-        this.terrain.dimension.size = this.terrain.dimension.width * this.terrain.dimension.height
+        this.terrain.dimension.size = this.terrain.dimension.width * this.terrain.dimension.height;
+
+        if (this.exercise.solution == null) {
+            this.exercise.solution = {
+                "solution": {
+                    "exercise_id": this.exercise_id,
+                    "code": this.$store.state.code,
+                    "submitted": false
+                }
+            }
+        }
+
     },
     mounted() {
         this.game = this.newGame()
         this.game.on('cornChange', (event) => this.cornChanged(event))
         console.info("loaded game object")
+        console.log(this.exercise);
     },
     methods: {
         putCodeIntoEditor() {
@@ -144,8 +164,61 @@ export default {
         cornChanged(event) {
             alert("CornChanged" + event)
         },
-        submitTask(){
-            //todo
+
+        async submitTask() {
+            this.exercise.submitted = !this.exercise.solution.submitted;
+
+            var solution = {
+                solution:{
+                    solution_id: this.exercise.solution.solution_id,
+                    exercise_id: this.exercise.exercise_id,
+                    code: this.$store.state.code,
+                    submitted: this.exercise.submitted
+                }   
+            };
+
+            await this.putTaskAxios(solution);
+        },
+
+        async saveTask() {
+            var solution = {
+                solution:{
+                    solution_id: this.exercise.solution.solution_id,
+                    exercise_id: this.exercise.exercise_id,
+                    code: this.$store.state.code,
+                    submitted: this.exercise.submitted
+                }   
+            };
+
+            await this.putTaskAxios(solution);
+        },
+
+        async putTaskAxios(data) {
+            
+            var config = {
+                method: "put",
+                url: this.hostname + "courses/solutions",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "application/json",
+                    Accept: "*/*",
+                },
+                withCredentials: true,
+                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+                data: data,
+            };
+
+            await axios(config)
+                .then((response) => {
+                    this.exercise.solution = response.data
+                    return JSON.stringify(response.data);
+                })
+                .catch((error) => {
+                    console.log("fehler");
+                    console.log(error.message);
+                });
+
+
         }
 
     }

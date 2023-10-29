@@ -83,7 +83,7 @@ export default {
         this.get = response.data;
         console.log(response.data);
       } catch (error) {
-        console.log(error.data);
+        console.log(error.message);
       }
     },
     goToExercise(exercise) {
@@ -97,8 +97,8 @@ export default {
       return new Date(date) < now;
     }
   },
-  beforeMount() {
-    this.refreshData()
+  async beforeMount() {
+    await this.refreshData()
   },
 }
 </script>

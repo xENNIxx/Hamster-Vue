@@ -88,7 +88,7 @@
           .catch((error) => {
               this.hasError = true
               this.errorText = error.response.data;
-              console.log(JSON.stringify(error.data));
+              console.log(error.message);
             });
       },
       checkRegistration(json) {
