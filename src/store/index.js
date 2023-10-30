@@ -46,8 +46,9 @@ export const createStore = (app) => {
       setExercise(state, ex){
         state.exercise = ex;
       },
-      setCodeFromEditor(state, c){
+      setCodeFromEditor(state, c) {
         state.code = c
+        console.log(`code: ${this.code}`);
       }
     },
     actions: {

@@ -11,7 +11,7 @@
             </div>
             <!-- class="inline-flex" --> 
             <div>
-                <GroundEditorVue @submitted="submitCode($event)" :updatedCode="h" />
+                <GroundEditorVue @submitted="submitCode($event)" />
             </div>
         </div>
     </div>
@@ -25,8 +25,6 @@ import GroundEditorVue from '@/components/editors/GroundEditor.vue'
 import PlaygroundTerritorySelectorVue from '@/components/PlaygroundTerritorySelector.vue'
 import Game from '../assets/js/Game.js'
 import {request_} from '../assets/js/Request.js'
-import Tab from '../components/Tab.vue'
-import TabRow from '../components/TabRow.vue'
 import RestButton from '../components/RestButton.vue'
 import axios from 'axios'
 
@@ -35,8 +33,6 @@ export default {
 components: {
     GroundEditorVue,
     PlaygroundTerritorySelectorVue,
-    Tab,
-    TabRow,
     RestButton
 },
 props : {

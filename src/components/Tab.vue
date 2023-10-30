@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { Program } from '../models/Program'
+
 export default {
     name: "Tab",
     data() {
@@ -17,18 +19,17 @@ export default {
         }
     },
     props:
-        ["tabIdProp", "tabTitleProp", "tabCodeProb", "tabIsActiveProp", "updatedCode"]
+        ["tabIdProp", "tabTitleProp", "tabCodeProb", "tabIsActiveProp"]
     ,
     emits:
         ['anyEvent']
     ,
     methods: {
         getCode() {
-            //this.code = this.updatedCode;
-            this.$emit('anyEvent', this.id + "#" + this.code);
-            //console.log("getCode-method ->" + this.id + "\n" + this.code);
-            console.log(`code: ${this.code}`);
-            console.log(`updatedCode: ${this.updatedCode}`);
+            this.$emit('anyEvent', this.id + "/#/" + this.code);
+            let p = new Program(this.id, this.title, this.code);
+            // this.$g_Programs.push(p);
+            // console.log("getCode-method ->" + this.id + "\n" + this.code);
         }
     }
 };

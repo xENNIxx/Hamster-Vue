@@ -1,7 +1,7 @@
 <template>
   <div>
         <nav class="flex justify-self-start p-3 max-h-13">
-          <TabRow @any-event="setCodeEvent" :updatedCode="code" />
+          <TabRow @any-event="setCodeEvent" />
         </nav>
         <section>
             <codemirror
@@ -16,9 +16,8 @@
             <br>
             <nav>
               <button class="btn" @click="submitCode">Run</button>
-              <button class="btn">Save</button>
+              <button class="btn" @click="saveCode">Save</button>
             </nav>
-            
           </section>
   </div>
 </template>
@@ -29,6 +28,8 @@
   import {javascript} from '@codemirror/lang-javascript'
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
+import { createApp } from 'vue'
+import Root from 'postcss/lib/root'
 
   // Codemirror.
 
@@ -50,12 +51,17 @@
         this.value = this.code;
     },
     methods: {
-        setCodeEvent(data = '') {
-          this.code = data;
+        saveCode() {
+          console.log(`ProgramObject: ${this.$g_Programs}`);
         },
-        updateValue(event){
-            this.value = event
-            this.$store.commit('setCodeFromEditor', event)
+        setCodeEvent(data = '') { 
+          this.code = data;
+          console.log(`data: ${data}`);
+          console.log(`globalCode: ${this.$globalCode}`);
+        },
+        updateValue(event) {
+            this.value = event;
+            this.$store.commit('setCodeFromEditor', event);
         },
       async submitCode(){
 

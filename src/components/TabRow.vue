@@ -33,23 +33,20 @@ export default {
     components: {
         Tab
     },
-    props: {
-        updatedCode: String
-    },
     emit: ['anyEvent']
     ,
     methods: {
         addTab() {
             this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: "empty->" + this.tabCounter});
             this.tabCounter++;
-            console.log(this.updatedCode);
+
             //console.log("addTab-Method");
         },
         handelEvent(buttonInformation = '') {
-            let arrInfos = buttonInformation.split('#')
+            let arrInfos = buttonInformation.split('/#/')
             this.externButtonId = arrInfos[0]
             this.$emit('anyEvent', arrInfos[1]);
-            console.log('handelEvent from button ' + this.externButtonId);
+            //console.log('handelEvent from button ' + this.externButtonId);
         },
     }
 };
