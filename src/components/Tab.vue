@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { Program } from '../models/Program'
+import Program from '../models/Program'
 
 export default {
     name: "Tab",
@@ -28,7 +28,7 @@ export default {
         getCode() {
             this.$emit('anyEvent', this.id + "/#/" + this.code);
             let p = new Program(this.id, this.title, this.code);
-            // this.$g_Programs.push(p);
+            this.$g_Programs.push(p);
             // console.log("getCode-method ->" + this.id + "\n" + this.code);
         }
     }

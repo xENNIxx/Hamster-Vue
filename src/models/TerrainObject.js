@@ -1,4 +1,4 @@
-class TerrainObject {
+export default class TerrainObject {
     constructor(terrainID, terrainName, width, height, defaultHaster, customFields) {
         this.terrainID = terrainID;
         this.terrainName = terrainName;

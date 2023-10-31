@@ -28,8 +28,7 @@
   import {javascript} from '@codemirror/lang-javascript'
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
-import { createApp } from 'vue'
-import Root from 'postcss/lib/root'
+  // import Program from '../../models/Program'
 
   // Codemirror.
 
@@ -52,12 +51,11 @@ import Root from 'postcss/lib/root'
     },
     methods: {
         saveCode() {
-          console.log(`ProgramObject: ${this.$g_Programs}`);
+          // this.$g_Programs ans backend schicken
         },
         setCodeEvent(data = '') { 
-          this.code = data;
+          this.code = data;  
           console.log(`data: ${data}`);
-          console.log(`globalCode: ${this.$globalCode}`);
         },
         updateValue(event) {
             this.value = event;
