@@ -20,6 +20,7 @@
 <script>
 
 import Tab from "@/components/Tab.vue"
+import Program from '../models/Program'
 
 export default {
     name: "TabRow",
@@ -27,7 +28,7 @@ export default {
         return {
             tabs: [],
             tabCounter: 0,
-            externButtonId: 0,
+            externButtonId: 0
         }
     },
     components: {
@@ -44,9 +45,14 @@ export default {
         },
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('/#/')
-            this.externButtonId = arrInfos[0]
+            // let program = new Program(this.$g_Programs[this.$g_CurrentTapId]);
+
+
+            this.externButtonId = this.$g_CurrentTapId;
+            console.log(`externID: ${this.$g_CurrentTapId}`);
+
+
             this.$emit('anyEvent', arrInfos[1]);
-            //console.log('handelEvent from button ' + this.externButtonId);
         },
     }
 };

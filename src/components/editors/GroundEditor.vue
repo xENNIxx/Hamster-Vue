@@ -54,8 +54,8 @@
           // this.$g_Programs ans backend schicken
         },
         setCodeEvent(data = '') { 
-          this.code = data;  
-          console.log(`data: ${data}`);
+          this.code = data;
+          // console.log(`data: ${data}`);
         },
         updateValue(event) {
             this.value = event;
