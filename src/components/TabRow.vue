@@ -15,12 +15,12 @@
             :tabCodeProb="tabs[Tab.tabId].tabCode"
             :tabIsActiveProp="false" />
     </div>
+    <button class="btn" @click="testMethod">testbutton</button>
 </template>
-
 <script>
 
 import Tab from "@/components/Tab.vue"
-import Program from '../models/Program'
+// import Program from '../models/Program'
 
 export default {
     name: "TabRow",
@@ -37,6 +37,11 @@ export default {
     emit: ['anyEvent']
     ,
     methods: {
+        testMethod() {
+            let x = 5;
+            this.$g_Programs
+            console.log(`newMethod: ${this.$g_Programs}`);
+        },
         addTab() {
             this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: "empty->" + this.tabCounter});
             this.tabCounter++;
@@ -46,12 +51,7 @@ export default {
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('/#/')
             // let program = new Program(this.$g_Programs[this.$g_CurrentTapId]);
-
-
-            this.externButtonId = this.$g_CurrentTapId;
-            console.log(`externID: ${this.$g_CurrentTapId}`);
-
-
+            this.externButtonId = this.$g_Programs;
             this.$emit('anyEvent', arrInfos[1]);
         },
     }

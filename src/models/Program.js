@@ -3,6 +3,7 @@ export default class Program {
         this.programID = programID;
         this.programName = programName;
         this.sourceCode = sourceCode;
+        // filedepth einbauen
     }
 
     showFields() {

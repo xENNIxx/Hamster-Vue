@@ -55,17 +55,17 @@ data() {
         },
         field_attribute: 'data-playground-field-',
         loaded_terrain_obj: {
-            type: Object 
+            type: Object
         }
     }
 },
 beforeMount() {
-    this.terrain.dimension.size = this.terrain.dimension.width * this.terrain.dimension.height
+    this.terrain.dimension.size = this.terrain.dimension.width * this.terrain.dimension.height;
 },
 mounted() {
-    this.game = this.newGame()
-    this.game.on('cornChange', (event) => this.cornChanged(event))
-    console.info("loaded game object")
+    this.game = this.newGame();
+    this.game.on('cornChange', (event) => this.cornChanged(event));
+    console.info("loaded game object");
 },
 methods : {
     axiosMethod() {

@@ -19,19 +19,18 @@ export default {
         }
     },
     props:
-        ["tabIdProp", "tabTitleProp", "tabCodeProb", "tabIsActiveProp"] 
+        ["tabIdProp", "tabTitleProp", "tabCodeProb", "tabIsActiveProp"]
     ,
     emits:
         ['anyEvent']
     ,
     methods: {
         getCode() {
-            this.$emit('anyEvent', this.id + "/#/" + this.code);
-            let p = new Program(this.id, this.title, this.code);
-            this.$g_Programs.push(p);
-            this.$g_CurrentTapId = this.id;
-            console.log(`globalID: ${this.$g_CurrentTapId}`);
-            // console.log("getCode-method ->" + this.id + "\n" + this.code);
+            // this.$emit('anyEvent', this.id + "/#/" + this.code);
+            // let p = new Program(this.id, this.title, this.code);
+            // this.$g_Programs.push(p);
+            // this.$g_Programs = this.id;
+            console.log(`global_Tab: ${this.$g_Programs}`);
         }
     }
 };
