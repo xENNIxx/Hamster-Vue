@@ -26,7 +26,7 @@ export default {
     ,
     methods: {
         getCode() {
-            // this.$emit('anyEvent', this.id + "/#/" + this.code);
+            this.$emit('anyEvent', this.id + "</#/>" + this.code);
             // let p = new Program(this.id, this.title, this.code);
             // this.$g_Programs.push(p);
             // this.$g_Programs = this.id;
