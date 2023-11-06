@@ -14,14 +14,14 @@ const rootApp = app.use(store)
 
 
 const HOSTNAME = "http://localhost:8080/api/"
-let g_Programs = 0
-// let g_Terrains = []
-// let g_CurrentTapId = 0
+let g_Programs = []
+let g_Terrains = []
+let g_CurrentTabId = 99
 app.config.globalProperties.hostname = HOSTNAME
 app.config.globalProperties.checkValue = checkValue
 app.config.globalProperties.$g_Programs = g_Programs
-// app.config.globalProperties.$g_Terrains = g_Terrains
-// app.config.globalProperties.$g_CurrentTapId = g_CurrentTapId
+app.config.globalProperties.$g_Terrains = g_Terrains
+app.config.globalProperties.$g_CurrentTabId = g_CurrentTabId
 
 app.config.globalProperties.entity_symbols = Object.freeze({
     PLAYER: ">",

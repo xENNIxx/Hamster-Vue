@@ -52,8 +52,8 @@
     methods: {
         saveCode() {
           // this.$g_Programs ans backend schicken
-          let x = this.$g_CurrentTapId;
-          console.log(`global_GroundEditor: ${x}`);
+          this.$g_CurrentTabId = 44;
+          console.log(`save: ${this.$g_CurrentTabId}`);
         },
         setCodeEvent(data = '') { 
           this.code = data;
