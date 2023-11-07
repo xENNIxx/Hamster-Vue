@@ -42,9 +42,9 @@ export default {
             this.tabCounter++;
         },
         handelEvent(buttonInformation = '') {
-            let arrInfos = buttonInformation.split('</#/>')
+        let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
-            this.$emit('anyEvent', arrInfos[1]);
+            this.$emit('anyEvent', arrInfos);
         },
     }
 };
