@@ -72,7 +72,7 @@ export default {
       axios.defaults.withCredentials = true;
       var config = {
         method: "get",
-        url: this.hostname + "courses/students/my-view",
+        url: this.hostname + "users/students/my-view",
         headers: {
           "Access-Control-Allow-Credentials": true,
         },
