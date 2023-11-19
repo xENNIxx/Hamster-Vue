@@ -38,11 +38,11 @@ export default {
     ,
     methods: {
         addTab() {
-            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: "empty->" + this.tabCounter});
+            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter});
             this.tabCounter++;
         },
         handelEvent(buttonInformation = '') {
-        let arrInfos = buttonInformation.split('</#/>')
+            let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', arrInfos);
         },

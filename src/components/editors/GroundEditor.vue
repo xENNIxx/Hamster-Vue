@@ -52,7 +52,8 @@
     methods: {
         saveCode() {
           // this.$g_Programs ans backend schicken
-          this.$g_CurrentTabId.push(44);
+          let currentCode = this.code;
+          this.$g_CurrentTabId.push(currentCode);
           console.log(`save: ${this.$g_CurrentTabId[0]}`);
         },
         setCodeEvent(data = '') {

@@ -26,10 +26,12 @@ export default {
     ,
     methods: {
         getCode() {
+            this.code = this.$g_CurrentTabId[0];
+            this.$g_CurrentTabId = [];
             this.$emit('anyEvent', this.id + "</#/>" + this.code);
             let p = new Program(this.id, this.title, this.code);
             this.$g_Programs.push(p);
-            console.log(`getCode: ${this.$g_CurrentTabId[0]}`);
+            // console.log(`getCode: ${this.$g_CurrentTabId[0]}`);
             // console.log(`global_Tab: ${this.$g_Programs}`);
         }
     }
