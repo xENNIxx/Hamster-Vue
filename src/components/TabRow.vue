@@ -20,7 +20,7 @@
 <script>
 
 import Tab from "@/components/Tab.vue"
-// import Program from '../models/Program'
+import Program from '../models/Program'
 
 export default {
     name: "TabRow",
@@ -38,13 +38,17 @@ export default {
     ,
     methods: {
         addTab() {
-            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter});
+            let defaultTitel = "titel" + this.tabCounter;
+            let defaultCode = "void main() {\n\n}";
+            let program = new Program(this.tabCounter, defaultTitel, defaultCode);
+            this.$g_Programs.push(program);
+            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: defaultCode});
             this.tabCounter++;
         },
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
-            this.$emit('anyEvent', arrInfos);
+            this.$emit('anyEvent', this.externButtonId);
         },
     }
 };

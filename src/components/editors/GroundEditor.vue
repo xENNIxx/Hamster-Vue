@@ -1,7 +1,7 @@
 <template>
   <div>
         <nav class="flex justify-self-start p-3 max-h-13">
-          <TabRow @any-event="setCodeEvent" />
+          <tab-row @any-event="handelEvent"/>
         </nav>
         <section>
             <codemirror
@@ -41,29 +41,33 @@
         return {
           tabs: [],
           tabCounter: 0,
-          code: '',
           extensions: [javascript()],
-          value: ""
-        }
+          value: "",
+          externButtonId: 0,
+          code: ''
+       }
     },
     mounted() {
         this.value = this.code;
+        
     },
+    emits: ['anyEvent']
+    ,
     methods: {
-        saveCode() {
-          // this.$g_Programs ans backend schicken
-          let currentCode = this.code;
-          this.$g_CurrentTabId.push(currentCode);
-          console.log(`save: ${this.$g_CurrentTabId[0]}`);
-        },
-        setCodeEvent(data = '') {
-          this.code = data[1];
-          // console.log(`data: ${data}`);
-        },
-        updateValue(event) {
-            this.value = event;
-            this.$store.commit('setCodeFromEditor', event);
-        },
+      handelEvent(buttonInformation = '') {
+        let arrInfos = buttonInformation.split('</#/>')
+        this.externButtonId = arrInfos[0];
+        this.code = this.$g_Programs[this.externButtonId].sourceCode;
+      },
+      saveCode() {
+        // this.$g_Programs an das backend schicken
+        this.$g_Programs[this.externButtonId].sourceCode = this.code;
+        console.log(`save: ${this.$g_Programs[this.externButtonId].sourceCode}`);
+      },
+      updateValue(event) {
+        this.value = event;
+        this.$store.commit('setCodeFromEditor', event);
+      },
       async submitCode(){
 
         let reqObj = {
