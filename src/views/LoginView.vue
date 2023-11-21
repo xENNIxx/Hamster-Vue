@@ -10,6 +10,7 @@
           <input v-model="password" type="password" placeholder="Password" class="input"/>
           <button @click="clickevent" class="btn btn-primary" v-text="name"></button>
           <p :class="{'text-error': hasError, 'text-success': !hasError}">{{ errorText }}</p>
+          <span v-if="loading" class="loading loading-spinner loading-lg"></span>
         </div>
       </div>
     </div>
@@ -31,6 +32,7 @@ export default {
       password: "",
       errorText:"",
       hasError: false,
+      loading: false
     };
   },
   props: {
@@ -46,6 +48,7 @@ export default {
   methods: {
     // TestURL: https://gorest.co.in/public/v2/users
     async clickevent(event) {
+      this.loading = true
       if (this.checkValue(this.username) || this.checkValue(this.password)){
         this.hasError = true
         this.errorText = "Bitte Username/Password eingeben!"
@@ -81,15 +84,17 @@ export default {
           this.hasError = false
           this.errorText = "Eingeloggt!";
           console.log("eingeloggt")
-          
+          this.loading = false
           return JSON.stringify(response.data);
         })
         .then((json) => this.checkLogin(json))
         .catch((error) => {
             this.hasError = true
             this.errorText = "Fehler beim Login!";
+            this.loading = false
             console.log(error.message);
           });
+      
     },
     checkLogin(json) {
       this.get = json;
