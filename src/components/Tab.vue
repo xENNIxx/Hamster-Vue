@@ -6,9 +6,10 @@
 </template>
 
 <script>
-import Program from '../models/Program'
+import GroundEditor from './editors/GroundEditor.vue';
 
 export default {
+  components: { GroundEditor },
     name: "Tab",
     data() {
         return {
@@ -26,11 +27,9 @@ export default {
     ,
     methods: {
         getCode() {
+            this.code = 'void main(){}';
+            this.$g_CurrentTabId = [];
             this.$emit('anyEvent', this.id + "</#/>" + this.code);
-            let p = new Program(this.id, this.title, this.code);
-            this.$g_Programs.push(p);
-            console.log(`getCode: ${this.$g_CurrentTabId[0]}`);
-            // console.log(`global_Tab: ${this.$g_Programs}`);
         }
     }
 };
