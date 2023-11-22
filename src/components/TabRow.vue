@@ -1,6 +1,9 @@
 
 <template>
-    <button class="borderstyle p-1 m-2" @click="addTab">+</button>
+    <nav>
+        <input type="text"/>
+        <button class="borderstyle p-1 m-2" @click="addTab">+</button>
+    </nav>
     <div class="p-1" v-for="Tab in tabs" :key="Tab.id">
         <Tab v-if="Tab.tabId == this.externButtonId"
             @any-event="handelEvent"
@@ -26,15 +29,19 @@ export default {
     name: "TabRow",
     data() {
         return {
-            tabs: [],
+            tabs: this.tabsProperties,
             tabCounter: 0,
-            externButtonId: 0
+            externButtonId: 0,
+            defaultTabs: [] //array, das an den GroundEditor übergeben wird -> wird also nicht angezeigt
         }
     },
     components: {
         Tab
     },
-    emit: ['anyEvent']
+    props: 
+        ["tabsProperties"]
+    ,
+    emit: ['anyEvent', 'defaultTabs']
     ,
     methods: {
         addTab() {
@@ -42,13 +49,16 @@ export default {
             let defaultCode = "void main() {\n\n}";
             let program = new Program(this.tabCounter, defaultTitel, defaultCode);
             this.$g_Programs.push(program);
-            this.tabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: defaultCode});
+            this.defaultTabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: defaultCode});
+            this.$emit('defaultTabs', this.defaultTabs);
             this.tabCounter++;
+            console.log('addTab');
         },
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
+            console.log(`defaultTabs: ${this.defaultTabs}`);
         },
     }
 };

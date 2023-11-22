@@ -1,7 +1,7 @@
 <template>
   <div>
         <nav class="flex justify-self-start p-3 max-h-13">
-          <tab-row @any-event="handelEvent"/>
+          <tab-row @any-event="handelEvent" :tabsProperties="tabs"/>
         </nav>
         <section>
             <codemirror
@@ -17,6 +17,7 @@
             <nav>
               <button class="btn" @click="submitCode">Run</button>
               <button class="btn" @click="saveCode">Save</button>
+              <button class="btn" @click="closeTab">Close</button>
             </nav>
           </section>
   </div>
@@ -49,20 +50,25 @@
     },
     mounted() {
         this.value = this.code;
-        
     },
-    emits: ['anyEvent']
+    emits: ['anyEvent', 'defaultTab']
     ,
     methods: {
       handelEvent(buttonInformation = '') {
         let arrInfos = buttonInformation.split('</#/>')
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
+        this.tabs = arrInfos[1];
+        console.log(`tabArray: ${this.tabs}`);
       },
       saveCode() {
         // this.$g_Programs an das backend schicken
         this.$g_Programs[this.externButtonId].sourceCode = this.code;
         console.log(`save: ${this.$g_Programs[this.externButtonId].sourceCode}`);
+      },
+      closeTab() {
+        this.$g_Programs[this.externButtonId].sourceCode = this.code;
+
       },
       updateValue(event) {
         this.value = event;
@@ -80,7 +86,7 @@
         // this.$parent.handleServerResponse(await request_(this.hostname + "hamster/defaultTerrain", reqObj, "post"))
         this.$emit('submitted', reqObj)
       },
-
+      /*
       closeTab(x) {
         for (let i = 0; i < this.tabs.length; i++) {
           if (this.tabs[i] === x) {
@@ -90,7 +96,7 @@
       },
       newTab() {
         this.tabs.push(this.tabCounter++)
-      }
+      }*/
     }
   }
 </script>
