@@ -1,9 +1,5 @@
 
 <template>
-    <nav>
-        <input type="text"/>
-        <button class="borderstyle p-1 m-2" @click="addTab">+</button>
-    </nav>
     <div class="p-1" v-for="Tab in tabs" :key="Tab.id">
         <Tab v-if="Tab.tabId == this.externButtonId"
             @any-event="handelEvent"
@@ -18,6 +14,9 @@
             :tabCodeProb="tabs[Tab.tabId].tabCode"
             :tabIsActiveProp="false" />
     </div>
+    <nav>
+        <button class="borderstyle p-1 m-2" @click="addTab">+</button>
+    </nav>
     <!--<button class="btn" @click="testMethod">testbutton</button>-->
 </template>
 <script>
@@ -29,7 +28,7 @@ export default {
     name: "TabRow",
     data() {
         return {
-            tabs: this.tabsProperties,
+            tabs: [],
             tabCounter: 0,
             externButtonId: 0,
             defaultTabs: [] //array, das an den GroundEditor übergeben wird -> wird also nicht angezeigt
@@ -45,12 +44,20 @@ export default {
     ,
     methods: {
         addTab() {
-            let defaultTitel = "titel" + this.tabCounter;
-            let defaultCode = "void main() {\n\n}";
+            const inputAllert = prompt('Gib hier etwas ein:', '');
+            let defaultTitel = '';
+            if (inputAllert != null || inputAllert != undefined || inputAllert.trim() != '') {
+                defaultTitel = this.makeTrueClassString(inputAllert);
+            } 
+            if (defaultTitel.trim() == '') {
+                defaultTitel = 'Titel' + this.tabCounter;
+            }
+            console.log(`defaultTitel: ${defaultTitel}`);
+            let defaultCode = 'class ' + defaultTitel + ' {\n\n}' 
             let program = new Program(this.tabCounter, defaultTitel, defaultCode);
             this.$g_Programs.push(program);
-            this.defaultTabs.push({tabId: this.tabCounter, tabTitle: "titel " + this.tabCounter, tabCode: defaultCode});
-            this.$emit('defaultTabs', this.defaultTabs);
+            this.tabs.push({tabId: this.tabCounter, tabTitle: defaultTitel, tabCode: defaultCode});
+            // this.$emit('defaultTabs', this.defaultTabs);
             this.tabCounter++;
             console.log('addTab');
         },
@@ -60,6 +67,20 @@ export default {
             this.$emit('anyEvent', this.externButtonId);
             console.log(`defaultTabs: ${this.defaultTabs}`);
         },
+        makeTrueClassString(input) {
+            let trimmedInput = input.trim();
+            let trimmedInputArray = trimmedInput.split('');
+            let output = '';
+            for (let i = 0; i < trimmedInputArray.length; i++) {
+                if (i == 0) {
+                    output += trimmedInputArray[i].toUpperCase();
+                } else {
+                    output += trimmedInputArray[i];
+                }
+            }
+            console.log(output);
+            return output;
+        }
     }
 };
 </script>
