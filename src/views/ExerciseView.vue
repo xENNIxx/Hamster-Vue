@@ -197,7 +197,7 @@ export default {
             
             var config = {
                 method: "put",
-                url: this.hostname + "courses/solutions",
+                url: this.hostname + "solutions",
                 headers: {
                     "Access-Control-Allow-Origin": "*",
                     "Content-Type": "application/json",
