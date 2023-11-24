@@ -16,7 +16,7 @@
             <br>
             <nav>
               <button class="btn" @click="submitCode">Run</button>
-              <button class="btn" @click="saveCode">Save</button>
+              <button class="btn" @click="saveCodeInTab">Save</button>
               <button class="btn" @click="closeTab">Close</button>
             </nav>
           </section>
@@ -59,16 +59,16 @@
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
         this.tabs = arrInfos[1];
-        console.log(`tabArray: ${this.tabs}`);
+        this.saveCodeInTab();
+        console.log(`handleEvent`);
       },
-      saveCode() {
+      saveCodeInTab() {
         // this.$g_Programs an das backend schicken
         this.$g_Programs[this.externButtonId].sourceCode = this.code;
         console.log(`save: ${this.$g_Programs[this.externButtonId].sourceCode}`);
       },
       closeTab() {
         this.$g_Programs[this.externButtonId].sourceCode = this.code;
-
       },
       updateValue(event) {
         this.value = event;
