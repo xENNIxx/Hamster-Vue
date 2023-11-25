@@ -9,7 +9,7 @@
                 <button class="btn" @click="cleanField">Cleanup</button>
                 <button class="btn" @click="reset">Reset Field</button>
             </div>
-            <!-- class="inline-flex" --> 
+            <!-- class="inline-flex" -->
             <div>
                 <GroundEditorVue @submitted="submitCode($event)" />
             </div>
@@ -150,22 +150,21 @@ methods : {
         this.game = this.newGame()
     },
     loadTer(e){
-        console.log(e)
-        this.game.createEntityObj(e)
-        this.loaded_terrain_obj = e
+        console.log(e);
+        this.game.createEntityObj(e);
+        this.loaded_terrain_obj = e;
     },
-    async submitCode(e){ 
+    async submitCode(e) {
         for(let prop in this.loaded_terrain_obj){
             if(prop != 'program'){
-                e.hamster[prop] = this.loaded_terrain_obj[prop]
+                e.hamster[prop] = this.loaded_terrain_obj[prop];
             }
         }
-
         console.log(this.hostname +  "hamster/newTerrain");
         console.log(JSON.stringify(e));
-        let result = await request_ (this.hostname + "hamster/newTerrain", e, 'POST')
-        console.log(result)
-        this.game.handleResponse(result)
+        let result = await request_ (this.hostname + "hamster/newTerrain", e, 'POST');
+        console.log(result);
+        this.game.handleResponse(result);
     },
     //eslint-disable-next-line
     cornChanged(event){

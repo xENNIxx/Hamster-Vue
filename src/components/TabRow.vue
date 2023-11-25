@@ -65,7 +65,7 @@ export default {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
-            console.log(`defaultTabs: ${this.defaultTabs}`);
+            // console.log(`defaultTabs: ${this.defaultTabs}`);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();
@@ -78,7 +78,7 @@ export default {
                     output += trimmedInputArray[i];
                 }
             }
-            console.log(output);
+            // console.log(output);
             return output;
         }
     }

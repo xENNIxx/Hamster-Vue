@@ -21,7 +21,6 @@ app.config.globalProperties.hostname = HOSTNAME
 app.config.globalProperties.checkValue = checkValue
 app.config.globalProperties.$g_Programs = g_Programs
 app.config.globalProperties.$g_Terrains = g_Terrains
-app.config.globalProperties.$g_CurrentTabId = g_CurrentTabId
 
 app.config.globalProperties.entity_symbols = Object.freeze({
     PLAYER: ">",

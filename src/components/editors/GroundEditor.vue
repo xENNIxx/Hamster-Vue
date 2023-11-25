@@ -3,7 +3,7 @@
         <nav class="flex justify-self-start p-3 max-h-13">
           <tab-row @any-event="handelEvent" :tabsProperties="tabs"/>
         </nav>
-        <section>
+          <section>
             <codemirror
               v-model="code"
               :autofocus="true"
@@ -16,8 +16,8 @@
             <br>
             <nav>
               <button class="btn" @click="submitCode">Run</button>
-              <button class="btn" @click="saveCodeInTab">Save</button>
-              <button class="btn" @click="closeTab">Close</button>
+              <button class="btn bg-red-500" @click="closeTab">Close</button>
+              <button class="btn" @submitted="sendCodeToBackend">Save</button>
             </nav>
           </section>
   </div>
@@ -54,18 +54,19 @@
     emits: ['anyEvent', 'defaultTab']
     ,
     methods: {
+      async sendCodeToBackend(e, apiString) {
+        console.log(JSON.stringify(e));
+        let result = await request_ (this.hostname + apiString, e, 'POST');
+        console.log(result);
+        // this.game.handleResponse(result);
+      },
       handelEvent(buttonInformation = '') {
         let arrInfos = buttonInformation.split('</#/>')
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
         this.tabs = arrInfos[1];
         this.saveCodeInTab();
-        console.log(`handleEvent`);
-      },
-      saveCodeInTab() {
-        // this.$g_Programs an das backend schicken
-        this.$g_Programs[this.externButtonId].sourceCode = this.code;
-        console.log(`save: ${this.$g_Programs[this.externButtonId].sourceCode}`);
+        // console.log(`handleEvent`);
       },
       closeTab() {
         this.$g_Programs[this.externButtonId].sourceCode = this.code;
@@ -73,6 +74,7 @@
       updateValue(event) {
         this.value = event;
         this.$store.commit('setCodeFromEditor', event);
+        this.$g_Programs[this.externButtonId].sourceCode = this.code; //save code from current tab
       },
       async submitCode(){
 

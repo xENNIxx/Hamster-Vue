@@ -27,8 +27,7 @@ export default {
     ,
     methods: {
         getCode() {
-            this.code = 'void main(){}';
-            this.$g_CurrentTabId = [];
+            this.code = '';
             this.$emit('anyEvent', this.id + "</#/>" + this.code);
         }
     }
