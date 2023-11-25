@@ -15,7 +15,9 @@
       <!-- Reiter für eingeloggten User -->
       <router-link v-if="isLoggedIn" class="m-5" to="/playground"> Playground </router-link>
       <router-link v-if="isLoggedIn" class="m-5" to="/courses"> Courses </router-link>
-
+      
+      <router-link v-if="isLoggedIn" class="m-5" to="/profile"> Profile </router-link>
+      
     </div>
     <select data-choose-theme class="right-5 fixed btn btn-sm">
       <option value="light">light</option>
@@ -25,6 +27,8 @@
       <option value="aqua">aqua</option>
       <option value="halloween">halloween</option>
     </select>
+
+
 
     <RestButton class="btn btn-sm right-40 fixed" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'"
       method="get" @click="logOutResponse" />
