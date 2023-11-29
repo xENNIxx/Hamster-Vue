@@ -1,7 +1,7 @@
 <template>
   <div>
         <nav class="flex justify-self-start p-3 max-h-13">
-          <tab-row @any-event="handelEvent" :tabsProperties="tabs"/>
+          <tab-row @any-event="handelEvent" />
         </nav>
           <section>
             <codemirror
@@ -17,7 +17,7 @@
             <nav>
               <button class="btn" @click="submitCode">Run</button>
               <button class="btn bg-red-500" @click="closeTab">Close</button>
-              <button class="btn" @submitted="sendCodeToBackend">Save</button>
+              <button class="btn" @click="sendCodeToBackend">Save</button>
             </nav>
           </section>
   </div>
@@ -51,14 +51,11 @@
     mounted() {
         this.value = this.code;
     },
-    emits: ['anyEvent', 'defaultTab']
+    emits: ['anyEvent']
     ,
     methods: {
-      async sendCodeToBackend(e, apiString) {
-        console.log(JSON.stringify(e));
-        let result = await request_ (this.hostname + apiString, e, 'POST');
-        console.log(result);
-        // this.game.handleResponse(result);
+      sendCodeToBackend() {
+        console.log(`g_Tabs: ${this.$g_Tabs[0]}`);
       },
       handelEvent(buttonInformation = '') {
         let arrInfos = buttonInformation.split('</#/>')

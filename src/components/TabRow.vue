@@ -28,10 +28,9 @@ export default {
     name: "TabRow",
     data() {
         return {
-            tabs: [],
+            tabs: this.$g_Tabs,
             tabCounter: 0,
-            externButtonId: 0,
-            defaultTabs: [] //array, das an den GroundEditor übergeben wird -> wird also nicht angezeigt
+            externButtonId: 0
         }
     },
     components: {
@@ -40,7 +39,7 @@ export default {
     props: 
         ["tabsProperties"]
     ,
-    emit: ['anyEvent', 'defaultTabs']
+    emit: ['anyEvent']
     ,
     methods: {
         addTab() {
@@ -56,8 +55,9 @@ export default {
             let defaultCode = 'class ' + defaultTitel + ' {\n\n}' 
             let program = new Program(this.tabCounter, defaultTitel, defaultCode);
             this.$g_Programs.push(program);
-            this.tabs.push({tabId: this.tabCounter, tabTitle: defaultTitel, tabCode: defaultCode});
-            // this.$emit('defaultTabs', this.defaultTabs);
+            console.log(`g_Tabs_title_first: ${defaultTitel}`);
+            this.$g_Tabs.push({tabId: this.tabCounter, tabTitle: defaultTitel, tabCode: defaultCode});
+            console.log(`g_Tabs_title_secons: ${this.$g_Tabs[0].defaultTitel}`);
             this.tabCounter++;
             console.log('addTab');
         },
@@ -65,7 +65,6 @@ export default {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
-            // console.log(`defaultTabs: ${this.defaultTabs}`);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();

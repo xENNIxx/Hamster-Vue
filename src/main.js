@@ -16,11 +16,12 @@ const rootApp = app.use(store)
 const HOSTNAME = "http://localhost:8080/api/"
 let g_Programs = []
 let g_Terrains = []
-let g_CurrentTabId = [] //nur index 0 verwenden -> als Zwischenspeicher
+let g_Tabs = []
 app.config.globalProperties.hostname = HOSTNAME
 app.config.globalProperties.checkValue = checkValue
 app.config.globalProperties.$g_Programs = g_Programs
 app.config.globalProperties.$g_Terrains = g_Terrains
+app.config.globalProperties.$g_Tabs = g_Tabs
 
 app.config.globalProperties.entity_symbols = Object.freeze({
     PLAYER: ">",
