@@ -5,13 +5,20 @@
             <div v-text="exercise.details" class="text-xl text-center"></div>
 
             <div class="flex justify-center">
-                <button class="btn btn-primary w-1/10 m-3" @click="saveTask()">Speichern</button>
-
-                <button v-if="!exercise.solution.submitted" class="btn btn-primary w-1/10 m-3" @click="submitTask()">Abgeben</button>
-                <button v-else class="btn btn-secondary w-1/10 m-3" @click="submitTask()">Abgabe rückgängig machen</button>
+                
+                <div v-if="exercise.solution.feedback == null">
+                    <button class="btn btn-primary w-1/10 m-3" @click="saveTask()">Speichern</button>
+                    <button v-if="!exercise.solution.submitted" class="btn btn-primary w-1/10 m-3" @click="submitTask()">Abgeben</button>
+                    <button v-else class="btn btn-secondary w-1/10 m-3" @click="submitTask()">Abgabe rückgängig machen</button>
+                </div>
+                <div v-else class="text-center m-5">
+                    <p class="font-bold text-2xl">Feedback</p>
+                    {{exercise.solution.feedback}}
+                </div>
             </div>
             <!--{{ this.$store.state.code }}-->
         </div>
+        
     </div>
     <div class="playground-wrapper my-10">
         <div class="flex-container">
@@ -172,7 +179,7 @@ export default {
                 solution:{
                     solution_id: this.exercise.solution.solution_id,
                     exercise_id: this.exercise.exercise_id,
-                    code: this.$store.state.code,
+                    code: "replace this its only for testing",//this.$store.state.code,
                     submitted: this.exercise.submitted
                 }   
             };

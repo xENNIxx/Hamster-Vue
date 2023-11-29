@@ -23,7 +23,8 @@
           </thead>
           <tbody>
             <!-- row 1 -->
-            <tr v-for="exercise in course.exercises" :class="{'bg-opacity-30 bg-red-500': checkDeadline(exercise.deadline)}">
+            
+            <tr v-for="exercise in course.exercises" class="bg-opacity-30" :class="setColor(exercise)">
               <td >
                 <div class="font-bold">
                   {{ exercise.name }}
@@ -63,7 +64,7 @@ export default {
   data() {
     return {
       get: null,
-      expDeadline: false
+      expDeadline: false,
     };
   },
   methods: {
@@ -93,8 +94,16 @@ export default {
     checkDeadline(date){
       var now = new Date();
       now.setHours(0,0,0,0);
-      console.log(new Date(date) < now);
       return new Date(date) < now;
+    },
+    setColor(exercise){
+      if(exercise.solution.feedback != null){
+        return 'bg-green-500'
+      }else if(exercise.solution.submitted){
+        return 'bg-yellow-300'
+      }else if(this.checkDeadline(exercise.deadline)){
+        return 'bg-red-500'
+      }
     }
   },
   async beforeMount() {
