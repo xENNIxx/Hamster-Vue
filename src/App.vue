@@ -3,23 +3,24 @@
   <!-- this.hostname = http://localhost:8080/api/ -->
   <!-- soll backend infos schicken - gibt aber noch fehler -->
   <!-- <button class="right-20 fixed p-1 bg-secondary" @click="onClick">click me</button>-->
-  <nav class="bg-primary flex justify-center p-3 max-h-13">
-    <div class="text-center text-primary-content text-xl ">
-      <!-- immer verfügbare Reiter -->
-      <router-link to="/" class="m-5">Home </router-link>
 
-      <!-- Reiter für uneingeloggten User -->
-      <router-link v-if="!isLoggedIn" class="m-5" to="/login"> Login </router-link>
-      <router-link v-if="!isLoggedIn" class="m-5" to="/register"> Register</router-link>
-
-      <!-- Reiter für eingeloggten User -->
-      <router-link v-if="isLoggedIn" class="m-5" to="/playground"> Playground </router-link>
-      <router-link v-if="isLoggedIn" class="m-5" to="/courses"> Courses </router-link>
-      
-      <router-link v-if="isLoggedIn" class="m-5" to="/profile"> Profile </router-link>
-      
-    </div>
-    <select data-choose-theme class="right-5 fixed btn btn-sm">
+  <div class="navbar bg-base-300 shadow-md">
+  <div class="navbar-start">
+    <router-link to="/" class="btn btn-ghost text-xl"><i class="fas fa-frog"></i></router-link>
+  </div>
+  <div class="navbar-center flex">
+    <ul class="menu menu-horizontal px-1">
+      <li v-if="isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/playground"><i class="fas fa-play"></i> Playground </router-link></li>
+      <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/courses"><i class="fas fa-book"></i> Courses </router-link></li>
+      <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/profile"><i class="fas fa-user"></i> Profile </router-link></li>
+      <li v-if="!isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/login"><i class="fas fa-sign-in-alt"></i> Login </router-link></li>
+      <li v-if="!isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/register"><i class="fas fa-user-plus"></i> Register</router-link></li>
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <RestButton class="btn btn-sm" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'"
+      method="get" @click="logOutResponse"/>
+    <select data-choose-theme class="btn btn-sm m-2">
       <option value="light">light</option>
       <option value="dark">dark</option>
       <option value="cyberpunk">cyberpunk</option>
@@ -27,15 +28,8 @@
       <option value="aqua">aqua</option>
       <option value="halloween">halloween</option>
     </select>
-
-
-
-    <RestButton class="btn btn-sm right-40 fixed" v-if="isLoggedIn" name="Logout" :link="this.hostname + 'login'"
-      method="get" @click="logOutResponse" />
-
-
-  </nav>
-
+  </div>
+</div>
 
   <router-view />
 </template>
