@@ -97,11 +97,14 @@ export default {
       return new Date(date) < now;
     },
     setColor(exercise){
-      if(exercise.solution.feedback != null){
-        return 'bg-green-500'
-      }else if(exercise.solution.submitted){
-        return 'bg-yellow-300'
-      }else if(this.checkDeadline(exercise.deadline)){
+      if(exercise.solution != null){
+        if(exercise.solution.feedback != null){
+          return 'bg-green-500'
+        }else if(exercise.solution.submitted){
+          return 'bg-yellow-300'
+        }
+      }
+      if(this.checkDeadline(exercise.deadline)){
         return 'bg-red-500'
       }
     }
