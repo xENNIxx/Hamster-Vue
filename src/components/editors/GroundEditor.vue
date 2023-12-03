@@ -55,15 +55,14 @@
     ,
     methods: {
       sendCodeToBackend() {
-        console.log(`g_Tabs: ${this.$g_Tabs[0]}`);
+        console.log(`g_Tabs: ${this.$g_Tabs[0].title}`);
       },
       handelEvent(buttonInformation = '') {
         let arrInfos = buttonInformation.split('</#/>')
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
         this.tabs = arrInfos[1];
-        this.saveCodeInTab();
-        // console.log(`handleEvent`);
+        console.log(`sourceCode: ${this.code}`);
       },
       closeTab() {
         this.$g_Programs[this.externButtonId].sourceCode = this.code;

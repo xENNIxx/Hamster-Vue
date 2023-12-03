@@ -14,6 +14,7 @@ const rootApp = app.use(store)
 
 
 const HOSTNAME = "http://localhost:8080/api/"
+//arrays beinhalten keine Objekte -> gespeichert als JSON-Strings
 let g_Programs = []
 let g_Terrains = []
 let g_Tabs = []

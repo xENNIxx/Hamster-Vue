@@ -22,7 +22,7 @@
 <script>
 
 import Tab from "@/components/Tab.vue"
-import Program from '../models/Program'
+import Program from '../models/Program.js'
 
 export default {
     name: "TabRow",
@@ -51,13 +51,12 @@ export default {
             if (defaultTitel.trim() == '') {
                 defaultTitel = 'Titel' + this.tabCounter;
             }
-            console.log(`defaultTitel: ${defaultTitel}`);
             let defaultCode = 'class ' + defaultTitel + ' {\n\n}' 
-            let program = new Program(this.tabCounter, defaultTitel, defaultCode);
+            // let program = new Program(this.tabCounter, defaultTitel, defaultCode);
+            let program = {'programID': this.tabCounter, 'programName': defaultTitel, 'sourceCode': defaultCode};
             this.$g_Programs.push(program);
-            console.log(`g_Tabs_title_first: ${defaultTitel}`);
-            this.$g_Tabs.push({tabId: this.tabCounter, tabTitle: defaultTitel, tabCode: defaultCode});
-            console.log(`g_Tabs_title_secons: ${this.$g_Tabs[0].defaultTitel}`);
+            let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
+            this.$g_Tabs.push(currentTab);
             this.tabCounter++;
             console.log('addTab');
         },
