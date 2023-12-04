@@ -1,7 +1,7 @@
 
 <template>
-    <div class="p-1" v-for="Tab in this.$g_Tabs" :key="Tab.id">
-        <Tab v-if="Tab.tabId == this.externButtonId"
+    <div class="p-1" v-for="Tab in this.tabs" :key="Tab.id">
+        <Tab v-if="Tab.id == this.externButtonId"   
             @any-event="handelEvent"
             :tabIdProp="Tab.id"
             :tabTitleProp="Tab.title"
@@ -28,6 +28,7 @@ export default {
     name: "TabRow",
     data() {
         return {
+            tabs: this.$g_Tabs,
             tabCounter: 0,
             externButtonId: 0
         }
@@ -42,6 +43,7 @@ export default {
     ,
     methods: {
         addTab() {
+            this.checkIfToManyTabsAreOpen();
             const inputAllert = prompt('Gib hier etwas ein:', '');
             let defaultTitel = this.getDefaultTitel(inputAllert);
             let defaultCode = this.getdefaultCode(defaultTitel);
@@ -88,6 +90,10 @@ export default {
             this.$g_Programs.push(program);
             let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
             this.$g_Tabs.push(currentTab);
+            // this.tabs.push(currentTab);
+        },
+        checkIfToManyTabsAreOpen() {
+            
         }
     }
 };
