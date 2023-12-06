@@ -15,7 +15,7 @@
             :tabIsActiveProp="false" />
     </div>
     <nav>
-        <button class="borderstyle p-1 m-1" @click="addTab"> + </button>
+        <button class="borderstyle p-1 m-1 bg-green-500" @click="addTab"> + </button>
         <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab"> - </button>
     </nav>
     <!--<button class="btn" @click="testMethod">testbutton</button>-->
@@ -101,7 +101,6 @@ export default {
         },
         closeFirstTabInArray() {
             this.tabs.splice(0, 1);
-            console.log('close first tab');
         },
         closeTab() {
             for (let i = 0; i < this.tabs.length; i++) {
@@ -115,7 +114,6 @@ export default {
 </script>
 
 <style>
-
 .borderstyle {
     border: 1px solid green;
     border-radius: 10px;
