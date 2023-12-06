@@ -16,7 +16,6 @@
             <br>
             <nav>
               <button class="btn" @click="submitCode">Run</button>
-              <button class="btn bg-red-500" @click="closeTab">Close</button>
               <button class="btn" @click="sendCodeToBackend">Save</button>
             </nav>
           </section>
@@ -63,9 +62,6 @@
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
         this.tabs = arrInfos[1];
         console.log(`sourceCode: ${this.code}`);
-      },
-      closeTab() {
-        this.$g_Programs[this.externButtonId].sourceCode = this.code;
       },
       updateValue(event) {
         this.value = event;

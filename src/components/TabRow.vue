@@ -15,7 +15,8 @@
             :tabIsActiveProp="false" />
     </div>
     <nav>
-        <button class="borderstyle p-1 m-2" @click="addTab">+</button>
+        <button class="borderstyle p-1 m-1" @click="addTab"> + </button>
+        <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab"> - </button>
     </nav>
     <!--<button class="btn" @click="testMethod">testbutton</button>-->
 </template>
@@ -28,7 +29,7 @@ export default {
     name: "TabRow",
     data() {
         return {
-            tabs: this.$g_Tabs,
+            tabs: [], //sind die gerade offenen Tabs
             tabCounter: 0,
             externButtonId: 0
         }
@@ -43,20 +44,21 @@ export default {
     ,
     methods: {
         addTab() {
-            this.checkIfToManyTabsAreOpen();
+            if (this.checkIfToManyTabsAreOpen()) {
+                this.closeFirstTabInArray();
+            }
             const inputAllert = prompt('Gib hier etwas ein:', '');
             let defaultTitel = this.getDefaultTitel(inputAllert);
             let defaultCode = this.getdefaultCode(defaultTitel);
             this.pushIntoArrays(defaultTitel, defaultCode);
             this.tabCounter++;
-            console.log(`tabs: ${this.$g_Tabs[0].title}`);
             console.log('addTab');
         },
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
-            console.log(`buttonid: ${this.externButtonId}`);
+            console.log(`externButtonId: ${this.externButtonId}`);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();
@@ -69,7 +71,6 @@ export default {
                     output += trimmedInputArray[i];
                 }
             }
-            // console.log(output);
             return output;
         },
         getDefaultTitel(inputAllert) {
@@ -89,11 +90,25 @@ export default {
             let program = {'programID': this.tabCounter, 'programName': defaultTitel, 'sourceCode': defaultCode};
             this.$g_Programs.push(program);
             let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
-            this.$g_Tabs.push(currentTab);
-            // this.tabs.push(currentTab);
+            this.tabs.push(currentTab);
+            console.log('pushIntoArrays');
         },
         checkIfToManyTabsAreOpen() {
-            
+            if (this.tabs.length >= 5) {
+                return true;
+            }
+            return false;
+        },
+        closeFirstTabInArray() {
+            this.tabs.splice(0, 1);
+            console.log('close first tab');
+        },
+        closeTab() {
+            for (let i = 0; i < this.tabs.length; i++) {
+                if (this.tabs[i].id == this.externButtonId) {
+                    this.tabs.splice(i, 1);
+                }
+            }
         }
     }
 };
