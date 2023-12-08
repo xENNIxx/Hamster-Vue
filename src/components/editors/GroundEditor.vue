@@ -61,7 +61,7 @@
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
         this.tabs = arrInfos[1];
-        console.log(`sourceCode: ${this.code}`);
+        // console.log(`sourceCode: ${this.code}`);
       },
       updateValue(event) {
         this.value = event;

@@ -1,7 +1,7 @@
 
 <template>
     <div class="p-1" v-for="Tab in this.tabs" :key="Tab.id">
-        <Tab v-if="Tab.id == this.externButtonId"   
+        <Tab v-if="Tab.id == this.externButtonId"
             @any-event="handelEvent"
             :tabIdProp="Tab.id"
             :tabTitleProp="Tab.title"
@@ -16,7 +16,7 @@
     </div>
     <nav>
         <button class="borderstyle p-1 m-1 bg-green-500" @click="addTab"> + </button>
-        <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab"> - </button>
+        <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab(this.externButtonId)"> - </button>
     </nav>
     <!--<button class="btn" @click="testMethod">testbutton</button>-->
 </template>
@@ -31,7 +31,8 @@ export default {
         return {
             tabs: [], //sind die gerade offenen Tabs
             tabCounter: 0,
-            externButtonId: 0
+            externButtonId: 0,
+            tabSequenz: []
         }
     },
     components: {
@@ -45,7 +46,7 @@ export default {
     methods: {
         addTab() {
             if (this.checkIfToManyTabsAreOpen()) {
-                this.closeFirstTabInArray();
+                this.closeOldestTabInArray();
             }
             const inputAllert = prompt('Gib hier etwas ein:', '');
             let defaultTitel = this.getDefaultTitel(inputAllert);
@@ -58,7 +59,8 @@ export default {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
-            console.log(`externButtonId: ${this.externButtonId}`);
+            this.shiftArray(this.externButtonId, this.tabSequenz);
+            console.log(`tabSequenz: ${this.tabSequenz}`);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();
@@ -91,6 +93,7 @@ export default {
             this.$g_Programs.push(program);
             let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
             this.tabs.push(currentTab);
+            this.shiftArray(this.externButtonId, this.tabSequenz);
             console.log('pushIntoArrays');
         },
         checkIfToManyTabsAreOpen() {
@@ -99,14 +102,56 @@ export default {
             }
             return false;
         },
-        closeFirstTabInArray() {
-            this.tabs.splice(0, 1);
+        closeOldestTabInArray() {
+            console.log(`tabSequenz: ${this.tabSequenz}`);
+            let length = this.tabSequenz.length;
+            this.closeTab(this.tabSequenz[length - 1]);
         },
-        closeTab() {
+        closeTab(externId) {
+            console.log(`externId: ${externId}`);
             for (let i = 0; i < this.tabs.length; i++) {
-                if (this.tabs[i].id == this.externButtonId) {
+                if (this.tabs[i].id == externId) {
                     this.tabs.splice(i, 1);
                 }
+            }
+            for (let i = 0; i < this.tabSequenz.length; i++) {
+                if (this.tabSequenz[i] == externId) {
+                    this.tabSequenz.splice(i, 1);
+                }
+            }
+        },
+        arrayContainsDigit(digit, array) {
+            for (let i = 0; i < array.length; i++) {
+                if (digit == array[i]) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        shiftArray(buttonIndex, array) {
+            if (!this.arrayContainsDigit(buttonIndex, array)) {
+                let newArray = [];
+                for (let i = 0; i < array.length; i++) {
+                    newArray[i + 1] = array[i];
+                }
+                newArray[0] = buttonIndex;
+                this.tabSequenz = newArray;
+            } else {
+                let indexPos = 0;
+                let newArray = [];
+                for (let i = 0; i < array.length; i++) {
+                    if (array[i] == buttonIndex) {
+                        indexPos = i;
+                    }
+                }
+                for (let i = 0; i < indexPos; i++) {
+                    newArray[i + 1] = array[i];
+                }
+                for (let i = indexPos + 1; i < array.length; i++) {
+                    newArray[i] = array[i];
+                }
+                newArray[0] = buttonIndex;
+                this.tabSequenz = newArray;
             }
         }
     }
