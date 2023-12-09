@@ -18,7 +18,6 @@
         <button class="borderstyle p-1 m-1 bg-green-500" @click="addTab"> + </button>
         <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab(this.externButtonId)"> - </button>
     </nav>
-    <!--<button class="btn" @click="testMethod">testbutton</button>-->
 </template>
 <script>
 
@@ -38,9 +37,6 @@ export default {
     components: {
         Tab
     },
-    props:
-        ["tabsProperties"]
-    ,
     emit: ['anyEvent']
     ,
     methods: {

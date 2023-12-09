@@ -19,6 +19,7 @@
               <button class="btn" @click="sendCodeToBackend">Save</button>
             </nav>
           </section>
+          <Tree :treeSourceProp="this.treeSource" />
   </div>
 </template>
 
@@ -28,14 +29,15 @@
   import {javascript} from '@codemirror/lang-javascript'
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
-  // import Program from '../../models/Program'
+  import Tree from '../Tree.vue'
 
   // Codemirror.
 
   export default {
     components: {
       Codemirror,
-      TabRow
+      TabRow,
+      Tree
     },
     data(){
         return {
@@ -44,7 +46,8 @@
           extensions: [javascript()],
           value: "",
           externButtonId: 0,
-          code: ''
+          code: '',
+          treeSource: ['Hamster/File1$', 'Elefant/Ordner1']
        }
     },
     mounted() {
