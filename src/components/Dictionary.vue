@@ -1,8 +1,9 @@
 <template>
-    <a @click="openDictionary" class="bg-blue-500">{{ this.dicTitle }}</a>
-    <div v-if="this.isOpen" class="ml-5">
-        <p>Dic ist offen</p>
-        <p>Dic ist länger</p>
+    <a @click="clickAction">{{ this.title }}</a>
+    <div v-if="isOpen">
+      <div>
+        <p>offen</p>
+      </div>
     </div>
 </template>
 
