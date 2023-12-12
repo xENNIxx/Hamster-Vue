@@ -6,10 +6,8 @@
 </template>
 
 <script>
-import GroundEditor from './editors/GroundEditor.vue';
 
 export default {
-  components: { GroundEditor },
     name: "Tab",
     data() {
         return {

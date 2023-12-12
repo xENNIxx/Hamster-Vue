@@ -16,10 +16,10 @@
             <br>
             <nav>
               <button class="btn" @click="submitCode">Run</button>
-              <button class="btn bg-red-500" @click="closeTab">Close</button>
               <button class="btn" @click="sendCodeToBackend">Save</button>
             </nav>
           </section>
+          <Tree :treeSourceProp="this.treeSource" />
   </div>
 </template>
 
@@ -29,14 +29,15 @@
   import {javascript} from '@codemirror/lang-javascript'
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
-  // import Program from '../../models/Program'
+  import Tree from '../Tree.vue'
 
   // Codemirror.
 
   export default {
     components: {
       Codemirror,
-      TabRow
+      TabRow,
+      Tree
     },
     data(){
         return {
@@ -45,7 +46,8 @@
           extensions: [javascript()],
           value: "",
           externButtonId: 0,
-          code: ''
+          code: '',
+          treeSource: ['Hamster/File1$', 'Elefant/Ordner1']
        }
     },
     mounted() {
@@ -55,18 +57,14 @@
     ,
     methods: {
       sendCodeToBackend() {
-        console.log(`g_Tabs: ${this.$g_Tabs[0]}`);
+        console.log(`g_Tabs: ${this.$g_Tabs[0].title}`);
       },
       handelEvent(buttonInformation = '') {
         let arrInfos = buttonInformation.split('</#/>')
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
         this.tabs = arrInfos[1];
-        this.saveCodeInTab();
-        // console.log(`handleEvent`);
-      },
-      closeTab() {
-        this.$g_Programs[this.externButtonId].sourceCode = this.code;
+        // console.log(`sourceCode: ${this.code}`);
       },
       updateValue(event) {
         this.value = event;

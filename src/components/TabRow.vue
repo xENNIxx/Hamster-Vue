@@ -1,63 +1,53 @@
 
 <template>
-    <div class="p-1" v-for="Tab in tabs" :key="Tab.id">
-        <Tab v-if="Tab.tabId == this.externButtonId"
+    <div class="p-1" v-for="Tab in this.tabs" :key="Tab.id">
+        <Tab v-if="Tab.id == this.externButtonId"
             @any-event="handelEvent"
-            :tabIdProp="tabs[Tab.tabId].tabId"
-            :tabTitleProp="tabs[Tab.tabId].tabTitle"
-            :tabCodeProb="tabs[Tab.tabId].tabCode"
+            :tabIdProp="Tab.id"
+            :tabTitleProp="Tab.title"
+            :tabCodeProb="Tab.code"
             :tabIsActiveProp="true" />
         <Tab v-else
             @any-event="handelEvent"
-            :tabIdProp="tabs[Tab.tabId].tabId"
-            :tabTitleProp="tabs[Tab.tabId].tabTitle"
-            :tabCodeProb="tabs[Tab.tabId].tabCode"
+            :tabIdProp="Tab.id"
+            :tabTitleProp="Tab.title"
+            :tabCodeProb="Tab.code"
             :tabIsActiveProp="false" />
     </div>
     <nav>
-        <button class="borderstyle p-1 m-2" @click="addTab">+</button>
+        <button class="borderstyle p-1 m-1 bg-green-500" @click="addTab"> + </button>
+        <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab(this.externButtonId)"> - </button>
     </nav>
-    <!--<button class="btn" @click="testMethod">testbutton</button>-->
 </template>
 <script>
 
 import Tab from "@/components/Tab.vue"
-import Program from '../models/Program'
+// import Program from '../models/Program.js'
 
 export default {
     name: "TabRow",
     data() {
         return {
-            tabs: this.$g_Tabs,
+            tabs: [], //sind die gerade offenen Tabs
             tabCounter: 0,
-            externButtonId: 0
+            externButtonId: 0,
+            tabSequenz: []
         }
     },
     components: {
         Tab
     },
-    props: 
-        ["tabsProperties"]
-    ,
     emit: ['anyEvent']
     ,
     methods: {
         addTab() {
-            const inputAllert = prompt('Gib hier etwas ein:', '');
-            let defaultTitel = '';
-            if (inputAllert != null || inputAllert != undefined || inputAllert.trim() != '') {
-                defaultTitel = this.makeTrueClassString(inputAllert);
-            } 
-            if (defaultTitel.trim() == '') {
-                defaultTitel = 'Titel' + this.tabCounter;
+            if (this.checkIfToManyTabsAreOpen()) {
+                this.closeOldestTabInArray();
             }
-            console.log(`defaultTitel: ${defaultTitel}`);
-            let defaultCode = 'class ' + defaultTitel + ' {\n\n}' 
-            let program = new Program(this.tabCounter, defaultTitel, defaultCode);
-            this.$g_Programs.push(program);
-            console.log(`g_Tabs_title_first: ${defaultTitel}`);
-            this.$g_Tabs.push({tabId: this.tabCounter, tabTitle: defaultTitel, tabCode: defaultCode});
-            console.log(`g_Tabs_title_secons: ${this.$g_Tabs[0].defaultTitel}`);
+            const inputAllert = prompt('Gib hier etwas ein:', '');
+            let defaultTitel = this.getDefaultTitel(inputAllert);
+            let defaultCode = this.getdefaultCode(defaultTitel);
+            this.pushIntoArrays(defaultTitel, defaultCode);
             this.tabCounter++;
             console.log('addTab');
         },
@@ -65,6 +55,8 @@ export default {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
+            this.shiftArray(this.externButtonId, this.tabSequenz);
+            console.log(`tabSequenz: ${this.tabSequenz}`);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();
@@ -77,15 +69,92 @@ export default {
                     output += trimmedInputArray[i];
                 }
             }
-            // console.log(output);
             return output;
+        },
+        getDefaultTitel(inputAllert) {
+            let defaultTitel = '';
+            if (inputAllert != null || inputAllert != undefined || inputAllert.trim() != '') {
+                defaultTitel = this.makeTrueClassString(inputAllert);
+            } 
+            if (defaultTitel.trim() == '') {
+                defaultTitel = 'Titel' + this.tabCounter;
+            }
+            return defaultTitel;
+        },
+        getdefaultCode(defaultTitel) {
+            return 'class ' + defaultTitel + ' {\n\n}';
+        },
+        pushIntoArrays(defaultTitel, defaultCode) {
+            let program = {'programID': this.tabCounter, 'programName': defaultTitel, 'sourceCode': defaultCode};
+            this.$g_Programs.push(program);
+            let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
+            this.tabs.push(currentTab);
+            this.shiftArray(this.externButtonId, this.tabSequenz);
+            console.log('pushIntoArrays');
+        },
+        checkIfToManyTabsAreOpen() {
+            if (this.tabs.length >= 5) {
+                return true;
+            }
+            return false;
+        },
+        closeOldestTabInArray() {
+            console.log(`tabSequenz: ${this.tabSequenz}`);
+            let length = this.tabSequenz.length;
+            this.closeTab(this.tabSequenz[length - 1]);
+        },
+        closeTab(externId) {
+            console.log(`externId: ${externId}`);
+            for (let i = 0; i < this.tabs.length; i++) {
+                if (this.tabs[i].id == externId) {
+                    this.tabs.splice(i, 1);
+                }
+            }
+            for (let i = 0; i < this.tabSequenz.length; i++) {
+                if (this.tabSequenz[i] == externId) {
+                    this.tabSequenz.splice(i, 1);
+                }
+            }
+        },
+        arrayContainsDigit(digit, array) {
+            for (let i = 0; i < array.length; i++) {
+                if (digit == array[i]) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        shiftArray(buttonIndex, array) {
+            if (!this.arrayContainsDigit(buttonIndex, array)) {
+                let newArray = [];
+                for (let i = 0; i < array.length; i++) {
+                    newArray[i + 1] = array[i];
+                }
+                newArray[0] = buttonIndex;
+                this.tabSequenz = newArray;
+            } else {
+                let indexPos = 0;
+                let newArray = [];
+                for (let i = 0; i < array.length; i++) {
+                    if (array[i] == buttonIndex) {
+                        indexPos = i;
+                    }
+                }
+                for (let i = 0; i < indexPos; i++) {
+                    newArray[i + 1] = array[i];
+                }
+                for (let i = indexPos + 1; i < array.length; i++) {
+                    newArray[i] = array[i];
+                }
+                newArray[0] = buttonIndex;
+                this.tabSequenz = newArray;
+            }
         }
     }
 };
 </script>
 
 <style>
-
 .borderstyle {
     border: 1px solid green;
     border-radius: 10px;
