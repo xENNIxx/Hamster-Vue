@@ -16,7 +16,7 @@
             <br>
             <nav>
               <button class="btn" @click="submitCode">Run</button>
-              <button class="btn" @click="sendCodeToBackend">Save</button>
+              <button class="btn" @click="sendDataToBackend">SaveAll</button>
             </nav>
           </section>
           <Tree :treeSourceProp="this.treeSource" />
@@ -30,6 +30,9 @@
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
   import Tree from '../Tree.vue'
+  import axios from 'axios'
+  import Program from '@/models/Program'
+  // import TerrainObject from '@/models/TerrainObject'
 
   // Codemirror.
 
@@ -47,7 +50,7 @@
           value: "",
           externButtonId: 0,
           code: '',
-          treeSource: ['Hamster/File1$', 'Elefant/Ordner1']
+          treeSource: ['Hamster/File1$']
        }
     },
     mounted() {
@@ -56,20 +59,28 @@
     emits: ['anyEvent']
     ,
     methods: {
-      sendCodeToBackend() {
-        console.log(`g_Tabs: ${this.$g_Tabs[0].title}`);
+      async sendDataToBackend() {
+        for (let i = 0; i < this.$g_Programs.length; i++) {
+          let pro = new Program();
+          pro.programName = 'name';
+          pro.programPath = null;
+          pro.sourceCode = 'void';
+          let id = 10;
+          let response = await axios.delete(this.hostname + `program/delete/${id}`);
+          console.log(`response: ${response}`);
+        }
       },
       handelEvent(buttonInformation = '') {
-        let arrInfos = buttonInformation.split('</#/>')
+        let arrInfos = buttonInformation.split('</#/>');
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
         this.tabs = arrInfos[1];
-        // console.log(`sourceCode: ${this.code}`);
       },
       updateValue(event) {
         this.value = event;
         this.$store.commit('setCodeFromEditor', event);
         this.$g_Programs[this.externButtonId].sourceCode = this.code; //save code from current tab
+        console.log('hier');
       },
       async submitCode(){
 

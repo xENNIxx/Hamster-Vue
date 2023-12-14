@@ -1,5 +1,5 @@
 <template>
-    <a @click="clickAction">{{ this.title }}</a>
+    <a @click="clickAction">{{ this.dicTitle }}</a>
     <div v-if="isOpen">
       <div>
         <p>offen</p>
@@ -13,14 +13,14 @@ export default {
     name: "Dictionary",
     data() {
         return {
-            dicTitle: 'Title',
+            dicTitle: this.dicTitleProb,
             dicFiles: [],
             isOpen: false
         }
     },
-    props: {
-
-    },
+    props: [
+        'dicTitleProb'
+    ],
     methods: {
         openDictionary() {
             this.isOpen = !this.isOpen;

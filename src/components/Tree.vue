@@ -1,13 +1,17 @@
 <template>
     <button @click="getTreeSourceMatrix">click</button>
-    <div v-for="title in this.currentDepth" :key="title">
-      <div v-if="this.isDictionary(title)">
-        <Dictionary :dicTitleProp="title" />
+    <table>
+      <div v-for="element in this.currentDepth" :key="element">
+        <tr>
+          <td v-if="this.isDictionary()">
+            <Dictionary :dicTitleProb="element"/>
+          </td>
+          <td v-else>
+            <File :fileTitleProp="element"/>
+          </td>
+        </tr>
       </div>
-      <div v-else>
-        <File :fileTitleProp="title" />
-      </div>
-    </div>
+    </table>
 </template>
 
 <script>
@@ -23,7 +27,7 @@ export default {
     },
     data() {
         return {
-            treeSource: ['Hamster/File1$', 'Tiger/Ordner1', 'Tiger/Ordner2'],
+            treeSource: ['Hamster/File1$'],
             treeSourceMatrix: [],
             currentDepth: [],
             depth: 0
@@ -38,10 +42,12 @@ export default {
         ,   
         methods: {
       getTreeSourceMatrix() {
-        for (let i = 0; i < this.treeSource.length; i++) {
-          this.treeSourceMatrix[i] = this.treeSource[i].split('/');
+        if (this.depth == 0) {
+          for (let i = 0; i < this.treeSource.length; i++) {
+            this.treeSourceMatrix[i] = this.treeSource[i].split('/');
+          }
         }
-        this.compareFirstDepth();
+        this.compareDepth();
       },
       isDictionary(inputString) {
         let array = inputString.split('');
@@ -58,7 +64,7 @@ export default {
         }
         return false;
       },
-      compareFirstDepth() {
+      compareDepth() {
         this.currentDepth = [];
         for (let i = 0; i < this.treeSourceMatrix.length; i++) {
           if (!this.containsDictionary(this.treeSourceMatrix[i][this.depth], this.currentDepth)) {
@@ -74,4 +80,11 @@ export default {
 </script>
 
 <style>
+
+.depth_zero {
+  margin-left: 5px;
+}
+.depth_one {
+  margin-left: 15px;
+}
 </style>

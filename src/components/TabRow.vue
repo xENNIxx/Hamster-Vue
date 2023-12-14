@@ -22,7 +22,6 @@
 <script>
 
 import Tab from "@/components/Tab.vue"
-// import Program from '../models/Program.js'
 
 export default {
     name: "TabRow",
@@ -56,7 +55,7 @@ export default {
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
             this.shiftArray(this.externButtonId, this.tabSequenz);
-            console.log(`tabSequenz: ${this.tabSequenz}`);
+            // console.log(`tabSequenz: ${this.tabSequenz}`);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();
@@ -90,7 +89,7 @@ export default {
             let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
             this.tabs.push(currentTab);
             this.shiftArray(this.externButtonId, this.tabSequenz);
-            console.log('pushIntoArrays');
+            // console.log('pushIntoArrays');
         },
         checkIfToManyTabsAreOpen() {
             if (this.tabs.length >= 5) {
@@ -99,12 +98,12 @@ export default {
             return false;
         },
         closeOldestTabInArray() {
-            console.log(`tabSequenz: ${this.tabSequenz}`);
+            // console.log(`tabSequenz: ${this.tabSequenz}`);
             let length = this.tabSequenz.length;
             this.closeTab(this.tabSequenz[length - 1]);
         },
         closeTab(externId) {
-            console.log(`externId: ${externId}`);
+            // console.log(`externId: ${externId}`);
             for (let i = 0; i < this.tabs.length; i++) {
                 if (this.tabs[i].id == externId) {
                     this.tabs.splice(i, 1);
