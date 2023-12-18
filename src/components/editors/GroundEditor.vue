@@ -32,6 +32,7 @@
   import Tree from '../Tree.vue'
   import axios from 'axios'
   import Program from '@/models/Program'
+  import JSONConverter from '@/models/JSONConverter'
   // import TerrainObject from '@/models/TerrainObject'
 
   // Codemirror.
@@ -60,14 +61,17 @@
     ,
     methods: {
       async sendDataToBackend() {
+        let jsonConverter = new JSONConverter();
         for (let i = 0; i < this.$g_Programs.length; i++) {
           let pro = new Program();
           pro.programName = 'name';
           pro.programPath = null;
           pro.sourceCode = 'void';
           let id = 10;
-          let response = await axios.delete(this.hostname + `program/delete/${id}`);
-          console.log(`response: ${response}`);
+          let response = await axios.get(this.hostname + `program/getBasicData`);
+          let pro2 = new Program(response.programName, response.sourceCode, response.programPath);
+          let realProgram = jsonConverter.getProgramObj(pro2);
+          console.log(`real: ${realProgram}`);
         }
       },
       handelEvent(buttonInformation = '') {
