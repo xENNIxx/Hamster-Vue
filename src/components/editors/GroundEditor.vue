@@ -51,7 +51,7 @@
           value: "",
           externButtonId: 0,
           code: '',
-          treeSource: ['Hamster/File1$']
+          treeSource: ['Hamster/Ordner1/File1']
        }
     },
     mounted() {

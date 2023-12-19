@@ -14,7 +14,6 @@ export default {
     data() {
         return {
             dicTitle: this.dicTitleProb,
-            dicFiles: [],
             isOpen: false
         }
     },

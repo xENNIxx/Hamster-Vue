@@ -1,21 +1,15 @@
 <template>
-    <button @click="getTreeSourceMatrix">click</button>
+    <button>click</button>
     <table>
-      <div v-for="element in this.currentDepth" :key="element">
+      <div v-for="element in this.treeSource" :key="element">
         <tr>
-          <td v-if="this.isDictionary()">
-            <Dictionary :dicTitleProb="element"/>
-          </td>
-          <td v-else>
-            <File :fileTitleProp="element"/>
-          </td>
+          <Dictionary :dicTitleProb="element.programName"/>
         </tr>
       </div>
     </table>
 </template>
 
 <script>
-
 import Dictionary from './Dictionary.vue'
 import File from './File.vue'
 
@@ -27,64 +21,34 @@ export default {
     },
     data() {
         return {
-            treeSource: ['Hamster/File1$'],
-            treeSourceMatrix: [],
-            currentDepth: [],
+            treeSource: this.getTreeSource(),
             depth: 0
         }
     },
     props: 
-        ['treeSourceProp'] //hier kommen das Array mit den gesamten Paths hinein
-        //Path mit Dictionary am Ende:
-        //          "Hamster/Bewegung/Ordner1"
-        //Path mit File am Ende:
-        //          "Hamster/Bewegung/File1$" -> das Dollerzeichen markiert ein File
+        ['treeSourceProp']
         ,   
-        methods: {
-      getTreeSourceMatrix() {
-        if (this.depth == 0) {
-          for (let i = 0; i < this.treeSource.length; i++) {
-            this.treeSourceMatrix[i] = this.treeSource[i].split('/');
-          }
-        }
-        this.compareDepth();
+    methods: {
+      getTreeSource() {
+        return [{'programId': 1, 'programName': 'hamster', 'programPath': 'dic1/dic10'},
+                {'programId': 2, 'programName': 'maus', 'programPath': 'dic2'}
+              ];
       },
-      isDictionary(inputString) {
-        let array = inputString.split('');
-        if (array[array.length - 1] == '$') {
-          return false;
-        }
-        return true;
-      },
-      containsDictionary(inputString, array) {
-        for (let i = 0; i < array.length; i++) {
-          if (array[i] == inputString) {
-            return true;
-          }
-        }
-        return false;
-      },
-      compareDepth() {
-        this.currentDepth = [];
-        for (let i = 0; i < this.treeSourceMatrix.length; i++) {
-          if (!this.containsDictionary(this.treeSourceMatrix[i][this.depth], this.currentDepth)) {
-            this.currentDepth.push(this.treeSourceMatrix[i][this.depth]);
-          }
-        }
-        this.depth++;
-        console.log(`compareDepth: ${this.currentDepth}`);
-      },
-
+      getSplitPath(path) {
+        return path.split('/');
+      }
     }
 }
 </script>
 
 <style>
-
-.depth_zero {
+.depth_0 {
   margin-left: 5px;
 }
-.depth_one {
+.depth_1 {
   margin-left: 15px;
+}
+.depth_2 {
+  margin-left: 25px;
 }
 </style>

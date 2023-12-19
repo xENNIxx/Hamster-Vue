@@ -43,10 +43,7 @@ export default {
             if (this.checkIfToManyTabsAreOpen()) {
                 this.closeOldestTabInArray();
             }
-            let gg = false;
             const inputAllert = prompt('Gib hier etwas ein:', '');
-            let hh = confirm(gg);
-            console.log(hh);
             let defaultTitel = this.getDefaultTitel(inputAllert);
             let defaultCode = this.getdefaultCode(defaultTitel);
             this.pushIntoArrays(defaultTitel, defaultCode);
