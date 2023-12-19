@@ -43,12 +43,25 @@ export default {
             if (this.checkIfToManyTabsAreOpen()) {
                 this.closeOldestTabInArray();
             }
-            const inputAllert = prompt('Gib hier etwas ein:', '');
-            let defaultTitel = this.getDefaultTitel(inputAllert);
-            let defaultCode = this.getdefaultCode(defaultTitel);
-            this.pushIntoArrays(defaultTitel, defaultCode);
-            this.tabCounter++;
+            const inputAllert = prompt('Gib hier den programName ein:', '');
+            const inputPath = prompt('Gib hier den Speicherort ein:', '');
+            if (this.checkIfDicExist(inputPath)) {
+                let defaultTitel = this.getDefaultTitel(inputAllert);
+                let defaultCode = this.getdefaultCode(defaultTitel);
+                this.pushIntoArrays(defaultTitel, defaultCode, inputPath);
+                this.tabCounter++;
+            } else {
+                alert('Dieser Ordner existiert nicht.');
+            }
             console.log('addTab');
+        },
+        checkIfDicExist(inputPath) {
+            for (let i = 0; i < this.$g_Dics.length; i++) {
+                if (inputPath == this.$g_Dics[i]) {
+                    return true;
+                }
+            }
+            return false;
         },
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>')
@@ -83,8 +96,10 @@ export default {
         getdefaultCode(defaultTitel) {
             return 'class ' + defaultTitel + ' {\n\n}';
         },
-        pushIntoArrays(defaultTitel, defaultCode) {
-            let program = {'programID': this.tabCounter, 'programName': defaultTitel, 'sourceCode': defaultCode};
+        pushIntoArrays(defaultTitel, defaultCode, path) {
+            let program = {'programID': this.tabCounter, 'programName': defaultTitel, 
+                            'sourceCode': defaultCode, 'programPath': path};
+            console.log(`path: ${program.programPath}`);
             this.$g_Programs.push(program);
             let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
             this.tabs.push(currentTab);

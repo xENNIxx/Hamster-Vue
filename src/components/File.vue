@@ -1,5 +1,5 @@
 <template>
-    <a @click="clickAction">{{ this.getRightFileTitle() }}</a>
+    <a @click="clickAction">{{ this.title }}</a>
 </template>
 
 <script>
@@ -15,17 +15,8 @@ export default {
     'fileTitleProp'
   ],
   methods: {
-    getRightFileTitle() {
-      let realArray = []
-      let array = this.title.split('');
-      for (let i = 0; i < array.length - 1; i++) {
-        realArray.push(array[i]);
-      }
-      console.log(`realArray: ${realArray.toString()}`);
-      return realArray.toString();
-    },
     clickAction() {
-
+      console.log('fileAction');
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
-    <button>click</button>
+    <button class="btn" @click="addDic">AddDic</button>
     <table>
-      <div v-for="element in this.treeSource" :key="element">
+      <div v-for="dic in this.dics" :key="dic">
         <tr>
-          <Dictionary :dicTitleProb="element.programName"/>
+          <Dictionary :dicTitleProb="dic" />
         </tr>
       </div>
     </table>
@@ -21,22 +21,18 @@ export default {
     },
     data() {
         return {
-            treeSource: this.getTreeSource(),
-            depth: 0
+            dics: []
         }
     },
     props: 
         ['treeSourceProp']
         ,   
     methods: {
-      getTreeSource() {
-        return [{'programId': 1, 'programName': 'hamster', 'programPath': 'dic1/dic10'},
-                {'programId': 2, 'programName': 'maus', 'programPath': 'dic2'}
-              ];
+      addDic() {
+        	const inputPath = prompt('Gib hier den Namen des Ordners ein:', '');
+          this.dics.push(inputPath);
+          this.$g_Dics.push(inputPath); //damit die Abfrage in TabRow funktioniert
       },
-      getSplitPath(path) {
-        return path.split('/');
-      }
     }
 }
 </script>
