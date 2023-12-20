@@ -1,7 +1,7 @@
 <template>
     <div class="playground-wrapper">
         <div class="flex-container">
-            <div>
+            <div class="m-3">
                 <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)"/>
                 <div class="playground" data-playground-></div>
                 <button class="start-btn btn" @click="start">Start</button>

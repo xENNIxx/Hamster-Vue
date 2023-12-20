@@ -1,9 +1,11 @@
 <template>
   <div>
-        <nav class="flex justify-self-start p-3 max-h-13">
-          <tab-row @any-event="handelEvent" />
-        </nav>
-          <section>
+      <nav class="flex justify-self-start p-3 max-h-13">
+        <tab-row @any-event="handelEvent" />
+      </nav>
+      <div class="grid grid-cols-2 gap-4">
+        <nav class="flex justify-self-start">
+          <section class="p-4">
             <codemirror
               v-model="code"
               :autofocus="true"
@@ -19,7 +21,11 @@
               <button class="btn" @click="sendDataToBackend">SaveAll</button>
             </nav>
           </section>
-          <Tree :treeSourceProp="this.treeSource" />
+          <div class="p-4">
+            <Tree :treeSourceProp="this.treeSource" />
+          </div>
+        </nav>
+      </div>
   </div>
 </template>
 
