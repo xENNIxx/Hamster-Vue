@@ -5,7 +5,7 @@
       </nav>
       <div class="grid grid-cols-2 gap-4">
         <nav class="flex justify-self-start">
-          <section class="p-4">
+          <section class="p-3">
             <codemirror
               v-model="code"
               :autofocus="true"

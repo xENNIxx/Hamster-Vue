@@ -2,10 +2,10 @@
     <button class="btn" @click="addDic">AddDic</button>
     <table>
       <div v-for="dic in this.dics" :key="dic">
-        <a @click="openDic(dic)" class="m-1  font-bold">{{ dic }}</a>
-        <div v-if="this.isOpen[dic]" class="ml-2">
+        <a @click="openDic(dic)" class="m-1 bg bg-red-300 rounded-sm linkHoverDic">{{ dic }}</a>
+        <div v-if="this.isOpen[dic]" class="ml-3">
           <div v-for="file in this.getFileNames(dic)" :key="file">
-            <a @click="getProgramName(file)" class="m-1">{{ file }}</a>
+            <a @click="getProgramName(file)" class="m-1 linkHoverFile">{{ file }}</a>
           </div>
         </div>
       </div>
@@ -42,17 +42,28 @@ export default {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           if (this.$g_Programs[i].programPath == dicName) {
             fileNames.push(this.$g_Programs[i].programName);
-            console.log('getFileNames');
           }
         }
         return fileNames;
       },
       getProgramName(programName) {
-        console.log(`programName: ${programName}`);
+        for (let i = 0; i < this.$g_Programs.length; i++) {
+          if (this.$g_Programs[i].programName == programName) {
+            this.$g_CurrentProgram = this.$g_Programs[i];
+            console.log(`currentProgram: ${this.$g_CurrentProgram.programName}`);
+          }
+        }
       }
     }
 }
 </script>
 
 <style>
+.linkHoverDic:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+.linkHoverFile:hover {
+  cursor: pointer;
+}
 </style>

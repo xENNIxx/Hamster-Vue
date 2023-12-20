@@ -30,7 +30,8 @@ export default {
             tabs: [], //sind die gerade offenen Tabs
             tabCounter: 0,
             externButtonId: 0,
-            tabSequenz: []
+            tabSequenz: [],
+            g_CurrentProgram: this.$g_CurrentProgram
         }
     },
     components: {
@@ -38,8 +39,21 @@ export default {
     },
     emit: ['anyEvent']
     ,
+    watch: {
+        g_CurrentProgram() {
+            this.getCurrentProgram();
+        }
+    },
     methods: {
         addTab() {
+            if (this.$g_CurrentProgram != undefined) {
+                let currentTab = {'id': this.tabCounter
+                            , 'title': this.$g_CurrentProgram.programName
+                            , 'code': this.$g_CurrentProgram.sourceCode};
+                this.tabs[this.$g_CurrentProgram.programID] = currentTab;
+                this.tabCounter++;
+                console.log('currentProgram');
+            }
             if (this.checkIfToManyTabsAreOpen()) {
                 this.closeOldestTabInArray();
             }
@@ -54,6 +68,17 @@ export default {
                 alert('Dieser Ordner existiert nicht.');
             }
             console.log('addTab');
+        },
+        getCurrentProgram() {
+            console.log('getCurrentProgram');
+        },
+        checkIfCurrentProgramExistsInArray() {
+            for (let i = 0; i < this.tabs.length; i++) {
+                if (this.tabs[i].title == this.$g_CurrentProgram.programName) {
+                    return true;
+                }
+            }
+            return false;
         },
         checkIfDicExist(inputPath) {
             for (let i = 0; i < this.$g_Dics.length; i++) {

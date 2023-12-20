@@ -1,7 +1,7 @@
 <template>
     <div class="playground-wrapper">
         <div class="flex-container">
-            <div class="m-3">
+            <div class="m-5">
                 <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)"/>
                 <div class="playground" data-playground-></div>
                 <button class="start-btn btn" @click="start">Start</button>
@@ -10,7 +10,7 @@
                 <button class="btn" @click="reset">Reset Field</button>
             </div>
             <!-- class="inline-flex" -->
-            <div>
+            <div class="m-5">
                 <GroundEditorVue @submitted="submitCode($event)" />
             </div>
         </div>
