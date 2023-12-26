@@ -46,14 +46,7 @@ export default {
     },
     methods: {
         addTab() {
-            if (this.$g_CurrentProgram != undefined) {
-                let currentTab = {'id': this.tabCounter
-                            , 'title': this.$g_CurrentProgram.programName
-                            , 'code': this.$g_CurrentProgram.sourceCode};
-                this.tabs[this.$g_CurrentProgram.programID] = currentTab;
-                this.tabCounter++;
-                console.log('currentProgram');
-            }
+            this.pushCurrentProgramIntoArray();
             if (this.checkIfToManyTabsAreOpen()) {
                 this.closeOldestTabInArray();
             }
@@ -68,9 +61,6 @@ export default {
                 alert('Dieser Ordner existiert nicht.');
             }
             console.log('addTab');
-        },
-        getCurrentProgram() {
-            console.log('getCurrentProgram');
         },
         checkIfCurrentProgramExistsInArray() {
             for (let i = 0; i < this.tabs.length; i++) {
@@ -124,12 +114,22 @@ export default {
         pushIntoArrays(defaultTitel, defaultCode, path) {
             let program = {'programID': this.tabCounter, 'programName': defaultTitel, 
                             'sourceCode': defaultCode, 'programPath': path};
-            console.log(`path: ${program.programPath}`);
             this.$g_Programs.push(program);
             let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
             this.tabs.push(currentTab);
             this.shiftArray(this.externButtonId, this.tabSequenz);
             // console.log('pushIntoArrays');
+        },
+        pushCurrentProgramIntoArray() {
+            if (this.$g_CurrentProgram != null || this.$g_CurrentProgram != undefined) {
+                let currentTab = {'id': this.$g_CurrentProgram.programID,
+                                 'title': this.$g_CurrentProgram.programName,
+                                 'code': this.$g_CurrentProgram.sourceCode};
+                this.tabs[this.$g_CurrentProgram.programID] = currentTab;
+                console.log('neue methode');
+            } else {
+                console.log(`methoden fail ${this.$g_CurrentProgram}`);
+            }
         },
         checkIfToManyTabsAreOpen() {
             if (this.tabs.length >= 5) {
