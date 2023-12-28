@@ -39,11 +39,6 @@ export default {
     },
     emit: ['anyEvent']
     ,
-    watch: {
-        g_CurrentProgram() {
-            this.getCurrentProgram();
-        }
-    },
     methods: {
         addTab() {
             this.pushCurrentProgramIntoArray();
@@ -121,14 +116,14 @@ export default {
             // console.log('pushIntoArrays');
         },
         pushCurrentProgramIntoArray() {
-            if (this.$g_CurrentProgram != null || this.$g_CurrentProgram != undefined) {
+            if (this.$g_CurrentProgram.programName != null) {
                 let currentTab = {'id': this.$g_CurrentProgram.programID,
                                  'title': this.$g_CurrentProgram.programName,
                                  'code': this.$g_CurrentProgram.sourceCode};
-                this.tabs[this.$g_CurrentProgram.programID] = currentTab;
-                console.log('neue methode');
+                this.tabs[currentTab.id] = currentTab;
+                console.log('pushCurrentProgram');
             } else {
-                console.log(`methoden fail ${this.$g_CurrentProgram}`);
+                console.log('currentProgram is null');
             }
         },
         checkIfToManyTabsAreOpen() {
