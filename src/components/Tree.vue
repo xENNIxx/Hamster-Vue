@@ -54,13 +54,11 @@ export default {
         }
       },
       changeToProgramObj(program) {
-        this.$g_CurrentProgram = {
-          'programID': program.programID,
+        this.$g_CurrentProgram.push({'programID': program.programID,
           'programName': program.programName,
           'sourcecode': program.sourcecode,
-          'programPath': program.programPath
-        }
-        console.log('changeToProgramObj');
+          'programPath': program.programPath});
+                console.log('changeToProgramObj');
       }
     }
 }
