@@ -40,8 +40,23 @@ const routes = [
     name: 'profile',
     component: () => import('../views/ProfileView.vue')
   },
-  
-  
+  // teacher specific routes
+  // TODO: better nameing-scheme
+  {
+    path: '/teachers/courses/new',
+    name: 'teachers_courses_create',
+    component: () => import('../views/teacherViews/CoursesCreateView.vue')
+  },
+  {
+    path: '/teachers/courses',
+    name: 'teacher_courses',
+    component: () => import('../views/teacherViews/MyCoursesView.vue')
+  },
+  {
+    path: '/teachers/courses/:id',
+    name: 'teacher_course_single',
+    component: () => import('../views/teacherViews/CoursesDetailView.vue')
+  }
 ]
 
 const router = createRouter({

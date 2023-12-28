@@ -23,8 +23,7 @@
           </thead>
           <tbody>
             <!-- row 1 -->
-            
-            <tr v-for="exercise in course.exercises" class="bg-opacity-30" :class="setColor(exercise)">
+            <tr v-for="exercise in course.activities" class="bg-opacity-30" :class="setColor(exercise)">
               <td >
                 <div class="font-bold">
                   {{ exercise.name }}
