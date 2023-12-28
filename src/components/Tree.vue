@@ -5,7 +5,7 @@
         <a @click="openDic(dic)" class="m-1 bg bg-red-300 rounded-sm linkHoverDic">{{ dic }}</a>
         <div v-if="this.isOpen[dic]" class="ml-3">
           <div v-for="file in this.getFileNames(dic)" :key="file">
-            <a @click="getProgramName(file)" class="m-1 linkHoverFile">{{ file }}</a>
+            <a @click="getAndFillInCurrentProgramName(file)" class="m-1 linkHoverFile">{{ file }}</a>
           </div>
         </div>
       </div>
@@ -46,13 +46,19 @@ export default {
         }
         return fileNames;
       },
-      getProgramName(programName) {
+      getAndFillInCurrentProgramName(programName) {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           if (this.$g_Programs[i].programName == programName) {
-            this.$g_CurrentProgram = this.$g_Programs[i];
-            console.log(`currentProgram: ${this.$g_CurrentProgram.programName}`);
+            this.changeToProgramObj(this.$g_Programs[i]);
           }
         }
+      },
+      changeToProgramObj(program) {
+        this.$g_CurrentProgram.push({'programID': program.programID,
+          'programName': program.programName,
+          'sourcecode': program.sourcecode,
+          'programPath': program.programPath});
+                console.log('changeToProgramObj');
       }
     }
 }
