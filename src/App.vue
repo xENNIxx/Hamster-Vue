@@ -11,6 +11,7 @@
   <div class="navbar-center flex">
     <ul class="menu menu-horizontal px-1">
       <li v-if="isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/playground"><i class="fas fa-play"></i> Playground </router-link></li>
+      <li v-if="isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/build"><i class="fas fa-hammer"></i> Build </router-link></li>
       <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/courses"><i class="fas fa-book"></i> Courses </router-link></li>
       <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/profile"><i class="fas fa-user"></i> Profile </router-link></li>
       <li v-if="!isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/login"><i class="fas fa-sign-in-alt"></i> Login </router-link></li>
