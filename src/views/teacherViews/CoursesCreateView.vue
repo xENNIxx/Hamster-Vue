@@ -11,7 +11,7 @@
 
                     <button @click="createCourse" class="btn btn-primary" v-text="name"></button>
 
-                    <p class="text-xs text-center mt-2 mb-0">Der Kurs wird direkt angelegt (wenn möglich)<br/> Schüler können anschließend über das Kurs-Menü hinzugefügt werden</p>
+                    <p class="italic text-slate-400 text-xs text-center mt-2 mb-0">Der Kurs wird direkt angelegt (wenn möglich)<br/> Schüler können anschließend über das Kurs-Menü hinzugefügt werden</p>
                 </div>
 
                 
