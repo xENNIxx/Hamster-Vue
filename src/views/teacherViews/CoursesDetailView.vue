@@ -2,25 +2,34 @@
 
 <template>
   <!-- course may haven't been loaded from api yet -->
-  <div v-if="course != undefined && course != null && students != undefined">
-    <div class="flex flex-row items-center justify-center">
-      <h1 class="text-3xl font-medium text-center mr-3 mt-9 mb-9">{{ course.name }}</h1>
-      <button @click="" class="btn btn-circle btn-ghost">
-      <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">
-        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
-        <path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+  <div v-if="course != null">
+    <!-- change coursename -->
+    <div v-if="changeCourseNameActive" class="flex flex-row items-center justify-center">
+      <input type="text" v-model="coursename" placeholder="Neuer Kursname" class="input !border-solid !border-1 !border-gray-600 text-3xl font-medium text-center  mr-3 mt-[1.875rem] mb-[1.875rem] w-[500px]" />  
+      <button v-if="changeCoursenameAwait" class="btn btn-primary btn-sm mr-2"><span class="loading loading-spinner"></span></button>
+      <button v-else @click="changeCourseName" class="btn btn-primary btn-sm mr-2" :disabled="coursename.trim() == ''">Apply</button>
+      <button @click="changeCourseNameActive = false; coursename = course.name" class="btn btn-outline btn-primary btn-sm">Abbrechen</button>
+    </div>
+    <!-- display coursename -->
+    <div v-else class="flex flex-row items-center justify-center">
+      <h1 class="text-3xl font-medium text-center mr-3 mt-9 mb-9">{{ course.name }}</h1>  
+      <button @click="changeCourseNameActive = true" class="btn btn-square btn-sm btn-ghost">
+        <i class="fas fa-edit"></i>
       </button>
     </div>
-    
-    
+
+    <p :class="`${(hasErr_changeCoursename) ? 'text-error' : 'text-success'} text-center mb-2`">{{ msg_changeCoursename }}</p>
 
     <button @click="" class="btn btn-circle btn-ghost absolute top-28 right-16">
       export
     </button>
 
     <div class="flex flex-row justify-around items-start">
+      <!-- TODO: Students Skeleton -->
+      <div v-if="students == null" class="skeleton h-14 py-1 w-1/4 m-5 shadow-md">
+      </div>
       <!-- Students -->
-      <div class="collapse bg-base-200 collapse-arrow w-1/4 m-5 shadow-md">
+      <div v-else class="collapse bg-base-200 collapse-arrow w-1/4 m-5 shadow-md">
         <input type="checkbox" class=""/>
         <div class="collapse-title text-xl font-medium">
           Students ({{ students.length }})
@@ -30,79 +39,128 @@
           <!-- manage students -->
           <div class="flex flex-row justify-between">
             <!-- delete -->
-            Todo: delete
+            <button v-if="deleteActive" @click="deleteActive = false; delStudents = []" class="btn btn-error btn-outline btn-xs py-0">Abbrechen</button>
+            <button v-else @click="deleteActive = true" class="btn btn-error btn-xs py-0">Entf<i class="fas fa-trash"></i></button>
+            
 
-            <!-- add student-button -->
-            <input type="checkbox" id="newStudents" class="modal-toggle" />
-            <!-- add popup-student -->
-            <div class="modal">
-              <div class="modal-box flex flex-col items-center">
-                <!-- popup-student head -->
-                <div class="flex flex-row justify-between w-full mb-3">
-                  <h3 class="font-bold text-lg">Schüler Hinzufügen</h3>
-                  <!-- close btn -->
-                  <div class="modal-action mt-0">
-                    <label for="newStudents" class="btn btn-ghost btn-circle btn-sm">✕</label>
+            <!-- delete students button -->
+            <div v-if="deleteActive">
+              <input type="checkbox" id="delStudentsModal" class="modal-toggle" />
+              <div class="modal">
+                <div class="modal-box flex flex-col items-center">
+                  <!-- modal head -->
+                  <div class="flex flex-row justify-between w-full mb-3">
+                    <h3 class="font-bold text-lg">Bist du wirklich sicher?</h3>
+                    <!-- close btn -->
+                    <div class="modal-action mt-0">
+                      <label for="delStudentsModal" class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-times"></i></label>
+                    </div>
+                  </div>
+                  <!-- modal body  -->
+                  <p class="italic text-slate-400 text-xs text-center mt-2 mb-4">Folgende Schüler und damit alle ihre Abgaben werden unwiderruflich aus der Datenbank entfernt!</p>          
+                  <!-- list of students to del -->
+                  <p><span v-for="(student, index) in delStudents">{{ student.username }}<span v-if="index + 1 != delStudents.length">, </span></span></p>
+                  
+                  <p v-if="delStudents.length == 0" class="italic text-slate-400 text-xs text-center mt-7 mb-0">keine Schüler ausgewählt</p>          
+                  <div v-else class="flex flex-col items-center">
+                    <!-- button loading -->
+                    <button v-if="addStudentsAwait" class="btn btn-error mt-5">
+                      <span class="loading loading-spinner"></span>
+                    </button>
+                    <!-- button del & message -->
+                    <button v-else @click="delStudentsFromCourse" class="btn btn-error mt-5">Students Entfernen</button>
+                    <p :class="(hasErr_delStudents) ? 'text-error my-3' : 'text-success my-3'">{{ msg_delStudents }}</p>
                   </div>
                 </div>
-                <!-- search students -->
-                <div class="dropdown">
-                  <!-- popup-student content -->
-                  <div role="button">
-                    <input v-model="addStudentSearch" type="text" placeholder="Schülername" class="input bg-base-200 border-solid border-2 mb-3"/>
-                  </div>
-                  <ul tabindex="0" class="dropdown-content z-[1] menu py-1  px-0 shadow bg-base-100 rounded-lg">
-                    <li v-for="student in filteredStudents"><button @click="() => {addStudents.push(student)}" class="btn-ghost rounded-none w-full text-sm mb-1">{{ student.username }}</button></li>
-                  </ul>
-                </div>
-
-
-                <!-- students to add -->
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Nr.</th>
-                      <th class="w-1/2">Name</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th colspan="3" class="p-0">
-                        <hr class="w-full"/>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(student, index) in addStudents">
-                      <td>{{ index + 1 }}</td>
-                      <td>{{ student.username }}</td>
-                      <td class="text-right">
-                        <button @click="() => {addStudents = addStudents.filter((curStudent) => curStudent != student)}" class="btn btn-error">entf.</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> 
-
-                <p v-if="addStudents.length == 0" class="italic text-slate-400 text-xs text-center mt-7 mb-0">keine Schüler ausgewählt</p>          
               </div>
+              <label class="btn btn-xs btn-error py-0" for="delStudentsModal">Fortfahren<i class="fas fa-trash"></i></label>
             </div>
-            <label class="btn btn-xs btn-success py-0" for="newStudents">add +</label>
+            <!-- add student modal -->
+            <div v-else>
+              <input type="checkbox" id="newStudents" class="modal-toggle" @change="() => {if (allStudents != null) {getAllStudents}}"/>
+              <div class="modal">
+                <div class="modal-box min-h-[320px] flex flex-col items-center">
+                  <!-- modal-student head -->
+                  <div class="flex flex-row justify-between w-full mb-3">
+                    <h3 class="font-bold text-lg">Schüler Hinzufügen</h3>
+                    <!-- close btn -->
+                    <div class="modal-action mt-0">
+                      <label for="newStudents" class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-times"></i></label>
+                    </div>
+                  </div>
+
+                  <!-- search students -->
+                  <div v-if="allStudents == null" class="skeleton w-[220px] h-[48px]"></div>
+                  <div v-else class="dropdown mb-3">
+                    <!-- modal-student content -->
+                    <div role="button">
+                      <!-- search students skeleton -->
+                      <input v-model="addStudentsSearchFilter" type="text" placeholder="Schülername" class="input bg-base-200 border-solid border-2"/>
+                    </div>
+                    <ul tabindex="0" class="dropdown-content z-[1] max-h-44 overflow-auto py-1 px-1 shadow bg-base-100 rounded-lg w-full mt-0">
+                      <li v-for="student in filteredStudents"><button @click="() => {if (!addStudents.includes(student)) addStudents.push(student)}" class="btn-ghost rounded-none w-full text-sm  text-left p-2 pl-4  mb-1">{{ student.username }}</button></li>
+                    </ul>
+                  </div>
+                  <!-- students to add -->
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nr.</th>
+                        <th class="w-1/2">Name</th>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <th colspan="3" class="p-0">
+                          <hr class="w-full"/>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(student, index) in addStudents">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ student.username }}</td>
+                        <td class="text-right">
+                          <button @click="() => {addStudents = addStudents.filter((curStudent) => curStudent != student)}" class="btn btn-ghost btn-circle text-red-500 btn-sm"><i class="fas fa-trash"></i></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table> 
+
+                  <p v-if="addStudents.length == 0" class="italic text-slate-400 text-xs text-center mt-7 mb-0">keine Schüler ausgewählt</p>          
+                  <div v-else class="flex flex-col items-center">
+                    <!-- button loading -->
+                    <button v-if="addStudentsAwait" class="btn btn-primary mt-5">
+                      <span class="loading loading-spinner"></span>
+                    </button>
+                    <!-- button add & message -->
+                    <button v-else @click="addStudentsToCourse" class="btn btn-primary mt-5">Hinzufügen</button>
+                    <p :class="(hasErr_addStudents) ? 'text-error my-3' : 'text-success my-3'">{{ msg_addStudents }}</p>
+                  </div>
+                </div>
+              </div>
+              <label class="btn btn-xs btn-success py-0" for="newStudents">neu<i class="fas fa-plus"></i></label>
+            </div>
           </div>
 
           <!-- students table -->
           <table class="table">
             <thead>
               <tr>
+                <th v-if="deleteActive"></th>
                 <th>Nr</th>
                 <th>Name</th>
               </tr>
               <tr>
-                <th colspan="2" class="p-0">
+                <th :colspan="deleteActive ? 3 : 2" class="p-0">
                   <hr class="w-full"/>
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(student, index) in students">
+                <td v-if="deleteActive">
+                  <input type="checkbox" :id="`checkStu_${index}`" @change="delStudentChange(student, index)" class="checkbox checkbox-error checkbox-xs"/>
+                </td>
                 <td>{{ index +1 }}</td>
                 <td>{{ student.username }}</td>
               </tr>
@@ -123,7 +181,10 @@
             <!-- filter-button -->
             <!-- TODO: farbe abhängig vom theme machen (aktuell nur bei light gut) -->
             <div class="dropdown">
-              <div tabindex="0" role="button" class="btn btn-xs bg-base-300">{{ activityFilter }}</div>
+              <div tabindex="0" role="button" class="btn btn-xs bg-base-300">
+                <i class="fas fa-filter mr-1"></i>
+                {{ activityFilter }}
+              </div>
               <ul tabindex="0" class="dropdown-content z-[1] menu py-1  px-0 shadow bg-base-100 rounded-lg">
                 <li><button @click="activityFilter = 'all'" class="btn-ghost rounded-none w-full text-sm mb-1">all</button></li>
                 <li><button @click="activityFilter = 'exercises'" class="btn-ghost rounded-none w-full text-sm mt-1">exercises</button></li>
@@ -132,7 +193,7 @@
             </div>
 
             <!-- add activity-button -->
-            <router-link :to="`/teachers/courses/${courseId}/exercises`" class="btn btn-xs btn-success py-0">add +</router-link>
+            <router-link :to="`/teachers/courses/${courseId}/exercises`" class="btn btn-xs btn-success py-0">neu <i class="fas fa-plus"></i></router-link>
           </div>
           <!-- activity-table -->
           <table class="w-full table">
@@ -158,10 +219,10 @@
                   {{ students.length }} ({{ students.length }})
                   <!-- ignore checkbox -->
                   <input type="checkbox" :id="`${activity.name}_info`" class="modal-toggle" />
-                  <!-- handed in popup -->
+                  <!-- status modal -->
                   <div class="modal">
                     <div class="modal-box">
-                      <!-- popup head -->
+                      <!-- modal head -->
                       <div class="flex flex-row justify-between mb-5">
                         <h3 class="font-bold text-lg">Abgegeben von</h3>
                         <!-- close btn -->
@@ -171,12 +232,12 @@
                       </div>
                       
                       <div class="flex flex-row justify-evenly mb-5">
-                        <p class="text-red-500"><i>icon</i> offen</p>
-                        <p class="text-orange-500"><i>icon</i> abgegeben</p>
-                        <p class="text-lime-500"><i>icon</i> kontrolliert</p>
+                        <p class="text-red-500"><i class="fas fa-hourglass-end"></i> offen</p>
+                        <p class="text-orange-500"><i class="fas fa-envelope"></i> abgegeben</p>
+                        <p class="text-lime-500"><i class="far fa-check-circle"></i> kontrolliert</p>
                       </div>
 
-                      <!-- popup content -->
+                      <!-- modal content -->
                       <table class="table">
                         <thead>
                           <tr>
@@ -189,7 +250,11 @@
                           <tr v-for="(student, index) in students">
                             <td>{{ index }}</td>
                             <td>{{ student.username }}</td>
-                            <td :class="setColor(activty, student)">nicht abgegeben</td>
+                            <td :class="setColor(activty, student)">
+                              <i v-if="true" class="far fa-check-circle"></i>
+                              <i v-else-if="true" class="fas fa-envelope"></i>
+                              <i v-else class="fas fa-hourglass-end"></i>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -197,21 +262,21 @@
                       
                     </div>
                   </div>
-                  <label class="btn btn-xs mx-5" :for="`${activity.name}_info`">info</label>
+                  <label class="btn btn-xs mx-5" :for="`${activity.name}_info`"><i class="fas fa-info"></i></label>
                 </td>
                 <td>
-                  <button class="btn btn-success btn-xs mr-3">Korrigieren ({{ students.length }}/{{ students.length }})</button>
+                  <button class="btn btn-success btn-xs mr-8">Korrigieren ({{ students.length }}/{{ students.length }})</button>
                   <!-- ignore checkbox -->
                   <input type="checkbox" :id="activity.name" class="modal-toggle" />
-                  <!-- details popup -->
+                  <!-- details modal -->
                   <div class="modal">
                     <div class="modal-box">
-                      <!-- popup head -->
+                      <!-- modal head -->
                       <div class="flex flex-row justify-between mb-5">
                         <h3 class="font-bold text-lg">Details</h3>
                         <!-- close btn -->
                         <div class="modal-action mt-0">
-                          <label :for="activity.name" class="btn btn-ghost btn-circle btn-sm">✕</label>
+                          <label :for="activity.name" class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-times"></i></label>
                         </div>
                       </div>
                       <p v-if="activity.details == null || activity.details == null || activity.details == ''" class="italic text-slate-400 text-xs">keine Details eingetragen</p>
@@ -219,10 +284,10 @@
                       
                     </div>
                   </div>
-                  <label class="btn btn-secondary btn-xs mx-5" :for="activity.name">Details</label>
+                  <label class="btn btn-secondary btn-xs mr-5" :for="activity.name">Details</label>
                 </td>
                 <td>
-                  <button class="mr-3">Edit</button>
+                  <button class="mr-3"><i class="fas fa-pen"></i></button>
                   <input type="checkbox"/>
                 </td>
               </tr>
@@ -238,6 +303,7 @@
 <script>
 import axios from "axios";
   
+const https = require("https");
 export default {
   name: "CoursesDetailView",
   data() {
@@ -245,11 +311,30 @@ export default {
       courseId: undefined,
       course: undefined,
       students: undefined,
-      addStudentSearch: "",
-      addStudents: [{"username":"jesus"}, {"username":"christ"}],
+      // change course name
+      coursename: "",
+      changeCoursenameAwait: false,
+      // add Students to Course
+      allStudents: undefined,
+      addStudentsSearchFilter: "",
+      addStudents: [],
+      addStudentsAwait: false,
+      // delete Students from Course
+      delStudents: [],
+      delStudentsAwait: false,
       allActivities: [],
       activitySolutions: [],
       activityFilter: "all",
+      // actions in view
+      deleteActive: false,
+      changeCourseNameActive: false,
+      // respone-messages
+      msg_changeCoursename: undefined,
+      hasErr_changeCoursename: undefined,
+      msg_delStudents: undefined,
+      hasErr_delStudents: undefined,
+      msg_addStudents: undefined,
+      hasErr_addStudents: undefined,
     }
   },
   props: {
@@ -272,41 +357,20 @@ export default {
         return filtered
       }
     },
-    async filteredStudents() {
-      let unfinished = this.addStudentSearch;
-      // setup request
-      const link = this.hostname + "users" // TODO: add link for "get users by username"
-      axios.defaults.withCredentials = true;
-      var config = {
-        method: "get",
-        url: link,
-        headers: {
-          "Access-Control-Allow-Origin": true,
-        },
-        withCredentials: true,
-      }
-
-      // call request
-      let filteredStudents;
-      try {
-        const response = await axios(config);
-        filteredStudents = response.data;
-        console.log(response.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-
+    filteredStudents() {
+      let filteredStudents = this.allStudents.filter((curStudent) => curStudent.username.includes(this.addStudentsSearchFilter))
       return filteredStudents;
     }
   },
   methods: {
+    // Get Data Methods
     async getCourse() {
       // set variables to default
       this.hasError = false;
       this.errorText = "";
     
       // setup request
-      const link = this.hostname + "courses/" + this.courseId;
+      const link = `${this.hostname}courses/${this.courseId}`;
       axios.defaults.withCredentials = true;
       var config = {
         method: "get",
@@ -321,6 +385,7 @@ export default {
       try {
         const response = await axios(config);
         this.course = response.data;
+        console.log("course:");
         console.log(response.data);
       } catch (error) {
         console.log(error.message);
@@ -328,21 +393,43 @@ export default {
     },
     async getCourseStudents() {
       // setup request
-      const link = this.hostname + "users/students?course_id=" + this.courseId;
-      axios.defaults.withCredentials = true;
+      const link = `${this.hostname}users/students?course_id=${this.courseId}`;
       var config = {
         method: "get",
         url: link,
         headers: {
           "Access-Control-Allow-Credentials": true,
         },
-        withCredentials: true,  // QUESTION: is this a duplicate entry?
+        withCredentials: true,
       };
 
       // call request
       try {
         const response = await axios(config);
         this.students = response.data;
+        console.log("courseStudents:");
+        console.log(response.data);
+      } catch(error) {
+        console.log(error);
+      }
+    },
+    async getAllStudents() {
+      // setup request
+      const link = `${this.hostname}users/students`;
+      var config = {
+        method: "get",
+        url: link,
+        headers: {
+          "Access-Control-Allow-Credentials": true,
+        },
+        withCredentials: true
+      };
+
+      // call request
+      try {
+        const response = await axios(config);
+        this.allStudents = response.data;
+        console.log("All Students");
         console.log(response.data);
       } catch(error) {
         console.log(error);
@@ -350,7 +437,7 @@ export default {
     },
     async getActivities() {
       // setup request
-      const link = this.hostname + "activities?course_id=" + this.courseId;
+      const link = `${this.hostname}activities?course_id=${this.courseId}`;
       console.log(link);
       axios.defaults.withCredentials = true;
       var config = {
@@ -373,7 +460,7 @@ export default {
     },
     async getSolutionsOfActivity(activityId) {
       // setup request
-      const link = this.hostname + "solutions?activity_id=" + activityId;
+      const link = `${this.hostname}solutions?activity_id=${activityId}`;
       axios.default.withCredentials = true;
       var config = {
         method: "get",
@@ -393,13 +480,114 @@ export default {
         console.log(error);
       }
     },
-    async searchStudents() {
-      // TODO
+    // "Action Methods" (post, patch, del)
+    async changeCourseName() {
+      // prepare Variables
+      this.changeCoursenameAwait = true;
+
+      // setup request
+      const link = `${this.hostname}courses/${this.courseId}`;
+      var data = {
+        name: this.coursename
+      };
+      var config = {
+        method: "patch",
+        url: link,
+        headers: {
+          "Access-Control-Allow-Credentials": true,
+        },
+        widthCredentials: true,
+        httpsAgent: new https.Agent({ rejectUnauthorized: true }),
+        data: data,
+      };
+
+      // call request
+      try {
+        const response = await axios(config);
+        console.log("patch coursename:");
+        console.log(response.data);
+        // react in view
+        this.course.name = this.coursename;
+        this.hasErr_changeCoursename = false;
+        this.msg_changeCoursename = "Kursnamen erfolgreich geändert";
+        this.changeCourseNameActive = false;
+      } catch (error) {
+        console.log(error);
+        this.hasErr_changeCoursename = true;
+        this.msg_changeCoursename = "Kursname konnte nicht geändert werden";
+      }
+
+      this.changeCoursenameAwait = false;
+    },
+    async addStudentsToCourse() {
+      // prepare variables/set defaults
+      this.addStudentsAwait = true;
+      this.msg_addStudents = "";
+      this.hasErr_addStudents = false;
+      
+      // setup request
+      const link = `${this.hostname}users/students?course_id=${this.courseId}`;
+      var data = JSON.stringify({
+        users: this.addStudents.map((curStudent) => {return curStudent.id}),
+      });
+      var config = {
+        method: "post",
+        url: link,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        withCredentials: true,  // QUESTION: duplicate config?
+        httpsAgent: new https.Agent({ rejectUnauthorized: true }),
+        data: data,
+      };
+
+      console.log(config);
+      // call request
+      try {
+        const response = await axios(config);
+        // has no response when successful
+        console.log("add Students to course:");
+        console.log("success");
+
+        // change view 
+        this.hasErr_addStudents = false;
+        this.msg_addStudents = "Students erfolgreich hinzugefügt";
+        this.addStudents = [];
+      } catch (error) {
+        console.log(error);
+        this.msg_addStudents = "Fehler! Nicht alle Students konnten hinzugefügt werden!";
+        this.hasErr_addStudents = true;
+      }
+
+      this.addStudentsAwait = false;
+    },
+    async delStudentsFromCourse() {
+      // prepare variables/set defaults
+      this.delStudentsAwait = true;
+      this.msg_delStudents = "";
+      this.hasErr_delStudents = false;
+
+      // TODO: delete
     },
     setColor(activty, student) {
       // TODO: get color by "is activtiy done by this student"
       return 'text-red-500';
-    }
+    },
+    delStudentChange(student, index) {
+
+      console.log(this.delStudents);
+      // when the student is now checked, add them to delStudents 
+      if (document.getElementById(`checkStu_${index}`).checked) {
+        this.delStudents.push(student);
+      }
+      // otherwise the student is now unchecked --> remove them from delStudents
+      else {
+        this.delStudents = this.delStudents.filter((curStudent) => curStudent != student);
+      }
+    },
+
   },
   async beforeMount() {
     try {
@@ -408,10 +596,12 @@ export default {
       console.log(error);
       // TODO: error-seite/notfound-seite aufrufen
     }
-    // TODO: async yes or no? currently yes
+    // TODO: async yes or no? currently yes 
     await this.getCourse();  // get the full course with that id
+    this.coursename = this.course.name; // set current coursename (for possible changes)
     await this.getCourseStudents(); // get all students of that course
-    this.getActivities();
+    await this.getAllStudents();
+    await this.getActivities();
   },
 }
 </script>
