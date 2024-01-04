@@ -93,8 +93,8 @@ export default class Game extends EventEmitter{
         
         let terrainObj= {
             blickrichtung: this.player.direction,
-            laenge: terLines[0],
-            breite: terLines[1],
+            width: terLines[0],
+            height: terLines[1],
             corn: [],
             cornAnzahl: [],
             wall: [],
@@ -138,7 +138,7 @@ export default class Game extends EventEmitter{
     }
 
     createEntityObj(terrainObj){
-        this.resetPlayground(terrainObj.breite, terrainObj.laenge)
+        this.resetPlayground(terrainObj.width, terrainObj.height)
         let fields = this.container.querySelectorAll(".play-field")
 
         this.player.direction = terrainObj.blickrichtung
@@ -146,22 +146,22 @@ export default class Game extends EventEmitter{
         this.player.position.x = terrainObj.x
         this.player.position.y = terrainObj.y
 
-        this.terrain.dimension.width = terrainObj.laenge
-        this.terrain.dimension.height = terrainObj.breite
+        this.terrain.dimension.width = terrainObj.width
+        this.terrain.dimension.height = terrainObj.height
 
         for(let iWall = 0; iWall < terrainObj.wall.length; iWall++){
-            fields[this.getFieldIndex(new Vector2D(terrainObj.wall[iWall][0], terrainObj.wall[iWall][1]), terrainObj.laenge)].classList = 'play-field wall'   
+            fields[this.getFieldIndex(new Vector2D(terrainObj.wall[iWall][0], terrainObj.wall[iWall][1]), terrainObj.width)].classList = 'play-field wall'   
         }
 
         for(let iCorn = 0; iCorn < terrainObj.corn.length; iCorn++){
             let position = new Vector2D(terrainObj.corn[iCorn][0], terrainObj.corn[iCorn][1])
-            let corn = fields[this.getFieldIndex(position, terrainObj.laenge)]
+            let corn = fields[this.getFieldIndex(position, terrainObj.width)]
             corn.classList = 'play-field corn'
             corn.innerText = terrainObj.cornAnzahl[iCorn]
             this.corns.push(new Corn(position, terrainObj.cornAnzahl[iCorn]))
         }
 
-        let player = fields[this.getFieldIndex(new Vector2D(terrainObj.x, terrainObj.y), terrainObj.laenge)]
+        let player = fields[this.getFieldIndex(new Vector2D(terrainObj.x, terrainObj.y), terrainObj.width)]
         player.classList = 'play-field player'
         player.setAttribute('direction', getPlayerDirection(terrainObj.blickrichtung))
 
@@ -169,7 +169,7 @@ export default class Game extends EventEmitter{
 
 
     getFieldIndex (position, height){
-        let h = height || this.terrain.dimension.height
+        let h = height || this.terrain.dimension.width
         let field = 0 
         field += position.x
         field += h*position.y

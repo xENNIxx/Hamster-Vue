@@ -2,48 +2,49 @@
 <template>
     <section class="flex flex-col items-center justify-center">
         <div class="flex flex-col items-center justify-center">
-            <label for="height">Height:</label>
-            <input type="number" id="height" v-model="size.height">
-            <label for="width">Width:</label>
-            <input type="number" id="width" v-model="size.width">
-            <label for="corn_anz">Corn:</label>
-            <input type="number" id="corn_anz" v-model="cornAnz">
+            <label class="label" for="height">Height:</label>
+            <input class="input input-bordered" type="number" id="height" v-model="size.height">
+            <label class="label" for="width">Width:</label>
+            <input class="input input-bordered" type="number" id="width" v-model="size.width">
+            <label class="label" for="corn_anz">Corn:</label>
+            <input class="input input-bordered" type="number" id="corn_anz" v-model="cornAnz">
         </div>
-        <button @click="createPlayground" class="btn m-5" id="applyField">Draw</button>
+
+        
 
         <div class="flex flex-col">
-        
-        <div class="form-control">
-            <label class="label cursor-pointer gap-4">
-                <span class="label-text">Corn</span>
-                <input type="radio" name="mode" class="radio" value="corn" v-model="mode"/>
-            </label>
+
+            <div class="form-control">
+                <label class="label cursor-pointer gap-4">
+                    <span class="label-text">Corn</span>
+                    <input type="radio" name="mode" class="radio" value="corn" v-model="mode" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label cursor-pointer gap-4">
+                    <span class="label-text">Player</span>
+                    <input type="radio" name="mode" class="radio" value="player" v-model="mode" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label cursor-pointer gap-4">
+                    <span class="label-text">Wall</span>
+                    <input type="radio" name="mode" class="radio" value="wall" v-model="mode" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label cursor-pointer gap-4">
+                    <span class="label-text">Remove</span>
+                    <input type="radio" name="mode" class="radio" value="remove" v-model="mode" />
+                </label>
+            </div>
         </div>
-        <div class="form-control">
-            <label class="label cursor-pointer gap-4">
-                <span class="label-text">Player</span>
-                <input type="radio" name="mode" class="radio" value="player" v-model="mode"/>
-            </label>
-        </div>
-        <div class="form-control">
-            <label class="label cursor-pointer gap-4">
-                <span class="label-text">Wall</span>
-                <input type="radio" name="mode" class="radio" value="wall" v-model="mode"/>
-            </label>
-        </div>
-        <div class="form-control">
-            <label class="label cursor-pointer gap-4">
-                <span class="label-text">Remove</span>
-                <input type="radio" name="mode" class="radio" value="remove" v-model="mode"/>
-            </label>
-        </div>
-    </div>
 
         <div ref="playground" id="playground"></div>
 
         <div class="m-5">
-            <button id="submit" class="btn m-1" @click="submit">Submit</button>
-            <button id="clear-playground" class="btn m-1" @click="resetPlayGround">Clear</button>
+            <button id="submit" class="btn btn-success m-1 " @click="submit">Submit</button>
+            <button @click="createPlayground" class="btn btn-primary m-5" id="applyField">Draw</button>
         </div>
 
     </section>
@@ -72,24 +73,21 @@ export default {
                 WALL: "#",
                 CORN: "*"
             }),
-            max_player: 1,
-            player_count: 0,
             direction: "",
-            player_direction: PLAYER_DIRECTION.RIGHT,
+            player_direction: PLAYER_DIRECTION.UP,
             hamster: {
                 programName: "test",
                 program: "void main() {vor();}",
                 terrainName: "testTerrain",
-                laenge: 0,
-                breite: 0,
+                width: 0,
+                height: 0,
                 x: 0,
                 y: 1,
                 blickrichtung: 1,
                 cornAnzahl: [],
                 corn: [],
                 wall: []
-            },
-            changed: false
+            }
         }
     },
     methods: {
@@ -101,10 +99,6 @@ export default {
 
             const playground = this.$refs.playground;
             console.log(playground.id);
-
-            if (this.changed && !this.resetPlayGround()) {
-                return;
-            }
 
             playground.innerHTML = "";
 
@@ -124,15 +118,15 @@ export default {
 
             for (let row = 0; row < this.size.height; row++) {
                 const rowDiv = document.createElement("div");
-                rowDiv.classList.add("play-row", "flex", "flex-row");
+                rowDiv.classList = "play-row flex flex-row";
                 for (let col = 0; col < this.size.width; col++) {
                     const index = row * this.size.width + col;
                     const div = document.createElement("div");
-                    div.classList.add("play-field", "p-4", "btn", "btn-outline", "btn-square", "rounded-none", "flex", "items-center", "justify-center", "text-center", "select-none", "cursor-pointer", "text-xs");
+                    div.classList = "play-field p-4 btn btn-outline btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs";
                     div.setAttribute("index", index);
                     div.addEventListener("mousedown", (event) => {
-                        this.changeField(event.currentTarget, true);
-                    });
+                    this.changeField(event.currentTarget, true)
+                    })
                     div.addEventListener("mouseover", (event) => {
                         if (this.clicking) {
                             this.changeField(event.currentTarget);
@@ -143,60 +137,39 @@ export default {
                 playground.appendChild(rowDiv);
             }
         },
-        resetPlayGround() {
-            if (this.checkValue(this.$refs.playground.innerHTML) == false) {
-                if (confirm("Playground would be reset!") == false)
-                    return false;
-            }
+        changeField(element) { //method for changing single playfield. example: empty field to player
 
 
-            this.$refs.playground.innerHTML = ''
-        },
-        changeField(element, override = false) { //method for changing single playfield. example: empty field to player
-            let last_classList = element.classList
-
-            if (!this.clicking && !override) //check if method is getting overriden (for testing) or action handler is fireing
-                return;
-
-            this.changed = true
-
-            if (this.mode == "player" && this.player_count >= this.max_player) {
-                if (element.classList.contains("player")) {
-                    this.changeDirection()
-                    element.setAttribute("direction", getPlayerDirection(this.player_direction))
-                } else {
-                    let playerField = document.querySelector(".player")
-                    playerField.classList = "play-field"
-                    playerField.removeAttribute("direction")
-                    element.classList = "play-field player"
-                    element.setAttribute("direction", getPlayerDirection(this.player_direction))
-                }
-                return;
-            }
-
-            if (element.classList.contains("player"))
-                this.player_count--
+            element.classList.add("play-field")
+            element.classList.add(this.mode)
+            //element.innerText = ""
 
             if (this.mode == "remove") {
-                if (last_classList.contains("player")) {
-                    this.player_count = 0
-                }
                 element.classList = "play-field p-4 btn btn-outline btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs";
                 element.innerText = ""
+                element.removeAttribute("direction")
                 return
             }
 
-            element.classList.add("play-field")
-
-            if (this.mode == "player") {
-                this.player_count++
-                element.setAttribute('direction', getPlayerDirection(this.player_direction))
+            if (this.mode == "wall") {
+                element.classList.add("bg-secondary")
             }
-            element.classList.add(this.mode)
-            element.innerText = ""
 
             if (this.mode == "corn") {
                 element.innerText = this.cornAnz
+            }
+
+            if (this.mode == "player") {
+                if (element.getAttribute("direction") != null) {
+                    this.changeDirection()
+                    element.setAttribute("direction", getPlayerDirection(this.player_direction))
+                    element.classList = "play-field player p-4 btn btn-outline bg-primary btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs";
+                }else{
+                    element.innerText="▲"
+                    element.setAttribute('direction', getPlayerDirection(this.player_direction));
+                    element.classList = "play-field player p-4 btn btn-outline bg-primary btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs";
+                }
+                return;
             }
         },
         submit() { //reading html playground and creating stringifiable array
@@ -277,8 +250,8 @@ export default {
             let lhamster = this.hamster
 
             lhamster.blickrichtung = this.player_direction
-            lhamster.breite = this.size.height
-            lhamster.laenge = this.size.width
+            lhamster.height = this.size.height
+            lhamster.width = this.size.width
             lhamster.terrainName = terName
 
             this.hamster = lhamster
@@ -310,3 +283,20 @@ export default {
 }
 </script>
 
+<style lang="scss">
+[direction="up"] {
+    transform: rotate(0deg);
+}
+
+[direction="down"] {
+    transform: rotate(180deg);
+}
+
+[direction="left"] {
+    transform: rotate(-90deg);
+}
+
+[direction="right"] {
+    transform: rotate(90deg);
+}
+</style>
