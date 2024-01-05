@@ -95,3 +95,34 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+.play-field {
+    @apply p-4 btn btn-outline btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs m-0;
+
+    &.corn{
+        @apply bg-base-300;
+    }
+    &.wall {
+        @apply bg-secondary;
+    }
+    &.player {
+        @apply p-4 btn btn-outline bg-primary btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-transparent;
+        //background-image: url();
+        &[direction="up"]{
+            transform: rotate(0deg);
+        }
+        &[direction="down"]{
+            transform: rotate(180deg);
+        }
+        &[direction="left"]{
+            transform: rotate(-90deg);
+        }
+        &[direction="right"]{
+            transform: rotate(90deg);
+        }
+    }
+}
+
+</style>

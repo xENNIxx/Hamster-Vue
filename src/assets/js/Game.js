@@ -114,7 +114,7 @@ export default class Game extends EventEmitter{
                     terrainObj.wall.push([x, y])
                 }else if(playGround_arr[y][x] == '>'){
                     currentRow[x].setAttribute("direction", getPlayerDirection(this.player.direction))
-                    color = "player"
+                    color = "player bg-primary"
                     this.player.position = new Vector2D(x, y)
                     this.player.currentFieldIndex = this.getFieldIndex(this.player.position)
                     terrainObj.x = x
@@ -128,7 +128,7 @@ export default class Game extends EventEmitter{
                     terrainObj.corn.push([x,y])
                     terrainObj.cornAnzahl.push(2)
                 }
-                currentRow[x].classList = "play-field " + color
+                currentRow[x].classList = "play-field  " + color
                     
             }
 

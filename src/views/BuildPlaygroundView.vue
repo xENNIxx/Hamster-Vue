@@ -43,8 +43,8 @@
         <div ref="playground" id="playground"></div>
 
         <div class="m-5">
-            <button id="submit" class="btn btn-success m-1 " @click="submit">Submit</button>
             <button @click="createPlayground" class="btn btn-primary m-5" id="applyField">Draw</button>
+            <button id="submit" class="btn btn-success m-1 " @click="submit">Submit</button>
         </div>
 
     </section>
@@ -145,15 +145,12 @@ export default {
             //element.innerText = ""
 
             if (this.mode == "remove") {
-                element.classList = "play-field p-4 btn btn-outline btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs";
+                element.classList = "play-field";
                 element.innerText = ""
                 element.removeAttribute("direction")
                 return
             }
 
-            if (this.mode == "wall") {
-                element.classList.add("bg-secondary")
-            }
 
             if (this.mode == "corn") {
                 element.innerText = this.cornAnz
@@ -163,11 +160,10 @@ export default {
                 if (element.getAttribute("direction") != null) {
                     this.changeDirection()
                     element.setAttribute("direction", getPlayerDirection(this.player_direction))
-                    element.classList = "play-field player p-4 btn btn-outline bg-primary btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs";
+                    element.classList = "play-field player";
                 }else{
-                    element.innerText="▲"
                     element.setAttribute('direction', getPlayerDirection(this.player_direction));
-                    element.classList = "play-field player p-4 btn btn-outline bg-primary btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs";
+                    element.classList = "play-field player";
                 }
                 return;
             }
@@ -283,20 +279,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-[direction="up"] {
-    transform: rotate(0deg);
-}
-
-[direction="down"] {
-    transform: rotate(180deg);
-}
-
-[direction="left"] {
-    transform: rotate(-90deg);
-}
-
-[direction="right"] {
-    transform: rotate(90deg);
-}
-</style>
