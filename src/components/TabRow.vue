@@ -60,7 +60,7 @@ export default {
             }
             console.log('addTab');
         },
-        checkIfCurrentProgramExistsInArray() {
+        checkIfCurrentProgramExistsInArray() { //für CurrentProgram
             for (let i = 0; i < this.tabs.length; i++) {
                 if (this.tabs[i].title == this.$g_CurrentProgram.programName) {
                     return true;
@@ -81,7 +81,6 @@ export default {
             this.externButtonId = arrInfos[0];
             this.$emit('anyEvent', this.externButtonId);
             this.shiftArray(this.externButtonId, this.tabSequenz);
-            // console.log(`tabSequenz: ${this.tabSequenz}`);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();
@@ -119,7 +118,11 @@ export default {
             // console.log('pushIntoArrays');
         },
         pushCurrentProgramIntoArray() {
-            console.log(`curentProgram: ${this.$g_CurrentProgram[0].programName}`);
+            console.log(`curentProgram: ${this.$g_CurrentProgram.programId},
+                        ${this.$g_CurrentProgram.programName},
+                        ${this.$g_CurrentProgram.programPath}`);
+            
+            /*
             if (this.$g_CurrentProgram[0] != null || this.$g_CurrentProgram[0] != undefined) {
                 let currentTab = {'id': this.$g_CurrentProgram[0].programID,
                                  'title': this.$g_CurrentProgram[0].programName,
@@ -129,6 +132,7 @@ export default {
             } else {
                 console.log('currentProgram is null');
             }
+            */
         },
         checkIfToManyTabsAreOpen() {
             if (this.tabs.length >= 5) {

@@ -49,16 +49,17 @@ export default {
       getAndFillInCurrentProgramName(programName) {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           if (this.$g_Programs[i].programName == programName) {
+            console.log(`id: ${this.$g_Programs[i].programId}`);
             this.changeToProgramObj(this.$g_Programs[i]);
           }
         }
       },
       changeToProgramObj(program) {
-        this.$g_CurrentProgram.push({'programID': program.programID,
-          'programName': program.programName,
-          'sourcecode': program.sourcecode,
-          'programPath': program.programPath});
-                console.log('changeToProgramObj');
+        //console.log(`id: ${program.programId}`);
+        this.$g_CurrentProgram.programId = program.programId;
+        this.$g_CurrentProgram.programName = program.programName;
+        this.$g_CurrentProgram.sourcecode = program.sourcecode;
+        this.$g_CurrentProgram.programPath = program.programPath;
       }
     }
 }
