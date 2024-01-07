@@ -1,9 +1,18 @@
+.flex-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
 <template>
     <div class="playground-wrapper">
-        <div class="flex-container">
+        <div class="flex w-full h-full flex-row items-start">
             <div class="m-5">
                 <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)"/>
-                <div class="playground" data-playground-></div>
+                <div class="playground grid" data-playground-></div>
                 <button class="start-btn btn" @click="start">Start</button>
                 <button class="btn" @click="print">Print</button>
                 <button class="btn" @click="cleanField">Cleanup</button>
@@ -174,85 +183,3 @@ methods : {
 }
 }
 </script>
-
-<style lang="scss">
-
-.playground {
-    display: grid;
-    gap: 5px;
-    aspect-ratio: 1/1;
-    user-select: none;
-    height: 100%;
-}
-.play-field {
-    position: relative;
-    border: 1px solid black;
-    min-width: 25px;
-    aspect-ratio: 1/1;
-    box-sizing: border-box;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(.75em, 1.25vw, 2em);
-
-    &.corn{
-        background: brown;
-    }
-    &.wall {
-        background: black;
-    }
-    &.player {
-        background-color: blue;
-        background-image: url('@/assets/images/arrow.svg');
-        background-position: center;
-        background-size: contain;
-        object-fit: contain;
-
-        &[direction="up"]{
-            transform: rotate(0deg);
-        }
-        &[direction="down"]{
-            transform: rotate(180deg);
-        }
-        &[direction="left"]{
-            transform: rotate(-90deg);
-        }
-        &[direction="right"]{
-            transform: rotate(90deg);
-        }
-    }
-}
-
-//diese styles nicht löschen
-.playground-wrapper {
-    position: relative;
-    height: 100%;
-
-}
-
-
-.flex-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-evenly
-}
-.start-btn {
-    margin-top: 1rem;
-}
-
-.btn {
-    margin-inline: .5rem;
-}
-
-.editor {
-    width: 600px;
-    height: 800px;
-}
-
-</style>

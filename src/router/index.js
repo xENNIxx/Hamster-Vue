@@ -26,6 +26,11 @@ const routes = [
     component: () => import('../views/PlaygroundView.vue')
   },
   {
+    path: '/build',
+    name: "Build",
+    component: () => import('../views/BuildPlaygroundView.vue'),
+  },
+  {
     path: '/courses',
     name: 'courses',
     component: () => import('../views/CoursesView.vue')
@@ -54,8 +59,13 @@ const routes = [
   },
   {
     path: '/teachers/courses/:id',
-    name: 'teacher_course_single',
+    name: 'teacher_course_detail',
     component: () => import('../views/teacherViews/CoursesDetailView.vue')
+  },
+  {
+    path: '/teachers/courses/:id/exercises',
+    name: 'teacher_course_exercises',
+    component: () => import('../views/teacherViews/CoursesExerciseView.vue')
   }
 ]
 

@@ -33,7 +33,7 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "daisyui": "^3.7.6",
+    "daisyui": "^4.5.0",
     "vue-cli-plugin-tailwind": "~3.0.0"
   },
   "description": "## Project setup ``` npm install ```",

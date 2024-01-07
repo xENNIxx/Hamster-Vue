@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center justify-center m-5">
-        <div class="card-body card shadow bg-base-300 w-2/5 items-center">
+        <div class="card-body card shadow bg-base-300 items-center w-2/5 mt-8">
             <h1 class="text-3xl text-center" v-text="exercise.name"></h1>
             <div v-text="exercise.details" class="text-xl text-center"></div>
 

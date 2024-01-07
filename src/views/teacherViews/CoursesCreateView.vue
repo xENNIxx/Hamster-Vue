@@ -11,7 +11,7 @@
 
                     <button @click="createCourse" class="btn btn-primary" v-text="name"></button>
 
-                    <p class="text-xs text-center mt-2 mb-0">Der Kurs wird direkt angelegt (wenn möglich)<br/> Schüler können anschließend über das Kurs-Menü hinzugefügt werden</p>
+                    <p class="italic text-slate-400 text-xs text-center mt-2 mb-0">Der Kurs wird direkt angelegt (wenn möglich)<br/> Schüler können anschließend über das Kurs-Menü hinzugefügt werden</p>
                 </div>
 
                 
@@ -85,7 +85,6 @@ export default {
                     name: this.coursename,
                 }
             });
-            // console.log(data); 
             var config = {
                 method: "post",
                 url: link,
@@ -95,12 +94,12 @@ export default {
                     Accept: "*/*",
                 },
                 withCredentials: true,  // QUESTION: duplicate config?
-                httpsAgent: new https.Agent({ rejectUnauthorized: false }),  // QUESTION: is rejectUnauthorized false? (only authorized teachers are allowed to call this method)
+                httpsAgent: new https.Agent({ rejectUnauthorized: true }),
                 data: data,
             };
     
             // call request and react
-            let responseCourseId = axios(config)
+            let response = axios(config)
                 .then((response) =>{
                     this.hasError = false
                     this.errorText = "Kurs angelegt!";
@@ -116,7 +115,7 @@ export default {
                     console.log(JSON.stringify(error.data));
                 });
             
-            return responseCourseId;
+            return response;
         }
     },
     computed: {

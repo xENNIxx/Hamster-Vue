@@ -11,6 +11,7 @@
   <div class="navbar-center flex">
     <ul class="menu menu-horizontal px-1">
       <li v-if="isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/playground"><i class="fas fa-play"></i> Playground </router-link></li>
+      <li v-if="isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/build"><i class="fas fa-hammer"></i> Build </router-link></li>
       <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/courses"><i class="fas fa-book"></i> Courses </router-link></li>
       <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/profile"><i class="fas fa-user"></i> Profile </router-link></li>
       <li v-if="!isLoggedIn"><router-link  class="btn btn-ghost btn-sm m-2" to="/login"><i class="fas fa-sign-in-alt"></i> Login </router-link></li>
@@ -94,3 +95,34 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+.play-field {
+    @apply p-4 btn btn-outline btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs m-0;
+
+    &.corn{
+        @apply bg-base-300;
+    }
+    &.wall {
+        @apply bg-secondary;
+    }
+    &.player {
+        @apply p-4 btn btn-outline bg-primary btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-transparent;
+        //background-image: url();
+        &[direction="up"]{
+            transform: rotate(0deg);
+        }
+        &[direction="down"]{
+            transform: rotate(180deg);
+        }
+        &[direction="left"]{
+            transform: rotate(-90deg);
+        }
+        &[direction="right"]{
+            transform: rotate(90deg);
+        }
+    }
+}
+
+</style>
