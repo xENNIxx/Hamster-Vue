@@ -121,7 +121,6 @@ export default {
             console.log(`curentProgram: ${this.$g_CurrentProgram.programId},
                         ${this.$g_CurrentProgram.programName},
                         ${this.$g_CurrentProgram.programPath}`);
-            
             /*
             if (this.$g_CurrentProgram[0] != null || this.$g_CurrentProgram[0] != undefined) {
                 let currentTab = {'id': this.$g_CurrentProgram[0].programID,

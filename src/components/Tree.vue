@@ -10,6 +10,7 @@
         </div>
       </div>
     </table>
+    <button @click="getPrograms()" class="btn">click</button>
 </template>
 
 <script>
@@ -27,6 +28,11 @@ export default {
         ['treeSourceProp']
         ,   
     methods: {
+      getPrograms() {
+        for (let i = 0; i < this.$g_Programs; i++) {
+          console.log(`programs: ${this.$g_Programs[i].programName}`);
+        }
+      },
       addDic() {
         	const inputPath = prompt('Gib hier den Namen des Ordners ein:', '');
           this.dics.push(inputPath);
@@ -49,14 +55,14 @@ export default {
       getAndFillInCurrentProgramName(programName) {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           if (this.$g_Programs[i].programName == programName) {
-            console.log(`id: ${this.$g_Programs[i].programId}`);
+            console.log(`id: ${this.$g_Programs[i].programID}`);
             this.changeToProgramObj(this.$g_Programs[i]);
           }
         }
       },
       changeToProgramObj(program) {
-        //console.log(`id: ${program.programId}`);
-        this.$g_CurrentProgram.programId = program.programId;
+        // console.log(`id: ${program.programID}`);
+        this.$g_CurrentProgram.programId = program.programID;
         this.$g_CurrentProgram.programName = program.programName;
         this.$g_CurrentProgram.sourcecode = program.sourcecode;
         this.$g_CurrentProgram.programPath = program.programPath;
