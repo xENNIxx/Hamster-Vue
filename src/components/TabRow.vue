@@ -72,14 +72,6 @@ export default {
             }
             console.log('addTab');
         },
-        checkIfCurrentProgramExistsInArray() { //für CurrentProgram
-            for (let i = 0; i < this.tabs.length; i++) {
-                if (this.tabs[i].title == this.$g_CurrentProgram.programName) {
-                    return true;
-                }
-            }
-            return false;
-        },
         checkIfDicExist(inputPath) {
             for (let i = 0; i < this.$g_Dics.length; i++) {
                 if (inputPath == this.$g_Dics[i]) {
@@ -124,12 +116,11 @@ export default {
             // console.log('pushIntoArrays');
         },
         pushCurrentProgramIntoArray(program) {
-            console.log(`programName: ${program.programName}`);
+            console.log(`programId: ${program.programId}, programName: ${program.programName}`);
             let currentTab = {'id': program.programId,
                                  'title': program.programName,
                                  'code': program.sourceCode};
-            this.tabs[currentTab.id] = currentTab;
-            console.log('pushCurrentProgram');
+            this.tabs[program.programId] = currentTab;
         },
         checkIfToManyTabsAreOpen() {
             if (this.tabs.length >= 5) {

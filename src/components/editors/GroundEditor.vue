@@ -74,14 +74,8 @@
       //normal-methods
       async sendDataToBackend() {
         for (let i = 0; i < this.$g_Programs.length; i++) {
-          let pro = new Program();
-          pro.programName = 'name';
-          pro.programPath = null;
-          pro.sourceCode = 'void';
-          let id = 10;
-          let response = await axios.get(this.hostname + `program/getBasicData`);
-          let pro2 = new Program(response.programName, response.sourceCode, response.programPath);
-          console.log(`real: ${realProgram}`);
+          let postStatus = await axios.post(this.hostname + '/program/save', this.$g_Programs[i]);
+          console.log(`programPOST: ${postStatus}`);
         }
       },
       updateValue(event) {
