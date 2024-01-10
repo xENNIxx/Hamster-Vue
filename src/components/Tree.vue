@@ -3,14 +3,13 @@
     <table>
       <div v-for="dic in this.dics" :key="dic">
         <a @click="openDic(dic)" class="m-1 bg bg-red-300 rounded-sm linkHoverDic">{{ dic }}</a>
-        <div v-if="this.isOpen[dic]" class="ml-3">
+        <div v-if="this.isOpen[dic]" class="ml-4">
           <div v-for="file in this.getFileNames(dic)" :key="file">
             <a @click="getAndFillInCurrentProgramName(file)" class="m-1 linkHoverFile">{{ file }}</a>
           </div>
         </div>
       </div>
     </table>
-    <button @click="getPrograms()" class="btn">click</button>
 </template>
 
 <script>
@@ -28,11 +27,6 @@ export default {
         ['treeSourceProp']
         ,   
     methods: {
-      getPrograms() {
-        for (let i = 0; i < this.$g_Programs; i++) {
-          console.log(`programs: ${this.$g_Programs[i].programName}`);
-        }
-      },
       addDic() {
         	const inputPath = prompt('Gib hier den Namen des Ordners ein:', '');
           this.dics.push(inputPath);
@@ -56,11 +50,11 @@ export default {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           if (this.$g_Programs[i].programName == programName) {
             console.log(`id: ${this.$g_Programs[i].programID}`);
-            this.changeToProgramObj(this.$g_Programs[i]);
+            this.changeToProgramObjAndPushIntoArray(this.$g_Programs[i]);
           }
         }
       },
-      changeToProgramObj(program) {
+      changeToProgramObjAndPushIntoArray(program) {
         // console.log(`id: ${program.programID}`);
         this.$g_CurrentProgram.programId = program.programID;
         this.$g_CurrentProgram.programName = program.programName;

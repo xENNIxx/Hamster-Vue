@@ -118,20 +118,12 @@ export default {
             // console.log('pushIntoArrays');
         },
         pushCurrentProgramIntoArray() {
-            console.log(`curentProgram: ${this.$g_CurrentProgram.programId},
-                        ${this.$g_CurrentProgram.programName},
-                        ${this.$g_CurrentProgram.programPath}`);
-            /*
-            if (this.$g_CurrentProgram[0] != null || this.$g_CurrentProgram[0] != undefined) {
-                let currentTab = {'id': this.$g_CurrentProgram[0].programID,
-                                 'title': this.$g_CurrentProgram[0].programName,
-                                 'code': this.$g_CurrentProgram[0].sourceCode};
-                this.tabs[currentTab.id] = currentTab;
-                console.log('pushCurrentProgram');
-            } else {
-                console.log('currentProgram is null');
-            }
-            */
+            console.log(`programName: ${this.$g_CurrentProgram.programName}`);
+            let currentTab = {'id': this.$g_CurrentProgram.programId,
+                                 'title': this.$g_CurrentProgram.programName,
+                                 'code': this.$g_CurrentProgram.sourceCode};
+            this.tabs[currentTab.id] = currentTab;
+            console.log('pushCurrentProgram');
         },
         checkIfToManyTabsAreOpen() {
             if (this.tabs.length >= 5) {
