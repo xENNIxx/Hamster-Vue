@@ -25,7 +25,10 @@ export default {
     },
     props: 
         ['treeSourceProp']
-        ,   
+        ,
+    emits: 
+        ['currentProgramEvent']
+        ,
     methods: {
       addDic() {
         	const inputPath = prompt('Gib hier den Namen des Ordners ein:', '');
@@ -55,11 +58,11 @@ export default {
         }
       },
       changeToProgramObjAndPushIntoArray(program) {
-        // console.log(`id: ${program.programID}`);
-        this.$g_CurrentProgram.programId = program.programID;
-        this.$g_CurrentProgram.programName = program.programName;
-        this.$g_CurrentProgram.sourcecode = program.sourcecode;
-        this.$g_CurrentProgram.programPath = program.programPath;
+        let currentProgram = {'programId': program.programID,
+                              'programName': program.programName,
+                              'sourcecode': program.sourcecode,
+                              'programPath': program.programPath}
+        this.$emit('currentProgramEvent', currentProgram);
       }
     }
 }

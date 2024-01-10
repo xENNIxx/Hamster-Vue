@@ -21,9 +21,9 @@
               <button class="btn" @click="sendDataToBackend">SaveAll</button>
             </nav>
           </section>
-          <div class="p-4">
+          <!--<div class="p-4">
             <Tree :treeSourceProp="this.treeSource" />
-          </div>
+          </div>-->
         </nav>
       </div>
   </div>
@@ -64,6 +64,14 @@
     emits: ['anyEvent']
     ,
     methods: {
+      //emit-methods
+      handelEvent(buttonInformation = '') {
+        let arrInfos = buttonInformation.split('</#/>');
+        this.externButtonId = arrInfos[0];
+        this.code = this.$g_Programs[this.externButtonId].sourceCode;
+        this.tabs = arrInfos[1];
+      },
+      //normal-methods
       async sendDataToBackend() {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           let pro = new Program();
@@ -75,12 +83,6 @@
           let pro2 = new Program(response.programName, response.sourceCode, response.programPath);
           console.log(`real: ${realProgram}`);
         }
-      },
-      handelEvent(buttonInformation = '') {
-        let arrInfos = buttonInformation.split('</#/>');
-        this.externButtonId = arrInfos[0];
-        this.code = this.$g_Programs[this.externButtonId].sourceCode;
-        this.tabs = arrInfos[1];
       },
       updateValue(event) {
         this.value = event;

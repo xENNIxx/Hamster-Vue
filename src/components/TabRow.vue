@@ -1,5 +1,8 @@
 
 <template>
+    <div class="mr-4">
+        <Tree @current-program-event="currentProgramMethod"/>
+    </div>
     <div class="p-1" v-for="Tab in this.tabs" :key="Tab.id">
         <Tab v-if="Tab.id == this.externButtonId"
             @any-event="handelEvent"
@@ -23,6 +26,7 @@
 <script>
 
 import Tab from "@/components/Tab.vue"
+import Tree from "@/components/Tree.vue"
 
 export default {
     name: "TabRow",
@@ -31,19 +35,27 @@ export default {
             tabs: [], //sind die gerade offenen Tabs
             tabCounter: 0,
             externButtonId: 0,
-            tabSequenz: [],
-            g_CurrentProgram: this.$g_CurrentProgram
+            tabSequenz: []
         }
     },
     components: {
-        Tab
+        Tab,
+        Tree
     },
     emit: ['anyEvent']
     ,
     methods: {
-        clickAction() {
-            this.pushCurrentProgramIntoArray();
+        //emit-methods
+        currentProgramMethod(msg='') {
+            this.pushCurrentProgramIntoArray(msg);
         },
+        handelEvent(buttonInformation = '') {
+            let arrInfos = buttonInformation.split('</#/>')
+            this.externButtonId = arrInfos[0];
+            this.$emit('anyEvent', this.externButtonId);
+            this.shiftArray(this.externButtonId, this.tabSequenz);
+        },
+        //normal-methods
         addTab() {
             if (this.checkIfToManyTabsAreOpen()) {
                 this.closeOldestTabInArray();
@@ -75,12 +87,6 @@ export default {
                 }
             }
             return false;
-        },
-        handelEvent(buttonInformation = '') {
-            let arrInfos = buttonInformation.split('</#/>')
-            this.externButtonId = arrInfos[0];
-            this.$emit('anyEvent', this.externButtonId);
-            this.shiftArray(this.externButtonId, this.tabSequenz);
         },
         makeTrueClassString(input) {
             let trimmedInput = input.trim();
@@ -117,11 +123,11 @@ export default {
             this.shiftArray(this.externButtonId, this.tabSequenz);
             // console.log('pushIntoArrays');
         },
-        pushCurrentProgramIntoArray() {
-            console.log(`programName: ${this.$g_CurrentProgram.programName}`);
-            let currentTab = {'id': this.$g_CurrentProgram.programId,
-                                 'title': this.$g_CurrentProgram.programName,
-                                 'code': this.$g_CurrentProgram.sourceCode};
+        pushCurrentProgramIntoArray(program) {
+            console.log(`programName: ${program.programName}`);
+            let currentTab = {'id': program.programId,
+                                 'title': program.programName,
+                                 'code': program.sourceCode};
             this.tabs[currentTab.id] = currentTab;
             console.log('pushCurrentProgram');
         },

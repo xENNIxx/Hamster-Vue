@@ -12,18 +12,16 @@ const store = createStore(app)
 
 const rootApp = app.use(store)
 
-
 const HOSTNAME = "http://localhost:8080/api/"
 let g_Programs = []
 let g_Terrains = []
 let g_Dics = []
-let g_CurrentProgram = {'programId': '', 'programName': '', 'sourcecode': '', 'programPath': ''}
+let g_FileClick = false
 app.config.globalProperties.hostname = HOSTNAME
 app.config.globalProperties.checkValue = checkValue
 app.config.globalProperties.$g_Programs = g_Programs
 app.config.globalProperties.$g_Terrains = g_Terrains
 app.config.globalProperties.$g_Dics = g_Dics
-app.config.globalProperties.$g_CurrentProgram = g_CurrentProgram
 
 app.config.globalProperties.entity_symbols = Object.freeze({
     PLAYER: ">",
