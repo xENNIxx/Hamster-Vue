@@ -58,11 +58,15 @@ export default {
         }
       },
       changeToProgramObjAndPushIntoArray(program) {
-        let currentProgram = {'programId': program.programID,
+        if (program == null || program == undefined) {
+          console.log('program is null or undefined');
+        } else {
+          let currentProgram = {'programId': program.programID,
                               'programName': program.programName,
                               'sourcecode': program.sourcecode,
                               'programPath': program.programPath}
-        this.$emit('currentProgramEvent', currentProgram);
+          this.$emit('currentProgramEvent', currentProgram);
+        }
       }
     }
 }

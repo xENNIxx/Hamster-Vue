@@ -35,7 +35,7 @@
   import {javascript} from '@codemirror/lang-javascript'
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
-  import Tree from '../Tree.vue'
+  // import Tree from '../Tree.vue'
   import axios from 'axios'
   // import TerrainObject from '@/models/TerrainObject'
 
@@ -44,8 +44,7 @@
   export default {
     components: {
       Codemirror,
-      TabRow,
-      Tree
+      TabRow
     },
     data(){
         return {

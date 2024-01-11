@@ -116,11 +116,26 @@ export default {
             // console.log('pushIntoArrays');
         },
         pushCurrentProgramIntoArray(program) {
-            console.log(`programId: ${program.programId}, programName: ${program.programName}`);
-            let currentTab = {'id': program.programId,
+            if (program == null || program == undefined) {
+                console.log('program is null or undefined');
+            } else if (!this.checkIfThisProgramIsInTabRow(program)) {
+                console.log(`programId: ${program.programId}, programName: ${program.programName}`);
+                let currentTab = {'id': program.programId,
                                  'title': program.programName,
                                  'code': program.sourceCode};
-            this.tabs[program.programId] = currentTab;
+                console.log(`currentTab: ${currentTab.id}`);
+                this.tabs.push(currentTab);
+            } else {
+                console.log(`Tab ${program.programName} ist bereits offen`);
+            }
+        },
+        checkIfThisProgramIsInTabRow(program) {
+            for (let i = 0; i < this.tabs.length; i++) {
+                if (this.tabs[i].title == program.programName) {
+                    return true;
+                }
+            }
+            return false;
         },
         checkIfToManyTabsAreOpen() {
             if (this.tabs.length >= 5) {
