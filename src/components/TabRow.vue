@@ -20,6 +20,7 @@
     <nav>
         <button class="borderstyle p-1 m-1 bg-green-500" @click="addTab"> + </button>
         <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab(this.externButtonId)"> - </button>
+        <button class="borderstyle p-1 m-1 bg-orange-500" @click="getNewTitleAndProgramName"> % </button>
     </nav>
     <button class="btn btn-primary" @click="clickAction">addToTabs</button>
 </template>
@@ -34,8 +35,8 @@ export default {
         return {
             tabs: [], //sind die gerade offenen Tabs
             tabCounter: 0,
-            externButtonId: 0,
-            tabSequenz: []
+            externButtonId: 0, //TabId vom gerade aktiven Tab
+            tabSequenz: [],
         }
     },
     components: {
@@ -158,6 +159,22 @@ export default {
             for (let i = 0; i < this.tabSequenz.length; i++) {
                 if (this.tabSequenz[i] == externId) {
                     this.tabSequenz.splice(i, 1);
+                }
+            }
+        },
+        updateTitleAndProgramName() {
+            console.log('updateTitleAndProgramName');
+            const input = prompt('Gib hier den neuen Titel ein:', '');
+            for (let i = 0; i < this.tabs.length; i++) {
+                if (this.tabs[i].tabId == this.externButtonId) {
+                    console.log(`currentTab: ${this.tabs[i].title}`);
+                    // this.tabs[i].title = input;
+                }
+            }
+            for (let i = 0; i < this.tabs.length; i++) {
+                if (this.$g_Programs[i].programId == this.externButtonId) {
+                    console.log(`currentProgram: ${this.$g_Programs[i].programId}`);
+                    // this.$g_Programs[i].programName = input;
                 }
             }
         },
