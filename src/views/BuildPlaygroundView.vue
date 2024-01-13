@@ -43,8 +43,8 @@
         <div ref="playground" id="playground"></div>
 
         <div class="m-5">
-            <button @click="createPlayground" class="btn btn-primary m-5" id="applyField">Draw</button>
-            <button id="submit" class="btn btn-success m-1 " @click="submit">Submit</button>
+            <button @click="createPlayground" class="btn btn-primary m-2" id="applyField">Draw</button>
+            <button id="submit" class="btn btn-success m-2 " @click="submit">Submit</button>
         </div>
 
     </section>
