@@ -20,7 +20,8 @@ export default {
         return {
             dics: [],
             filesForDic: [],
-            isOpen: {}
+            isOpen: {},
+            dicCounter: 0
         }
     },
     props: 
@@ -32,9 +33,19 @@ export default {
     methods: {
       addDic() {
         	const inputPath = prompt('Gib hier den Namen des Ordners ein:', '');
-          this.dics.push(inputPath);
-          this.$g_Dics.push(inputPath); //damit die Abfrage in TabRow funktioniert
-          this.isOpen[inputPath] = false;
+          if (this.checkInput(inputPath)) {
+            this.dics.push(inputPath);
+            this.$g_Dics.push(inputPath); //damit die Abfrage in TabRow funktioniert
+            this.isOpen[inputPath] = false;
+          } else {
+            alert('Kein valider dic-name');
+          }
+      },
+      checkInput(inputPath) {
+        if (inputPath == null || inputPath == undefined || inputPath.trim() == '') {
+          return false;
+        }
+        return true;
       },
       openDic(dicName) {
         this.isOpen[dicName] = !this.isOpen[dicName];

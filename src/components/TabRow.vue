@@ -20,9 +20,9 @@
     <nav>
         <button class="borderstyle p-1 m-1 bg-green-500" @click="addTab"> + </button>
         <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab(this.externButtonId)"> - </button>
-        <button class="borderstyle p-1 m-1 bg-orange-500" @click="getNewTitleAndProgramName"> % </button>
+        <button class="borderstyle p-1 m-1 bg-orange-500" @click="updateTitleAndProgramName"> % </button>
     </nav>
-    <button class="btn btn-primary" @click="clickAction">addToTabs</button>
+    <!--<button class="btn btn-primary" @click="clickAction">addToTabs</button>-->
 </template>
 <script>
 
@@ -163,20 +163,21 @@ export default {
             }
         },
         updateTitleAndProgramName() {
-            console.log('updateTitleAndProgramName');
             const input = prompt('Gib hier den neuen Titel ein:', '');
             for (let i = 0; i < this.tabs.length; i++) {
-                if (this.tabs[i].tabId == this.externButtonId) {
+                if (this.tabs[i].id == this.externButtonId) {
                     console.log(`currentTab: ${this.tabs[i].title}`);
-                    // this.tabs[i].title = input;
+                    this.tabs[i].title = this.getDefaultTitel(input);
                 }
             }
-            for (let i = 0; i < this.tabs.length; i++) {
-                if (this.$g_Programs[i].programId == this.externButtonId) {
-                    console.log(`currentProgram: ${this.$g_Programs[i].programId}`);
-                    // this.$g_Programs[i].programName = input;
+            for (let i = 0; i < this.$g_Programs.length; i++) {
+                if (this.$g_Programs[i].programID == this.externButtonId) {
+                    console.log(`currentProgram: ${this.$g_Programs[i].programName}`);
+                    this.$g_Programs[i].programName = this.getDefaultTitel(input);
                 }
             }
+            console.log(`title: ${this.tabs[this.externButtonId].title}`);
+            console.log(`programName: ${this.$g_Programs[this.externButtonId].programName}`);
         },
         arrayContainsDigit(digit, array) {
             for (let i = 0; i < array.length; i++) {
