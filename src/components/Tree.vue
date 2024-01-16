@@ -1,11 +1,11 @@
 <template>
     <button class="btn" @click="addDic">AddDic</button>
     <table>
-      <div v-for="dic in this.dics" :key="dic">
+      <div v-for="dic in dics" :key="dic">
         <a @click="openDic(dic)" class="m-1 bg bg-red-300 rounded-sm linkHoverDic">{{ dic }}</a>
         <div v-if="this.isOpen[dic]" class="ml-4">
-          <div v-for="file in this.getFileNames(dic)" :key="file">
-            <a @click="getAndFillInCurrentProgramName(file)" class="m-1 linkHoverFile">{{ file }}</a>
+          <div v-for="File in getFileNames(dic)" :key="File">
+            <a @click="getAndFillInCurrentProgramName(File)" class="m-1 linkHoverFile">{{ File }}</a>
           </div>
         </div>
       </div>
@@ -21,16 +21,25 @@ export default {
             dics: [],
             filesForDic: [],
             isOpen: {},
-            dicCounter: 0
+            dicCounter: 0,
+            tabIsClicked: this.TabIsClickedProp
         }
     },
     props: 
-        ['treeSourceProp']
+        ['TabIsClickedProp']
         ,
     emits: 
         ['currentProgramEvent']
         ,
+    watch: {
+      tabIsClicked() {
+        this.testMethod();
+      }
+    },
     methods: {
+      testMethod() {
+        console.log(`watch method`);
+      },
       addDic() {
         	const inputPath = prompt('Gib hier den Namen des Ordners ein:', '');
           if (this.checkInput(inputPath)) {
@@ -50,16 +59,6 @@ export default {
       openDic(dicName) {
         this.isOpen[dicName] = !this.isOpen[dicName];
       },
-      getFileNames(dicName) {
-        let fileNames = [];
-        console.log('hier');
-        for (let i = 0; i < this.$g_Programs.length; i++) {
-          if (this.$g_Programs[i].programPath == dicName) {
-            fileNames.push(this.$g_Programs[i].programName);
-          }
-        }
-        return fileNames;
-      },
       getAndFillInCurrentProgramName(programName) {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           if (this.$g_Programs[i].programName == programName) {
@@ -67,6 +66,15 @@ export default {
             this.changeToProgramObjAndPushIntoArray(this.$g_Programs[i]);
           }
         }
+      },
+      getFileNames(dicName) {
+        let fileNames = [];
+        for (let i = 0; i < this.$g_Programs.length; i++) {
+          if (this.$g_Programs[i].programPath == dicName) {
+            fileNames.push(this.$g_Programs[i].programName);
+          }
+        }
+        return fileNames;
       },
       changeToProgramObjAndPushIntoArray(program) {
         if (program == null || program == undefined) {
@@ -78,6 +86,9 @@ export default {
                               'programPath': program.programPath}
           this.$emit('currentProgramEvent', currentProgram);
         }
+      },
+      reloadTree() {
+
       }
     }
 }

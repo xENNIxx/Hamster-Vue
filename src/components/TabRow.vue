@@ -1,10 +1,10 @@
 
 <template>
     <div class="mr-4">
-        <Tree @current-program-event="currentProgramMethod"/>
+        <Tree @current-program-event="currentProgramMethod" :-tab-is-clicked-prop="tabIsClicked"/>
     </div>
-    <div class="p-1" v-for="Tab in this.tabs" :key="Tab.id">
-        <Tab v-if="Tab.id == this.externButtonId"
+    <div class="p-1" v-for="Tab in tabs" :key="Tab.title">
+        <Tab v-if="Tab.id == externButtonId"
             @any-event="handelEvent"
             :tabIdProp="Tab.id"
             :tabTitleProp="Tab.title"
@@ -37,6 +37,7 @@ export default {
             tabCounter: 0,
             externButtonId: 0, //TabId vom gerade aktiven Tab
             tabSequenz: [],
+            tabIsClicked: false
         }
     },
     components: {
@@ -120,7 +121,7 @@ export default {
             if (program == null || program == undefined) {
                 console.log('program is null or undefined');
             } else if (!this.checkIfThisProgramIsInTabRow(program)) {
-                console.log(`programId: ${program.programId}, programName: ${program.programName}`);
+                // console.log(`programId: ${program.programId}, programName: ${program.programName}`);
                 let currentTab = {'id': program.programId,
                                  'title': program.programName,
                                  'code': program.sourceCode};
@@ -176,8 +177,17 @@ export default {
                     this.$g_Programs[i].programName = this.getDefaultTitel(input);
                 }
             }
-            console.log(`title: ${this.tabs[this.externButtonId].title}`);
-            console.log(`programName: ${this.$g_Programs[this.externButtonId].programName}`);
+            this.tabIsClicked = true;
+            console.log(`tabIsClicked`);
+            this.tabIsClicked = false;
+            // console.log(`title: ${this.tabs[this.externButtonId].title}`);
+            // console.log(`programName: ${this.$g_Programs[this.externButtonId].programName}`);
+        },
+        updateTabWithNewName(newName, inputTab) {
+            let arr = inputTab.code.split(' ');
+            let result = inputTab.code.replace(arr[1], newName);
+            inputTab.code = result;
+            console.log(`newCode: ${result}`);
         },
         arrayContainsDigit(digit, array) {
             for (let i = 0; i < array.length; i++) {
