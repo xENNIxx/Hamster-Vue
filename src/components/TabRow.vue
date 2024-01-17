@@ -1,8 +1,5 @@
 
 <template>
-    <div class="mr-4">
-        <Tree @current-program-event="currentProgramMethod" :-tab-is-clicked-prop="tabIsClicked"/>
-    </div>
     <div class="p-1" v-for="Tab in tabs" :key="Tab.title">
         <Tab v-if="Tab.id == externButtonId"
             @any-event="handelEvent"
@@ -22,7 +19,7 @@
         <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab(this.externButtonId)"> - </button>
         <button class="borderstyle p-1 m-1 bg-orange-500" @click="updateTitleAndProgramName"> % </button>
     </nav>
-    <!--<button class="btn btn-primary" @click="clickAction">addToTabs</button>-->
+    <!--<button class="btn btn-primary" @click="clickAction">test</button>-->
 </template>
 <script>
 
@@ -44,13 +41,20 @@ export default {
         Tab,
         Tree
     },
-    emit: ['anyEvent']
+    props: 
+        ['CurrentProgramProp'] //program, das über den GroundEditor hereinkommt
     ,
+    emit:
+        ['anyEvent', 'changeEvent']
+    ,
+    watch: {
+        CurrentProgramProp(n, o) {
+            console.log(`hier ----> ${this.CurrentProgramProp.programName}`);
+            this.pushCurrentProgramIntoArray(this.CurrentProgramProp);
+        }
+    },
     methods: {
         //emit-methods
-        currentProgramMethod(msg='') {
-            this.pushCurrentProgramIntoArray(msg);
-        },
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>')
             this.externButtonId = arrInfos[0];
@@ -167,19 +171,18 @@ export default {
             const input = prompt('Gib hier den neuen Titel ein:', '');
             for (let i = 0; i < this.tabs.length; i++) {
                 if (this.tabs[i].id == this.externButtonId) {
-                    console.log(`currentTab: ${this.tabs[i].title}`);
                     this.tabs[i].title = this.getDefaultTitel(input);
+                    console.log(`currentTab: ${this.tabs[i].title}`);
                 }
             }
             for (let i = 0; i < this.$g_Programs.length; i++) {
                 if (this.$g_Programs[i].programID == this.externButtonId) {
-                    console.log(`currentProgram: ${this.$g_Programs[i].programName}`);
                     this.$g_Programs[i].programName = this.getDefaultTitel(input);
+                    console.log(`currentProgram: ${this.$g_Programs[i].programName}`);
                 }
             }
-            this.tabIsClicked = true;
-            console.log(`tabIsClicked`);
-            this.tabIsClicked = false;
+            this.tabIsClicked = !this.tabIsClicked;
+            this.$emit('changeEvent', this.tabIsClicked);
             // console.log(`title: ${this.tabs[this.externButtonId].title}`);
             // console.log(`programName: ${this.$g_Programs[this.externButtonId].programName}`);
         },

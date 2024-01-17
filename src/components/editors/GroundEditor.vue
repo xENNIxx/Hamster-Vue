@@ -1,7 +1,7 @@
 <template>
   <div>
       <nav class="flex justify-self-start p-3 max-h-13">
-        <tab-row @any-event="handelEvent" />
+        <tab-row @any-event="handelEvent" @change-event="changeEvent" :-current-program-prop="currentProgram"/>
       </nav>
       <div class="grid grid-cols-2 gap-4">
         <nav class="flex justify-self-start">
@@ -21,9 +21,9 @@
               <button class="btn" @click="sendDataToBackend">SaveAll</button>
             </nav>
           </section>
-          <!--<div class="p-4">
-            <Tree :treeSourceProp="this.treeSource" />
-          </div>-->
+          <div class="p-4">
+            <Tree @current-program-event="getCurrentTab" :-tab-is-clicked-prop="tabIsClicked"/>
+          </div>
         </nav>
       </div>
   </div>
@@ -35,7 +35,7 @@
   import {javascript} from '@codemirror/lang-javascript'
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
-  // import Tree from '../Tree.vue'
+  import Tree from '../Tree.vue'
   import axios from 'axios'
   // import TerrainObject from '@/models/TerrainObject'
 
@@ -44,7 +44,8 @@
   export default {
     components: {
       Codemirror,
-      TabRow
+      TabRow,
+      Tree
     },
     data(){
         return {
@@ -54,7 +55,8 @@
           value: "",
           externButtonId: 0,
           code: '',
-          treeSource: ['Hamster/Ordner1/File1']
+          currentProgram: {},
+          tabIsClicked: ''
        }
     },
     mounted() {
@@ -68,7 +70,14 @@
         let arrInfos = buttonInformation.split('</#/>');
         this.externButtonId = arrInfos[0];
         this.code = this.$g_Programs[this.externButtonId].sourceCode;
-        this.tabs = arrInfos[1];
+      },
+      changeEvent(msg='') {
+        console.log(`changeEvent ${msg}`)
+        this.tabIsClicked = msg;
+      },
+      getCurrentTab(program='') {
+        console.log(`getCurrentTab: ${program.programName}`);
+        this.currentProgram = program;
       },
       //normal-methods
       async sendDataToBackend() {

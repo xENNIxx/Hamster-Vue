@@ -21,8 +21,7 @@ export default {
             dics: [],
             filesForDic: [],
             isOpen: {},
-            dicCounter: 0,
-            tabIsClicked: this.TabIsClickedProp
+            dicCounter: 0
         }
     },
     props: 
@@ -32,14 +31,11 @@ export default {
         ['currentProgramEvent']
         ,
     watch: {
-      tabIsClicked() {
-        this.testMethod();
+      TabIsClickedProp(n,o) {
+        this.updateFileTreeNames();
       }
     },
     methods: {
-      testMethod() {
-        console.log(`watch method`);
-      },
       addDic() {
         	const inputPath = prompt('Gib hier den Namen des Ordners ein:', '');
           if (this.checkInput(inputPath)) {
@@ -87,8 +83,10 @@ export default {
           this.$emit('currentProgramEvent', currentProgram);
         }
       },
-      reloadTree() {
-
+      updateFileTreeNames() {
+        for (let i = 0; i < this.$g_Dics.length; i++) {
+          console.log(this.$g_Dics[i]);
+        }
       }
     }
 }
