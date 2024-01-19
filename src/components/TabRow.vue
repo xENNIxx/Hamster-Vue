@@ -38,8 +38,7 @@ export default {
         }
     },
     components: {
-        Tab,
-        Tree
+        Tab
     },
     props: 
         ['CurrentProgramProp'] //program, das über den GroundEditor hereinkommt
@@ -186,12 +185,14 @@ export default {
             // console.log(`title: ${this.tabs[this.externButtonId].title}`);
             // console.log(`programName: ${this.$g_Programs[this.externButtonId].programName}`);
         },
+        /* Methode muss noch verbessert werden
         updateTabWithNewName(newName, inputTab) {
             let arr = inputTab.code.split(' ');
             let result = inputTab.code.replace(arr[1], newName);
             inputTab.code = result;
             console.log(`newCode: ${result}`);
         },
+        */
         arrayContainsDigit(digit, array) {
             for (let i = 0; i < array.length; i++) {
                 if (digit == array[i]) {

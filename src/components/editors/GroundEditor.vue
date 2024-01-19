@@ -26,6 +26,7 @@
           </div>
         </nav>
       </div>
+      <RunSelection />
   </div>
 </template>
 
@@ -36,6 +37,7 @@
   // import { oneDark } from '@codemirror/theme-one-dark'
   import TabRow from '../TabRow.vue'
   import Tree from '../Tree.vue'
+  import RunSelection from '../RunSelection.vue'
   import axios from 'axios'
   // import TerrainObject from '@/models/TerrainObject'
 
@@ -45,7 +47,8 @@
     components: {
       Codemirror,
       TabRow,
-      Tree
+      Tree,
+      RunSelection
     },
     data(){
         return {
