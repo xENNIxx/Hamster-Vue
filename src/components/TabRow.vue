@@ -43,7 +43,7 @@ export default {
         ['CurrentProgramProp'] //program, das über den GroundEditor hereinkommt
     ,
     emit:
-        ['anyEvent', 'changeEvent']
+        ['anyEvent', 'changeEvent', 'addTabEvent']
     ,
     watch: {
         CurrentProgramProp(n, o) {
@@ -70,6 +70,7 @@ export default {
                 let defaultTitel = this.getDefaultTitel(inputAllert);
                 let defaultCode = this.getdefaultCode(defaultTitel);
                 this.pushIntoArrays(defaultTitel, defaultCode, inputPath);
+                this.$emit('addTabEvent', defaultTitel);
                 this.tabCounter++;
             } else {
                 alert('Dieser Ordner existiert nicht.');

@@ -1,12 +1,12 @@
 <template>
     <div>
         <select>
-            <option v-for="opt in nameArr" :key="opt.programName">
-                {{ opt.programName }}
+            <option v-for="opt in nameArr" :key="opt">
+                {{ opt }}
             </option>
         </select>
     </div>
-    <button @click="getProgramNames">click</button>
+    <button @click="send">SendIdsToBackend</button>
 </template>
 
 <script>
@@ -19,14 +19,20 @@ export default {
         }
     },
     props: 
-        []
+        ['CurrentTabProp']
     ,
     watch: {
-        
+        CurrentTabProp(n, o) {
+            this.getTitle();
+        }
     },
     methods: {
-        getProgramNames() {
-            this.nameArr = this.$g_Programs;
+        getTitle() {
+            this.nameArr.push(this.CurrentTabProp);
+            console.log(`prop: ${this.CurrentTabProp}`);
+        },
+        send() {
+
         }
     }
 };
