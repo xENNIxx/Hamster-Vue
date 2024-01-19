@@ -24,7 +24,6 @@
 <script>
 
 import Tab from "@/components/Tab.vue"
-import Tree from "@/components/Tree.vue"
 
 export default {
     name: "TabRow",

@@ -1,9 +1,9 @@
 <template>
     <div>
         <select>
-            <div v-for="opt in nameArr" :key="opt">
-                <option>{{ opt }}</option>
-            </div>
+            <option v-for="opt in nameArr" :key="opt.programName">
+                {{ opt.programName }}
+            </option>
         </select>
     </div>
     <button @click="getProgramNames">click</button>
@@ -21,10 +21,12 @@ export default {
     props: 
         []
     ,
+    watch: {
+        
+    },
     methods: {
         getProgramNames() {
-            this.nameArr.push('hier');
-            console.log('push');
+            this.nameArr = this.$g_Programs;
         }
     }
 };
