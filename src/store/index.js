@@ -12,15 +12,15 @@ export const createStore = (app) => {
     state: {
       lastInteraction: Date.now(),
       isInactive: false,
-      exercise: null,
+      activity: null,
       code: null
     },
     getters: {
       lastInteraction(state) {
         return new Date(state.lastInteraction).toLocaleString();
       },
-      getCurrentExercise(state){
-        return state.exercise;
+      getCurrentActivity(state){
+        return state.activity;
       },
       getCodeFromEditor(state){
         return state.code;
@@ -43,8 +43,8 @@ export const createStore = (app) => {
       setInactivity(state) {
         state.isInactive = true;
       },
-      setExercise(state, ex){
-        state.exercise = ex;
+      setActivity(state, ex){
+        state.activity = ex;
       },
       setCodeFromEditor(state, c) {
         state.code = c

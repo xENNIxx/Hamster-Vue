@@ -36,9 +36,9 @@ const routes = [
     component: () => import('../views/CoursesView.vue')
   },
   {
-    path: '/exercise',
-    name: 'exercise',
-    component: () => import('../views/ExerciseView.vue')
+    path: '/activity',
+    name: 'activity',
+    component: () => import('../views/ActivityView.vue')
   },
   {
     path: '/profile',

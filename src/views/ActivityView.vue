@@ -1,42 +1,40 @@
 <template>
     <div class="flex flex-col items-center justify-center m-5">
         <div class="card-body card shadow bg-base-300 items-center w-2/5 mt-8">
-            <h1 class="text-3xl text-center" v-text="exercise.name"></h1>
-            <div v-text="exercise.details" class="text-xl text-center"></div>
+            <h1 class="text-3xl text-center" v-text="activity.name"></h1>
+            <div v-text="activity.details" class="text-xl text-center"></div>
 
             <div class="flex justify-center">
-                
-                <div v-if="exercise.solution.feedback == null">
+
+                <div v-if="activity.solution.feedback == null">
                     <button class="btn btn-primary w-1/10 m-3" @click="saveTask()">Speichern</button>
-                    <button v-if="!exercise.solution.submitted" class="btn btn-primary w-1/10 m-3" @click="submitTask()">Abgeben</button>
-                    <button v-else class="btn btn-secondary w-1/10 m-3" @click="submitTask()">Abgabe rückgängig machen</button>
+                    <button v-if="!activity.solution.submitted" class="btn btn-primary w-1/10 m-3"
+                        @click="submitTask()">Abgeben</button>
+                    <button v-else class="btn btn-secondary w-1/10 m-3" @click="submitTask()">Abgabe rückgängig
+                        machen</button>
                 </div>
                 <div v-else class="text-center m-5">
                     <p class="font-bold text-2xl">Feedback</p>
-                    {{exercise.solution.feedback}}
+                    {{ activity.solution.feedback }}
                 </div>
             </div>
             <!--{{ this.$store.state.code }}-->
         </div>
-        
+
     </div>
-    <div class="playground-wrapper my-10">
-        <div class="flex-container">
-            <div>
-                <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)" />
-                <div class="playground" data-playground-></div>
-                <button class="btn m-1" @click="start">Start</button>
-                <button class="btn m-1" @click="print">Print</button>
-                <button class="btn m-1" @click="cleanField">Cleanup</button>
-                <button class="btn m-1" @click="reset">Reset Field</button>
+    <div class="playground-wrapper">
+        <div class="flex w-full h-full flex-row items-start">
+            <div class="m-5">
+                <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)"/>
+                <div class="playground grid" data-playground-></div>
+                <button class="start-btn btn" @click="start">Start</button>
+                <button class="btn" @click="print">Print</button>
+                <button class="btn" @click="cleanField">Cleanup</button>
+                <button class="btn" @click="reset">Reset Field</button>
             </div>
-            <nav class="flex justify-center p-3 max-h-13">
-                <TabRow></TabRow>
-            </nav>
             <!-- class="inline-flex" -->
-            <div>
+            <div class="m-5">
                 <GroundEditorVue @submitted="submitCode($event)" />
-                hier
             </div>
         </div>
     </div>
@@ -66,7 +64,7 @@ export default {
     },
     data() {
         return {
-            exercise: this.$store.state.exercise,
+            activity: this.$store.state.activity,
             terrain: {
                 dimension: {
                     width: 10,
@@ -89,10 +87,10 @@ export default {
     beforeMount() {
         this.terrain.dimension.size = this.terrain.dimension.width * this.terrain.dimension.height;
 
-        if (this.exercise.solution == null) {
-            this.exercise.solution = {
+        if (this.activity.solution == null) {
+            this.activity.solution = {
                 "solution": {
-                    "exercise_id": this.exercise_id,
+                    "activity_id": this.activity_id,
                     "code": this.$store.state.code,
                     "submitted": false
                 }
@@ -104,7 +102,7 @@ export default {
         this.game = this.newGame()
         this.game.on('cornChange', (event) => this.cornChanged(event))
         console.info("loaded game object")
-        console.log(this.exercise);
+        console.log(this.activity);
     },
     methods: {
         putCodeIntoEditor() {
@@ -150,22 +148,21 @@ export default {
             this.game = this.newGame()
         },
         loadTer(e) {
-            console.log(e)
-            this.game.createEntityObj(e)
-            this.loaded_terrain_obj = e
+            console.log(e);
+            this.game.createEntityObj(e);
+            this.loaded_terrain_obj = e;
         },
         async submitCode(e) {
             for (let prop in this.loaded_terrain_obj) {
                 if (prop != 'program') {
-                    e.hamster[prop] = this.loaded_terrain_obj[prop]
+                    e.hamster[prop] = this.loaded_terrain_obj[prop];
                 }
             }
-
             console.log(this.hostname + "hamster/newTerrain");
             console.log(JSON.stringify(e));
-            let result = await request_(this.hostname + "hamster/newTerrain", e, 'POST')
-            console.log(result)
-            this.game.handleResponse(result)
+            let result = await request_(this.hostname + "hamster/newTerrain", e, 'POST');
+            console.log(result);
+            this.game.handleResponse(result);
         },
         //eslint-disable-next-line
         cornChanged(event) {
@@ -173,15 +170,15 @@ export default {
         },
 
         async submitTask() {
-            this.exercise.submitted = !this.exercise.solution.submitted;
+            this.activity.submitted = !this.activity.solution.submitted;
 
             var solution = {
-                solution:{
-                    solution_id: this.exercise.solution.solution_id,
-                    exercise_id: this.exercise.exercise_id,
+                solution: {
+                    solution_id: this.activity.solution.solution_id,
+                    activity_id: this.activity.activity_id,
                     code: "replace this its only for testing",//this.$store.state.code,
-                    submitted: this.exercise.submitted
-                }   
+                    submitted: this.activity.submitted
+                }
             };
 
             await this.putTaskAxios(solution);
@@ -189,19 +186,19 @@ export default {
 
         async saveTask() {
             var solution = {
-                solution:{
-                    solution_id: this.exercise.solution.solution_id,
-                    exercise_id: this.exercise.exercise_id,
+                solution: {
+                    solution_id: this.activity.solution.solution_id,
+                    activity_id: this.activity.activity_id,
                     code: this.$store.state.code,
-                    submitted: this.exercise.submitted
-                }   
+                    submitted: this.activity.submitted
+                }
             };
 
             await this.putTaskAxios(solution);
         },
 
         async putTaskAxios(data) {
-            
+
             var config = {
                 method: "put",
                 url: this.hostname + "solutions",
@@ -217,7 +214,7 @@ export default {
 
             await axios(config)
                 .then((response) => {
-                    this.exercise.solution = response.data
+                    this.activity.solution = response.data
                     return JSON.stringify(response.data);
                 })
                 .catch((error) => {
@@ -231,77 +228,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-.playground {
-    display: grid;
-    gap: 5px;
-    aspect-ratio: 1/1;
-    user-select: none;
-    height: 100%;
-}
-
-.play-field {
-    position: relative;
-    border: 1px solid black;
-    min-width: 25px;
-    aspect-ratio: 1/1;
-    box-sizing: border-box;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: auto;
-
-    &.corn {
-        background: brown;
-    }
-
-    &.wall {
-        background: black;
-    }
-
-    &.player {
-        background-color: blue;
-        background-image: url('@/assets/images/arrow.svg');
-        background-position: center;
-        background-size: contain;
-        object-fit: contain;
-
-        &[direction="up"] {
-            transform: rotate(0deg);
-        }
-
-        &[direction="down"] {
-            transform: rotate(180deg);
-        }
-
-        &[direction="left"] {
-            transform: rotate(-90deg);
-        }
-
-        &[direction="right"] {
-            transform: rotate(90deg);
-        }
-    }
-}
-
-//diese styles nicht löschen
-.playground-wrapper {
-    position: relative;
-    height: 100%;
-
-}
-
-
-.flex-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-evenly
-}
-</style>
