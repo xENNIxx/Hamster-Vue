@@ -23,29 +23,29 @@
           </thead>
           <tbody>
             <!-- row 1 -->
-            <tr v-for="exercise in course.activities" class="bg-opacity-30" :class="setColor(exercise)">
+            <tr v-for="activity in course.activities" class="bg-opacity-30" :class="setColor(activity)">
               <td >
                 <div class="font-bold">
-                  {{ exercise.name }}
+                  {{ activity.name }}
                 </div>
               </td>
               <td>
-                {{ new Date(exercise.deadline).toLocaleDateString('de-DE') }}
+                {{ new Date(activity.deadline).toLocaleDateString('de-DE') }}
               </td>
               <th>
                 <!-- ignore checkbox -->
-                <input type="checkbox" :id="exercise.name" class="modal-toggle" />
+                <input type="checkbox" :id="activity.name" class="modal-toggle" />
                 <div class="modal">
                   <div class="modal-box">
                     <h3 class="font-bold text-lg">Details</h3>
-                    <p class="py-4">{{ exercise.details }}</p>
+                    <p class="py-4">{{ activity.details }}</p>
                     <div class="modal-action">
-                      <label :for="exercise.name" class="btn">Close</label>
+                      <label :for="activity.name" class="btn">Close</label>
                     </div>
                   </div>
                 </div>
-                <label class="btn btn-secondary btn-xs mx-5" :for="exercise.name">Details</label>
-                <button class="btn btn-success btn-xs" @click="goToExercise(exercise)">Löse</button>
+                <label class="btn btn-secondary btn-xs mx-5" :for="activity.name">Details</label>
+                <button class="btn btn-success btn-xs" @click="goToActivity(activity)">Löse</button>
               </th>
             </tr>
             
@@ -86,24 +86,24 @@ export default {
         console.log(error.message);
       }
     },
-    goToExercise(exercise) {
-      this.$store.commit('setExercise', exercise)
-      this.$router.push('exercise')
+    goToActivity(activity) {
+      this.$store.commit('setActivity', activity)
+      this.$router.push('activity')
     },
     checkDeadline(date){
       var now = new Date();
       now.setHours(0,0,0,0);
       return new Date(date) < now;
     },
-    setColor(exercise){
-      if(exercise.solution != null){
-        if(exercise.solution.feedback != null){
+    setColor(activity){
+      if(activity.solution != null){
+        if(activity.solution.feedback != null){
           return 'bg-green-500'
-        }else if(exercise.solution.submitted){
+        }else if(activity.solution.submitted){
           return 'bg-yellow-300'
         }
       }
-      if(this.checkDeadline(exercise.deadline)){
+      if(this.checkDeadline(activity.deadline)){
         return 'bg-red-500'
       }
     }

@@ -127,7 +127,7 @@ export default {
 
 <style lang="scss">
 .play-field {
-  @apply p-4 btn btn-outline btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs m-0;
+  @apply p-4 btn btn-outline bg-transparent btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-xs m-0;
 
   &.corn {
     @apply bg-base-300;
@@ -140,7 +140,10 @@ export default {
   &.player {
     @apply p-4 btn btn-outline bg-primary btn-square rounded-none flex items-center justify-center text-center select-none cursor-pointer text-transparent;
 
-    //background-image: url();
+    background-image: url("../src/assets/images/hamster.png");
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover;
     &[direction="up"] {
       transform: rotate(0deg);
     }
