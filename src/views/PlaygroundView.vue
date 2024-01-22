@@ -11,7 +11,9 @@
     <div class="playground-wrapper">
         <div class="flex w-full h-full flex-row items-start">
             <div class="m-5">
-                <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)"/>
+                <PlaygroundTerritorySelectorVue 
+                    @loadTer="loadTer($event)"
+                    @seleted-terrain="selectedTerrainEvent"/>
                 <div class="playground grid" data-playground-></div>
                 <button class="start-btn btn" @click="start">Start</button>
                 <button class="btn" @click="print">Print</button>
@@ -20,7 +22,8 @@
             </div>
             <!-- class="inline-flex" -->
             <div class="m-5">
-                <GroundEditorVue @submitted="submitCode($event)" />
+                <GroundEditorVue @submitted="submitCode($event)"
+                                :-selected-terrain-prop="selectedTerrain"/>
             </div>
         </div>
     </div>
@@ -65,7 +68,8 @@ data() {
         field_attribute: 'data-playground-field-',
         loaded_terrain_obj: {
             type: Object
-        }
+        },
+        selectedTerrain: ''
     }
 },
 beforeMount() {
@@ -77,6 +81,11 @@ mounted() {
     console.info("loaded game object");
 },
 methods : {
+    //emit-methods
+    selectedTerrainEvent(terrain='') {
+        this.selectedTerrain = terrain;
+    },
+    //normal-methods
     axiosMethod() {
         console.log('testMethod');
 

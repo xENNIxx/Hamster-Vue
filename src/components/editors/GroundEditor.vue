@@ -31,7 +31,8 @@
         </nav>
       </div>
       <div>
-        <RunSelection :-current-tab-prop="currentAddTab" />
+        <RunSelection :-current-tab-prop="currentAddTab"
+                      :-selected-terrain-prop="SelectedTerrainProp"/>
       </div>
   </div>
 </template>
@@ -72,6 +73,8 @@
     mounted() {
         this.value = this.code;
     },
+    props: ['SelectedTerrainProp']
+    ,
     emits: ['anyEvent']
     ,
     methods: {

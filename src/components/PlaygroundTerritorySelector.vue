@@ -26,13 +26,15 @@
               territories_there: false
           }
       },
+      emits: ['seletedTerrain']
+      ,
       methods: {
           loadTer(){
-              if(this.checkValue(this.selectedTer) || this.selectedTer == "Select Terrain")
-                  return;
-  
-              this.$emit('loadTer', this.terList.find((ter) => ter.terrainName == this.selectedTer))
-          }
+                this.$emit('seletedTerrain', this.selectedTer);
+                if(this.checkValue(this.selectedTer) || this.selectedTer == "Select Terrain")
+                    return;
+                this.$emit('loadTer', this.terList.find((ter) => ter.terrainName == this.selectedTer))
+            }
       },
       beforeMount(){
           try{
