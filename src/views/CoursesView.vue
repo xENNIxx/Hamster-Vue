@@ -7,11 +7,13 @@
           d="m1 14 3-3m-3 3 3 3m-3-3h16v-3m2-7-3 3m3-3-3-3m3 3H3v3" />
       </svg></button>
 
+      
     <label class="swap swap-flip text-3xl">
       <!-- this hidden checkbox controls the state -->
-      <input type="checkbox" v-model="competition" @click="changeMode"/>
-      <div class="swap-on">👑</div>
+      <input type="checkbox" @click="changeMode" />
       <div class="swap-off">📝</div>
+      <div class="swap-on">👑</div>
+
     </label>
 
     <div v-for="course in get" class="collapse bg-base-200 collapse-arrow w-1/2 m-5 shadow-md">
@@ -31,7 +33,7 @@
           </thead>
           <tbody>
             <!-- row 1 -->
-            <tr v-for="activity in course.activities" class="bg-opacity-30" :class="setColor(activity)">
+            <tr v-for="activity in activities[course.course_id]" class="bg-opacity-30" :class="setColor(activity)">
               <td>
                 <div class="font-bold">
                   {{ activity.name }}
@@ -73,7 +75,7 @@ export default {
       get: null,
       expDeadline: false,
       competition: false,
-      activities: [],
+      activities: {},
     };
   },
   methods: {
@@ -117,14 +119,19 @@ export default {
         return 'bg-red-500'
       }
     },
-    changeMode(){
-      
-      //activities = this.get
+    async changeMode() {
+      this.competition = !this.competition;
 
+      for (var course of this.get) {
+        var mode = { true: "exercise", false: "contest" }
+        this.activities[course.course_id] = course.activities.filter(activity => activity.type == mode[this.competition])
+        
+      }
     }
   },
   async beforeMount() {
-    await this.refreshData()
+    await this.refreshData();
+    await this.changeMode();
   },
 }
 </script>
