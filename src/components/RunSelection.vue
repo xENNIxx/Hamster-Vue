@@ -38,20 +38,15 @@ export default {
             console.log(`prop: ${this.CurrentTabProp}`);
         },
         send() {
-            if (this.checkIfProgramExists()) {
-                let c_programId = this.getProgramIdFromName();
-                if (c_programId == '...') {
-                    alert('Error -> programId wurde nicht gefunden.');
-                } else {
-                    console.log(`c_programId: ${c_programId}`);
-                }
-                this.axiosJson.programId = c_programId;
-                this.axiosJson.terrainName = this.SelectedTerrainProp;
-                //axios.post(); -> axios call um this.axiosJson zu posten
-            } else {
-                alert('Error -> programId wurde nicht gefunden.');
+            let bd_program = axios.get(this.hostname + `program/getBasicData`);
+            console.log(`length: ${bd_program.length}`);
+            /*
+            for (let i = 0; i < bd_program.length; i++) {
+                console.log(bd_program[i].programName);
             }
+            */
         },
+        /*
         checkIfProgramExists() {
             for (let i = 0; i < this.$g_Programs.length; i++) {
                 if (this.$g_Programs[i].programName == this.selectedOpt) {
@@ -69,6 +64,7 @@ export default {
             }
             return '...';
         }
+        */
     }
 };
 </script>
