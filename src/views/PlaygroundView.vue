@@ -1,12 +1,3 @@
-.flex-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-}
-
 <template>
     <div class="playground-wrapper">
         <div class="flex w-full h-full flex-row items-start">

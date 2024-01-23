@@ -25,7 +25,6 @@
     <div class="playground-wrapper">
         <div class="flex w-full h-full flex-row items-start">
             <div class="m-5">
-                <PlaygroundTerritorySelectorVue @loadTer="loadTer($event)"/>
                 <div class="playground grid" data-playground-></div>
                 <button class="start-btn btn" @click="start">Start</button>
                 <button class="btn" @click="print">Print</button>
@@ -36,8 +35,10 @@
             <div class="m-5">
                 <GroundEditorVue @submitted="submitCode($event)" />
             </div>
+            
         </div>
     </div>
+    {{this.$store.state.activity.hamster}}
 </template>
 
 <script>

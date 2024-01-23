@@ -6,6 +6,14 @@
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="m1 14 3-3m-3 3 3 3m-3-3h16v-3m2-7-3 3m3-3-3-3m3 3H3v3" />
       </svg></button>
+
+    <label class="swap swap-flip text-3xl">
+      <!-- this hidden checkbox controls the state -->
+      <input type="checkbox" v-model="competition" @click="changeMode"/>
+      <div class="swap-on">👑</div>
+      <div class="swap-off">📝</div>
+    </label>
+
     <div v-for="course in get" class="collapse bg-base-200 collapse-arrow w-1/2 m-5 shadow-md">
       <input type="checkbox" />
       <div class="collapse-title text-xl font-medium">
@@ -24,7 +32,7 @@
           <tbody>
             <!-- row 1 -->
             <tr v-for="activity in course.activities" class="bg-opacity-30" :class="setColor(activity)">
-              <td >
+              <td>
                 <div class="font-bold">
                   {{ activity.name }}
                 </div>
@@ -48,7 +56,7 @@
                 <button class="btn btn-success btn-xs" @click="goToActivity(activity)">Löse</button>
               </th>
             </tr>
-            
+
           </tbody>
         </table>
       </div>
@@ -64,6 +72,8 @@ export default {
     return {
       get: null,
       expDeadline: false,
+      competition: false,
+      activities: [],
     };
   },
   methods: {
@@ -90,22 +100,27 @@ export default {
       this.$store.commit('setActivity', activity)
       this.$router.push('activity')
     },
-    checkDeadline(date){
+    checkDeadline(date) {
       var now = new Date();
-      now.setHours(0,0,0,0);
+      now.setHours(0, 0, 0, 0);
       return new Date(date) < now;
     },
-    setColor(activity){
-      if(activity.solution != null){
-        if(activity.solution.feedback != null){
+    setColor(activity) {
+      if (activity.solution != null) {
+        if (activity.solution.feedback != null) {
           return 'bg-green-500'
-        }else if(activity.solution.submitted){
+        } else if (activity.solution.submitted) {
           return 'bg-yellow-300'
         }
       }
-      if(this.checkDeadline(activity.deadline)){
+      if (this.checkDeadline(activity.deadline)) {
         return 'bg-red-500'
       }
+    },
+    changeMode(){
+      
+      //activities = this.get
+
     }
   },
   async beforeMount() {
