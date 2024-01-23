@@ -260,7 +260,6 @@ export default {
                 currSavedTerrs = JSON.parse(currSavedTerrs)
 
             currSavedTerrs.push(this.hamster)
-
             localStorage.setItem('territories', JSON.stringify(currSavedTerrs)) //currently getting save locally
         },
         handleRangeChange(target, value) { //method for handeling Rangeslider-Child value change
