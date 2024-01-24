@@ -54,6 +54,7 @@
 /* eslint-disable */
 
 import { getPlayerDirection, PLAYER_DIRECTION } from '@/assets/js/utils.js'
+import axios from 'axios';
 
 export default {
     data() {
@@ -79,15 +80,19 @@ export default {
                 programName: "test",
                 program: "void main() {vor();}",
                 terrainName: "testTerrain",
+                terrainPath: 'testPath',
                 width: 0,
                 height: 0,
                 x: 0,
                 y: 1,
                 blickrichtung: 1,
+                cntCornInMouth: 0,
                 cornAnzahl: [],
                 corn: [],
-                wall: []
-            }
+                wall: [],
+            },
+            fields: [],
+            cornCounter: 0
         }
     },
     methods: {
@@ -154,6 +159,7 @@ export default {
 
             if (this.mode == "corn") {
                 element.innerText = this.cornAnz
+
             }
 
             if (this.mode == "player") {
@@ -197,7 +203,6 @@ export default {
                 for (let x = 0; x < this.size.width; x++) {
                     let field = play_field[x + this.size.width * y]
                     let classlist = field.classList
-
                     if (classlist.contains("player")) {
                         field_type = this.entity_symbols.PLAYER
                         this.hamster.x = x
@@ -206,20 +211,27 @@ export default {
                         field_type = this.entity_symbols.CORN
                         this.hamster.cornAnzahl.push(Number(field.innerText))
                         this.hamster.corn.push([x, y])
+                        let fieldJSON = {'xCord': x, 'yCord': y,
+                        'cntCorn': this.hamster.cornAnzahl[this.cornCounter], 'wall': false};
+                        this.fields.push(fieldJSON);
+                        this.cornCounter++;
                     } else if (classlist.contains("wall")) {
                         field_type = this.entity_symbols.WALL
                         this.hamster.wall.push([x, y])
+                        let fieldJSON = {'xCord': x, 'yCord': y,
+                        'cntCorn': 0, 'wall': true};
+                        this.fields.push(fieldJSON);
                     }
                     else
-                        field_type = ' '
+                        field_type = ' ';
 
-                    row.push(field_type)
+                    row.push(field_type);
                 }
-                playground_created.push(row)
+                playground_created.push(row);
             }
 
-            this.stringifyField(playground_created)
-            this.createTerJson()
+            this.stringifyField(playground_created);
+            this.createTerJson();
         },
         stringifyField(field) { //creat string from current playground --> string needed for game start 
             let output = ""
@@ -237,6 +249,12 @@ export default {
                 this.player_direction = Object.keys(PLAYER_DIRECTION).length - 1
         },
         createTerJson() { //Method for creating Terrain-Json-Object for Backendserver
+            /*
+            let terObj = {'terrainName': '', 'width': 0, 'height': 0, 'defaultHamster':
+                {'xCord': 0, 'yCord': 0, 'cntCornInMouth': 0, 'viewDirection': 0},
+                'terrainPath': '', 'customFields': [{'field': {'xCord': 0, 'yCord':0,
+                'cntCorn': 0, 'wall': false}}, {}, ...]};
+            */
             let terName = prompt("Enter Name of Territory:")
             if (terName == "" || terName == undefined || terName == null) {
                 console.warn("submit cancelled!")
@@ -259,8 +277,25 @@ export default {
             else
                 currSavedTerrs = JSON.parse(currSavedTerrs)
 
-            currSavedTerrs.push(this.hamster)
-            localStorage.setItem('territories', JSON.stringify(currSavedTerrs)) //currently getting save locally
+            currSavedTerrs.push(this.hamster);
+            // localStorage.setItem('territories', JSON.stringify(currSavedTerrs)) //currently getting save locally
+            console.log(`currTerrain: ${JSON.stringify(currSavedTerrs[currSavedTerrs.length - 1])}`);
+            this.saveLastTerrain(currSavedTerrs[currSavedTerrs.length - 1]);
+        },
+        async saveLastTerrain(terrain) {
+            console.log(`terrain: ${JSON.stringify(terrain)}`);
+            console.log(`fields: ${JSON.stringify(this.fields)}`);
+            let terObj = {terrainName: terrain.terrainName,
+                width: terrain.width,
+                height: terrain.height,
+                defaultHamster:
+                    {xCord: terrain.x, yCord: terrain.y, cntCornInMouth: terrain.cntCornInMouth, viewDirection: terrain.blickrichtung},
+                terrainPath: terrain.terrainPath,
+                customFields: this.fields};
+                
+            console.log(`terObj: ${JSON.stringify(terObj)}`);
+            let status = await axios.post(this.hostname + `terrainObject/save`, terObj);
+            console.log(`status: ${status.status}`);
         },
         handleRangeChange(target, value) { //method for handeling Rangeslider-Child value change
             switch (target) {
