@@ -7,7 +7,7 @@
           <p class="py-6 text-xl">An educational platform designed for students to master the fundamentals of programming.
           </p>
           <a class="btn btn-accent m-2" href="https://github.com/xENNIxx/Hamster-Vue">GitHub - Frontend</a>
-          <a class="btn btn-accent m-2" href="https://github.com/thomasstaud/HamsterBackend">GitHub - Backend</a>
+          <a class="btn btn-accent m-2" href="https://github.com/S1m0K/Hamster_Backend">GitHub - Backend</a>
           <a class="btn btn-primary m-2" href="https://www.java-hamster-modell.de/">Original Hamster</a>
         </div>
       </div>
