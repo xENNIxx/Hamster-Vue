@@ -6,7 +6,7 @@
             </option>
         </select>
     </div>
-    <button @click="send">SendIdsToBackend</button>
+    <button @click="send" class="btn">SendIdsToBackend</button>
 </template>
 
 <script>
@@ -59,7 +59,7 @@ export default {
                 }
             }
             return -1;
-        },
+        }
         /*
         getProgramId() {
             for (let i = 0; i < this.$g_Programs.length; i++) {
