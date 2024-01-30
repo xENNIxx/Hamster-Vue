@@ -1,15 +1,13 @@
 <template>
     <button class="btn" @click="addDic">AddDic</button>
-    <table>
-      <div v-for="dic in dics" :key="dic">
-        <a @click="openDic(dic)" class="m-1 bg bg-red-300 rounded-sm linkHoverDic">{{ dic }}</a>
-        <div v-if="this.isOpen[dic]" class="ml-4">
-          <div v-for="File in getFileNames(dic)" :key="File">
-            <a @click="getAndFillInCurrentProgramName(File)" class="m-1 linkHoverFile">{{ File }}</a>
-          </div>
+    <div v-for="dic in dics" :key="dic">
+      <a @click="openDic(dic)" class="m-1 bg bg-red-300 rounded-sm linkHoverDic">{{ dic }}</a>
+      <div v-if="this.isOpen[dic]" class="ml-4">
+        <div v-for="File in getFileNames(dic)" :key="File">
+          <a @click="getAndFillInCurrentProgramName(File)" class="m-1 linkHoverFile">{{ File }}</a>
         </div>
       </div>
-    </table>
+    </div>
 </template>
 
 <script>
@@ -19,7 +17,6 @@ export default {
     data() {
         return {
             dics: [],
-            filesForDic: [],
             isOpen: {},
             dicCounter: 0
         }

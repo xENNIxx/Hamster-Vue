@@ -4,7 +4,7 @@
         <tab-row  @any-event="handelEvent"
                   @change-event="changeEvent" 
                   @add-tab-event="addTabEvent"
-                  :-current-program-prop="currentProgram"/>
+                  :-current-program-prop="currentProgram" />
       </nav>
       <div class="grid grid-cols-2 gap-4">
         <nav class="flex justify-self-start">
@@ -26,7 +26,7 @@
           </section>
           <div class="p-4">
             <Tree @current-program-event="getCurrentTab"
-                  :-tab-is-clicked-prop="tabIsClicked"/>
+                  :-tab-is-clicked-prop="tabIsClicked" />
           </div>
         </nav>
       </div>
