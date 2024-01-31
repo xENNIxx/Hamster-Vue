@@ -51,8 +51,28 @@ import axios from 'axios';
 
                 let currentTerrainId = this.getTerrainIdFromName(this.selectedTer);
                 this.getSelectedTerrainFromId(currentTerrainId);
-
-
+                let json = {
+                    "terrainId" : 26,
+                    "terrainName" : "testTerrain",
+                    "width" : 15,
+                    "height" : 12,
+                    "defaultHamster" : {
+                        "hamster_id" : 3,
+                        "cntCornInMouth" : 10,
+                        "viewDirection" : "NORTH",
+                        "xcord" : 1,
+                        "ycord" : 1
+                    },
+                    "customFields" : [ {
+                        "field_id" : 15,
+                        "cntCorn" : 12,
+                        "wall" : false,
+                        "xcord" : 1,
+                        "ycord" : 4
+                    } ],
+                    "terrainPath" : "root/testPackage/"
+                }
+                //variable json beim emit übergeben und in PlaygroundView "zerlegen"
                 // this.$emit('loadTer', currentTerrain);
                 //this.$emit('loadTer', this.terList.find((ter) => ter.terrainName == this.selectedTer))
                 
