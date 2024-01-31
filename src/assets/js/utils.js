@@ -2,26 +2,26 @@
 
 
 export const PLAYER_DIRECTION = Object.freeze({
-    UP: 0,
-    RIGHT: 1,
-    DOWN: 2,
-    LEFT: 3,
+    NORTH: 0,
+    EAST: 1,
+    SOUTH: 2,
+    WEST: 3,
 })
 
 
-export function getPlayerDirection(direction){
+export function getPlayerDirection(direction) {
     switch(direction){
-        case PLAYER_DIRECTION.UP: 
-            return "up"
-        case PLAYER_DIRECTION.LEFT: 
-            return "left"
-        case PLAYER_DIRECTION.DOWN:
-            return "down"
-        case PLAYER_DIRECTION.RIGHT:
-            return "right"
+        case PLAYER_DIRECTION.NORTH:
+            return "up";
+        case PLAYER_DIRECTION.WEST: 
+            return "left";
+        case PLAYER_DIRECTION.SOUTH:
+            return "down";
+        case PLAYER_DIRECTION.EAST:
+            return "right";
     }
 }
 
 export function checkValue(value){
-    return ["", NaN, undefined].includes(value)
+    return ["", NaN, undefined].includes(value);
 }

@@ -146,45 +146,77 @@ export default class Game extends EventEmitter{
         return terrainObj
     }
 
-    //playground Darstellung
+    //playground Darstellung -> wurde umgeschrieben (dokumentieren!)
     createEntityObj(terrainObj){
-        this.resetPlayground(terrainObj.width, terrainObj.height)
-        let fields = this.container.querySelectorAll(".play-field")
+        console.log(`create: ${JSON.stringify(terrainObj)}`);
+        this.resetPlayground(terrainObj.width, terrainObj.height);
+        let fields = this.container.querySelectorAll(".play-field");
 
-        this.player.direction = terrainObj.blickrichtung
+        this.player.direction = terrainObj.blickrichtung;
 
-        this.player.position.x = terrainObj.x
-        this.player.position.y = terrainObj.y
+        this.player.position.x = terrainObj.defaultHamster.xcord;
+        this.player.position.y = terrainObj.defaultHamster.ycord;
 
-        this.terrain.dimension.width = terrainObj.width
-        this.terrain.dimension.height = terrainObj.height
+        this.terrain.dimension.width = terrainObj.width;
+        this.terrain.dimension.height = terrainObj.height;
 
-        for(let iWall = 0; iWall < terrainObj.wall.length; iWall++){
-            fields[this.getFieldIndex(new Vector2D(terrainObj.wall[iWall][0], terrainObj.wall[iWall][1]), terrainObj.width)].classList = 'play-field wall'   
+        //Wände platzieren
+        for(let field = 0; field < terrainObj.customFields.length; field++){
+            /* alter code
+            fields[this.getFieldIndex(new Vector2D(terrainObj.wall[iWall][0], terrainObj.wall[iWall][1]), terrainObj.width)].classList = 'play-field wall'  
+            */
+            if (terrainObj.customFields[field].wall == true) {
+                fields[this.getFieldIndex(new Vector2D(terrainObj.customFields[field].xcord, 
+                    terrainObj.customFields[field].ycord), terrainObj.width)].classList = 'play-field wall';
+            }
         }
 
-        for(let iCorn = 0; iCorn < terrainObj.corn.length; iCorn++){
+        //Körner werden platziert
+        for(let iCorn = 0; iCorn < terrainObj.customFields.length; iCorn++){
+            /* alter code
             let position = new Vector2D(terrainObj.corn[iCorn][0], terrainObj.corn[iCorn][1])
             let corn = fields[this.getFieldIndex(position, terrainObj.width)]
             corn.classList = 'play-field corn'
             corn.innerText = terrainObj.cornAnzahl[iCorn]
             this.corns.push(new Corn(position, terrainObj.cornAnzahl[iCorn]))
+            */
+            if (terrainObj.customFields[iCorn].wall == false) {
+                let position = new Vector2D(terrainObj.customFields[iCorn].xcord, terrainObj.customFields[iCorn].ycord);
+                let currentCorn = fields[this.getFieldIndex(position, terrainObj.width)];
+                currentCorn.classList = 'play-field corn';
+                currentCorn.innerHTML = terrainObj.customFields[iCorn].cntCorn;
+                this.corns.push(new Corn(position, terrainObj.customFields[iCorn].cntCorn));
+            }
         }
 
-        let player = fields[this.getFieldIndex(new Vector2D(terrainObj.x, terrainObj.y), terrainObj.width)]
-        player.classList = 'play-field player'
-        player.setAttribute('direction', getPlayerDirection(terrainObj.blickrichtung))
-
+        //Spieler plazieren
+        let pd = this.getDigitFromDirection(terrainObj.defaultHamster.viewDirection); //player direction
+        let player = fields[this.getFieldIndex(new Vector2D(terrainObj.defaultHamster.xcord, 
+                    terrainObj.defaultHamster.ycord), terrainObj.width)];
+        player.classList = 'play-field player';
+        console.log(`direction: ${pd}`);
+        player.setAttribute('direction', getPlayerDirection(pd));
     }
 
+    getDigitFromDirection(dir) {
+        switch(dir) {
+            case "NORTH":
+                return 0;
+            case "EAST":
+                return 1;
+            case "SOUTH":
+                return 2;
+            case "WEST":
+                return 3;
+        }
+    }
 
-    getFieldIndex (position, height){
-        let h = height || this.terrain.dimension.width
-        let field = 0 
-        field += position.x
-        field += h*position.y
-
-        return field
+    getFieldIndex(position, height) {
+        let h = height || this.terrain.dimension.width;
+        let field = 0;
+        field += position.x;
+        field += h*position.y;
+        return field;
     }
 
     resetPlayground(width, height){

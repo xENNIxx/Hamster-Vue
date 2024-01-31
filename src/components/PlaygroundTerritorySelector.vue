@@ -41,7 +41,7 @@ import axios from 'axios';
                     nameArr.push(this.fullTerrainData[i].terrainName);
                 }
                 this.terList = nameArr;
-                console.log(`terList: ${this.terList}`);
+                // console.log(`terList: ${this.terList}`);
             },
             //normal-methods
             loadTer(){
@@ -59,35 +59,51 @@ import axios from 'axios';
                     "defaultHamster" : {
                         "hamster_id" : 3,
                         "cntCornInMouth" : 10,
-                        "viewDirection" : "NORTH",
+                        "viewDirection" : "SOUTH",
                         "xcord" : 1,
                         "ycord" : 1
                     },
-                    "customFields" : [ {
+                    "customFields" : [
+                    {
                         "field_id" : 15,
                         "cntCorn" : 12,
                         "wall" : false,
                         "xcord" : 1,
                         "ycord" : 4
-                    } ],
+                    },
+                    {
+                        "field_id" : 16,
+                        "cntCorn" : 0,
+                        "wall" : true,
+                        "xcord" : 2,
+                        "ycord" : 2
+                    },
+                    {
+                        "field_id" : 17,
+                        "cntCorn" : 0,
+                        "wall" : true,
+                        "xcord" : 6,
+                        "ycord" : 2
+                    }
+                    ],
                     "terrainPath" : "root/testPackage/"
                 }
                 //variable json beim emit übergeben und in PlaygroundView "zerlegen"
-                // this.$emit('loadTer', currentTerrain);
+                this.$emit('loadTer', json);
                 //this.$emit('loadTer', this.terList.find((ter) => ter.terrainName == this.selectedTer))
                 
             },
             getTerrainIdFromName(terrainName) {
                 for (let i = 0; i < this.fullTerrainData.length; i++) {
                     if (this.fullTerrainData[i].terrainName == terrainName) {
-                        console.log(`id: ${this.fullTerrainData[i].terrainId}`);
+                        // console.log(`id: ${this.fullTerrainData[i].terrainId}`);
                         return this.fullTerrainData[i].terrainId;
                     }
                 }
             },
             async getSelectedTerrainFromId(terrainId) {
                 let data = await axios.get(this.hostname + `terrainObject/get/${terrainId}`);
-                console.log(`terrainData: ${JSON.stringify(data.data)}`);
+                // console.log(`terrainData: ${JSON.stringify(data.data)}`);
             }
       },
       beforeMount() {
