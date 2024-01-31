@@ -2,6 +2,7 @@
 import { CommandCreator } from "./Command"
 import {getPlayerDirection, PLAYER_DIRECTION} from '@/assets/js/utils.js'
 const EventEmitter = require('events')
+// import axios from "axios"
 
 export default class Game extends EventEmitter{
     
@@ -78,6 +79,12 @@ export default class Game extends EventEmitter{
         this.fields = this.container.querySelectorAll('.play-field')
     }
 
+    getTerrainBasicData() {
+        console.log('getTerrainBasicData');
+
+    }
+
+    //terrain-string bauen
     createEntityString(terrain){
         this.resetPlayground(terrain.dimension.width, terrain.dimension.height)
         
@@ -101,8 +108,12 @@ export default class Game extends EventEmitter{
             x: -1,
             y: -1
         }
-
-        console.table(playGround_arr)
+        //playground_arr -> Array mit komplettem Playround (jede Zeile in 
+        //      einem Array-Field gespeichert)
+        for (let i = 0; i < playGround_arr.length; i++) {
+            console.log(playGround_arr[i]);
+        }
+        console.table(playGround_arr);
         let color = "white"
         for(let y = 0; y < terrain.dimension.height; y++){
             const currentRow = Array.from(this.container.querySelectorAll('.play-field')).slice(y*terrain.dimension.width, (terrain.dimension.width*(y+1)));
@@ -129,14 +140,13 @@ export default class Game extends EventEmitter{
                     terrainObj.cornAnzahl.push(2)
                 }
                 currentRow[x].classList = "play-field  " + color
-                    
             }
-
+            // console.log(`hier game: ${JSON.stringify(currentRow[0])}`);
         }
-
         return terrainObj
     }
 
+    //playground Darstellung
     createEntityObj(terrainObj){
         this.resetPlayground(terrainObj.width, terrainObj.height)
         let fields = this.container.querySelectorAll(".play-field")
@@ -223,7 +233,7 @@ export default class Game extends EventEmitter{
         this.cleanupField()
     }
 
-    collectCorn (position) {
+    collectCorn(position) {
         console.log(this.corns)
         this.corns.forEach((element, index) => {
             if(element.position.is(position) && element.count > 0){

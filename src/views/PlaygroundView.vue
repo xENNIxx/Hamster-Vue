@@ -50,7 +50,7 @@ data() {
                 size : null
             },
             // playGround : "10\n10\n###   ####\n  >       \n  *       \n  *       \n          \n          \n          \n          \n          \n          \n0\n1\n1\n0\n",
-            playGround: "10\n10\n##        \n>         \n  *       \n  *       \n          \n          \n          \n          \n          \n          \n0\n1\n1\n0",
+            playGround: "10\n10\n##        \n>         \n  ******  \n  *       \n          \n          \n          \n          \n          \n          \n0\n1\n1\n0",
             content: "<h1>Some initial content</h1>",
             game: "",
             reponse: "",
@@ -159,8 +159,8 @@ methods : {
         this.game = this.newGame()
     },
     loadTer(e){
-        console.log(e);
-        this.game.createEntityObj(e);
+        console.log(`loadTerEvent: ${JSON.stringify(e)}`);
+        this.game.createEntityObj(e); //playground darstellen
         this.loaded_terrain_obj = e;
     },
     async submitCode(e) {

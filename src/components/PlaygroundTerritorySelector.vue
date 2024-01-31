@@ -14,6 +14,7 @@
   </template>
   
   <script>
+import { useThrottledRefHistory } from '@vueuse/core';
 import axios from 'axios';
 
   export default {
@@ -28,36 +29,50 @@ import axios from 'axios';
       emits: ['seletedTerrain']
       ,
       methods: {
-            loadTer(){
-                this.$emit('seletedTerrain', this.selectedTer);
-                if(this.checkValue(this.selectedTer) || this.selectedTer == "Select Terrain")
-                    return;
-                let currentTerrain = this.getFullSelectedTerrain();
-                this.$emit('loadTer', currentTerrain);
-                //this.$emit('loadTer', this.terList.find((ter) => ter.terrainName == this.selectedTer))
-                
-            },
-            async getTerrainsFromDB() {
+            //before-mount-methods
+            async getTerrainDataFromDB() {
                 let data = await axios.get(this.hostname + 'terrainObject/getBasicData');
                 this.fullTerrainData = data.data;
+                this.getTerrainNames();
+            },
+            getTerrainNames() {
                 let nameArr = [];
-                for (let i = 0; i < data.data.length; i++) {
-                    nameArr.push(data.data[i].terrainName);
+                for (let i = 0; i < this.fullTerrainData.length; i++) {
+                    nameArr.push(this.fullTerrainData[i].terrainName);
                 }
                 this.terList = nameArr;
                 console.log(`terList: ${this.terList}`);
             },
-            getFullSelectedTerrain() {
+            //normal-methods
+            loadTer(){
+                this.$emit('seletedTerrain', this.selectedTer);
+                if(this.checkValue(this.selectedTer) || this.selectedTer == "Select Terrain")
+                    return;
+
+                let currentTerrainId = this.getTerrainIdFromName(this.selectedTer);
+                this.getSelectedTerrainFromId(currentTerrainId);
+
+
+                // this.$emit('loadTer', currentTerrain);
+                //this.$emit('loadTer', this.terList.find((ter) => ter.terrainName == this.selectedTer))
+                
+            },
+            getTerrainIdFromName(terrainName) {
                 for (let i = 0; i < this.fullTerrainData.length; i++) {
-                    if (this.fullTerrainData[i].terrainName == this.selectedTer) {
-                        return this.fullTerrainData[i];
+                    if (this.fullTerrainData[i].terrainName == terrainName) {
+                        console.log(`id: ${this.fullTerrainData[i].terrainId}`);
+                        return this.fullTerrainData[i].terrainId;
                     }
                 }
+            },
+            async getSelectedTerrainFromId(terrainId) {
+                let data = await axios.get(this.hostname + `terrainObject/get/${terrainId}`);
+                console.log(`terrainData: ${JSON.stringify(data.data)}`);
             }
       },
       beforeMount() {
         try{
-            this.getTerrainsFromDB();
+            this.getTerrainDataFromDB();
             //this.terList = JSON.parse(localStorage.getItem('territories'))
             this.territories_there = true;
         }catch(error){

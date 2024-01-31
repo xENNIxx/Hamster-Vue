@@ -24,6 +24,7 @@
 <script>
 
 import Tab from "@/components/Tab.vue"
+import axios from "axios";
 
 export default {
     name: "TabRow",
@@ -52,6 +53,10 @@ export default {
         }
     },
     methods: {
+        async clickAction() {
+            let x = await axios.get(this.hostname + 'program/get/1');
+            console.log(`newData: ${JSON.stringify(x.data)}`);
+        },
         //emit-methods
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>')
