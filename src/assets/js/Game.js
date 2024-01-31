@@ -152,7 +152,7 @@ export default class Game extends EventEmitter{
         this.resetPlayground(terrainObj.width, terrainObj.height);
         let fields = this.container.querySelectorAll(".play-field");
 
-        this.player.direction = terrainObj.blickrichtung;
+        this.player.direction = terrainObj.defaultHamster.viewDirection;
 
         this.player.position.x = terrainObj.defaultHamster.xcord;
         this.player.position.y = terrainObj.defaultHamster.ycord;
@@ -194,7 +194,7 @@ export default class Game extends EventEmitter{
         let player = fields[this.getFieldIndex(new Vector2D(terrainObj.defaultHamster.xcord, 
                     terrainObj.defaultHamster.ycord), terrainObj.width)];
         player.classList = 'play-field player';
-        console.log(`direction: ${pd}`);
+        console.log(`direction: ${getPlayerDirection(pd)}`);
         player.setAttribute('direction', getPlayerDirection(pd));
     }
 
@@ -234,8 +234,10 @@ export default class Game extends EventEmitter{
             
             this.player.currentFieldIndex = playerField
         }
-
+        console.log(`updatePlayer: ${getPlayerDirection(this.getDigitFromDirection(this.player.direction))}`);
         this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.player.direction))
+        //this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.getDigitFromDirection(this.player.direction)));
+
         this.cleanupField()
     }
 
@@ -325,42 +327,38 @@ export default class Game extends EventEmitter{
 
     handleResponse (response){
         if(response == "" || typeof response == 'undefined')
-            return -1
+            return -1;
         
         if(!response.hasOwnProperty("finished")){
-            swal("Ooops!","Response Error","error")
-            return -1
+            swal("Ooops!","Response Error","error");
+            return -1;
         }
-
         Object.values(response).forEach((step, index) => {
             setTimeout(() => {
                 this.commandCreator.startAction(step)
             }, index * this.renderDelay)
             
         });
-    
-        
     }
 
     moveForward(){
-        let currentDirection = getPlayerDirection(this.player.direction)
-
+        let currentDirection = getPlayerDirection(this.getDigitFromDirection(this.player.direction));
+        // console.log(`moveForward: ${currentDirection}`);
         switch(currentDirection.toLowerCase()){
-            case "up":
-                this.player.position.y--
-                break
-            case "left":
-                this.player.position.x--
-                break
-            case "down":
-                this.player.position.y++
-                break
-            case "right":
-                this.player.position.x++
-                break
+            case 'up':
+                this.player.position.y--;
+                break;
+            case 'left':
+                this.player.position.x--;
+                break;
+            case 'down':
+                this.player.position.y++;
+                break;
+            case 'right':
+                this.player.position.x++;
+                break;
         }
-
-        this.updatePlayer()
+        this.updatePlayer();
     }
 
 }

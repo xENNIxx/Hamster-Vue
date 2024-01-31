@@ -54,11 +54,11 @@ import axios from 'axios';
                 let json = {
                     "terrainId" : 26,
                     "terrainName" : "testTerrain",
-                    "width" : 15,
-                    "height" : 12,
+                    "width" : 10,
+                    "height" : 10,
                     "defaultHamster" : {
                         "hamster_id" : 3,
-                        "cntCornInMouth" : 10,
+                        "cntCornInMouth" : 5,
                         "viewDirection" : "SOUTH",
                         "xcord" : 1,
                         "ycord" : 1
