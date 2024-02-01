@@ -6,21 +6,22 @@ const EventEmitter = require('events')
 
 export default class Game extends EventEmitter{
     
-    renderDelay = 500
-    corns = []
+    renderDelay = 500;
+    corns = [];
+    walls = [];
     player = {
         position: new Vector2D(0, 0),
         direction: PLAYER_DIRECTION.RIGHT,
         currentFieldIndex: 0,
         corn: 0
-    }
+    };
 
     terrain = {
         dimension: {
             width: -1,
             height: -1
         }
-    }
+    };
 
 
 
@@ -36,24 +37,16 @@ export default class Game extends EventEmitter{
 
     initCommands(){
         this.commandCreator.createCommand("1", () => {
-            this.moveForward()
+            console.log(`z: ${this.checkSpace()}`);
+            if (this.checkSpace()) {
+                this.moveForward();
+            } else {
+                alert('error - kein platz');
+            } 
         }, "Move forward by one field")
 
         this.commandCreator.createCommand("2", () => {
-            /*
-            let currentDirection = this.player.direction
-            currentDirection--
-            if(currentDirection < 0)
-                currentDirection = PLAYER_DIRECTION.LEFT
-            this.player.direction = currentDirection
-            */
-            let currentPostionDigit = this.getDigitFromDirection(this.player.direction);
-            currentPostionDigit--;
-            if (currentPostionDigit < 0) {
-                currentPostionDigit = 3;
-            }
-            this.player.direction = currentPostionDigit;
-            this.updatePlayer();
+            this.turnLeft();
         }, "Player turns left");
         
         this.commandCreator.createCommand("3", () => {
@@ -154,11 +147,11 @@ export default class Game extends EventEmitter{
 
     //playground Darstellung -> wurde umgeschrieben (dokumentieren!)
     createEntityObj(terrainObj){
-        console.log(`create: ${JSON.stringify(terrainObj)}`);
+        // console.log(`create: ${JSON.stringify(terrainObj)}`);
         this.resetPlayground(terrainObj.width, terrainObj.height);
         let fields = this.container.querySelectorAll(".play-field");
 
-        console.log(`terrainBasicDir: ${terrainObj.defaultHamster.viewDirection}`);
+        // console.log(`terrainBasicDir: ${terrainObj.defaultHamster.viewDirection}`);
         this.player.direction = terrainObj.defaultHamster.viewDirection;
 
         this.player.position.x = terrainObj.defaultHamster.xcord;
@@ -175,7 +168,8 @@ export default class Game extends EventEmitter{
             if (terrainObj.customFields[field].wall == true) {
                 fields[this.getFieldIndex(new Vector2D(terrainObj.customFields[field].xcord, 
                     terrainObj.customFields[field].ycord), terrainObj.width)].classList = 'play-field wall';
-            }
+                    this.walls.push([terrainObj.customFields[field].xcord, terrainObj.customFields[field].ycord]);
+                }
         }
 
         //Körner werden platziert
@@ -197,11 +191,10 @@ export default class Game extends EventEmitter{
         }
 
         //Spieler plazieren
-        let pd = this.getDigitFromDirection(terrainObj.defaultHamster.viewDirection); //player direction
+        //let pd = this.getDigitFromDirection(terrainObj.defaultHamster.viewDirection); //player direction
         let player = fields[this.getFieldIndex(new Vector2D(terrainObj.defaultHamster.xcord, 
                     terrainObj.defaultHamster.ycord), terrainObj.width)];
         player.classList = 'play-field player';
-        console.log(`true direction: ${terrainObj.defaultHamster.viewDirection}`);
         player.setAttribute('direction', getPlayerDirection(this.getDigitFromDirection(terrainObj.defaultHamster.viewDirection)));
     }
 
@@ -241,7 +234,6 @@ export default class Game extends EventEmitter{
             
             this.player.currentFieldIndex = playerField
         }
-        console.log(`updatePlayerDirection: ${this.player.direction}`);
         this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.getDigitFromDirection(this.player.direction)))
         //this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.getDigitFromDirection(this.player.direction)));
         this.cleanupField()
@@ -319,7 +311,6 @@ export default class Game extends EventEmitter{
         for(let i = 0; i < this.corns.length; i++)
             if(this.corns[i].position.is(position))
                 return this.corns[i]
-        
         return -1
     }
 
@@ -347,9 +338,43 @@ export default class Game extends EventEmitter{
         });
     }
 
+    checkSpace() {
+        let currentDirection = this.getDigitFromDirection(this.player.direction);
+        // console.log(`checkSpace: ${this.getDigitFromDirection(this.player.direction)}`);
+        switch(currentDirection) {
+            case 0: //up
+                for (let i = 0; i < this.walls.length; i++) {
+                    if (this.walls[i][0] == this.player.position.x && this.walls[i][1] == (this.player.position.y - 1)) {
+                        return false;
+                    }
+                }
+                return true;
+            case 1: //right
+                for (let i = 0; i < this.walls.length; i++) {
+                    if (this.walls[i][0] == (this.player.position.x + 1) && this.walls[i][1] == this.player.position.y) {
+                        return false;
+                    }
+                }
+                return true;
+            case 2: //down
+                for (let i = 0; i < this.walls.length; i++) {
+                    if (this.walls[i][0] == this.player.position.x && this.walls[i][1] == (this.player.position.y + 1)) {
+                        return false;
+                    }
+                }
+                return true;
+            case 3: //left
+                for (let i = 0; i < this.walls.length; i++) {
+                    if (this.walls[i][0] == (this.player.position.x - 1) && this.walls[i][1] == this.player.position.y) {
+                        return false;
+                    }
+                }
+                return true;
+        }
+    }
+
     moveForward(){
         let currentDirection = getPlayerDirection(this.getDigitFromDirection(this.player.direction));
-        console.log(`moveForward: ${currentDirection}`);
         switch(currentDirection.toLowerCase()){
             case 'up':
                 this.player.position.y--;
@@ -365,6 +390,40 @@ export default class Game extends EventEmitter{
                 break;
         }
         this.updatePlayer();
+    }
+
+    turnLeft() {
+        /* old code
+            let currentDirection = this.player.direction
+            currentDirection--
+            if(currentDirection < 0)
+                currentDirection = PLAYER_DIRECTION.LEFT
+            this.player.direction = currentDirection
+        */
+            let d = this.getDigitFromDirection(this.player.direction);
+            d--;
+            if (d < 0) {
+                d = 3;
+            }
+            switch(d) {
+                case 0:
+                    this.player.direction = 'NORTH'; break;
+                case 1:
+                    this.player.direction = 'EAST'; break;
+                case 2:
+                    this.player.direction = 'SOUTH'; break;
+                case 3:
+                    this.player.direction = 'WEST'; break;
+            }
+            this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.getDigitFromDirection(this.player.direction)));
+            this.updatePlayer();
+
+        /* Method-outputs:
+
+            this.player.direction -> NORTH
+            this.getDigitFromDirection(this.player.direction) -> 0
+            getPlayerDirection(this.getDigitFromDirection(this.player.direction)) -> up
+        */
     }
 
 }
