@@ -59,7 +59,7 @@ import axios from 'axios';
                     "defaultHamster" : {
                         "hamster_id" : 3,
                         "cntCornInMouth" : 5,
-                        "viewDirection" : "SOUTH",
+                        "viewDirection" : "EAST",
                         "xcord" : 1,
                         "ycord" : 1
                     },

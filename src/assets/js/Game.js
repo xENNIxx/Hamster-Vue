@@ -40,15 +40,21 @@ export default class Game extends EventEmitter{
         }, "Move forward by one field")
 
         this.commandCreator.createCommand("2", () => {
+            /*
             let currentDirection = this.player.direction
             currentDirection--
-
             if(currentDirection < 0)
                 currentDirection = PLAYER_DIRECTION.LEFT
-
             this.player.direction = currentDirection
-            this.updatePlayer()
-        }, "Player turns left")
+            */
+            let currentPostionDigit = this.getDigitFromDirection(this.player.direction);
+            currentPostionDigit--;
+            if (currentPostionDigit < 0) {
+                currentPostionDigit = 3;
+            }
+            this.player.direction = currentPostionDigit;
+            this.updatePlayer();
+        }, "Player turns left");
         
         this.commandCreator.createCommand("3", () => {
             this.storeCorn(this.player.position)
@@ -152,6 +158,7 @@ export default class Game extends EventEmitter{
         this.resetPlayground(terrainObj.width, terrainObj.height);
         let fields = this.container.querySelectorAll(".play-field");
 
+        console.log(`terrainBasicDir: ${terrainObj.defaultHamster.viewDirection}`);
         this.player.direction = terrainObj.defaultHamster.viewDirection;
 
         this.player.position.x = terrainObj.defaultHamster.xcord;
@@ -194,8 +201,8 @@ export default class Game extends EventEmitter{
         let player = fields[this.getFieldIndex(new Vector2D(terrainObj.defaultHamster.xcord, 
                     terrainObj.defaultHamster.ycord), terrainObj.width)];
         player.classList = 'play-field player';
-        console.log(`direction: ${getPlayerDirection(pd)}`);
-        player.setAttribute('direction', getPlayerDirection(pd));
+        console.log(`true direction: ${terrainObj.defaultHamster.viewDirection}`);
+        player.setAttribute('direction', getPlayerDirection(this.getDigitFromDirection(terrainObj.defaultHamster.viewDirection)));
     }
 
     getDigitFromDirection(dir) {
@@ -234,10 +241,9 @@ export default class Game extends EventEmitter{
             
             this.player.currentFieldIndex = playerField
         }
-        console.log(`updatePlayer: ${getPlayerDirection(this.getDigitFromDirection(this.player.direction))}`);
-        this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.player.direction))
+        console.log(`updatePlayerDirection: ${this.player.direction}`);
+        this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.getDigitFromDirection(this.player.direction)))
         //this.fields[this.player.currentFieldIndex].setAttribute("direction", getPlayerDirection(this.getDigitFromDirection(this.player.direction)));
-
         this.cleanupField()
     }
 
@@ -272,7 +278,7 @@ export default class Game extends EventEmitter{
         this.corns.forEach((element, index) => {
             if(element.position.is(position) && element.count > 0){
                 this.player.corn++
-                element.count --;
+                element.count--;
                 let cornField = this.fields[this.getFieldIndex(position, this.terrain.dimension.height)]
                 cornField.innerText = element.count
                 this.emit('cornChange')
@@ -343,7 +349,7 @@ export default class Game extends EventEmitter{
 
     moveForward(){
         let currentDirection = getPlayerDirection(this.getDigitFromDirection(this.player.direction));
-        // console.log(`moveForward: ${currentDirection}`);
+        console.log(`moveForward: ${currentDirection}`);
         switch(currentDirection.toLowerCase()){
             case 'up':
                 this.player.position.y--;
