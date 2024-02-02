@@ -156,6 +156,7 @@ export default class Game extends EventEmitter{
 
         // console.log(`terrainBasicDir: ${terrainObj.defaultHamster.viewDirection}`);
         this.player.direction = terrainObj.defaultHamster.viewDirection;
+        this.player.corn = terrainObj.defaultHamster.cntCornInMouth;
 
         this.player.position.x = terrainObj.defaultHamster.xcord;
         this.player.position.y = terrainObj.defaultHamster.ycord;
@@ -276,7 +277,7 @@ export default class Game extends EventEmitter{
                 element.count--;
                 let cornField = this.fields[this.getFieldIndex(position, this.terrain.dimension.height)]
                 cornField.innerText = element.count
-                this.emit('cornChange')
+                //this.emit('cornChange')
                 if(element.count == 0){
                     let field = this.getFieldIndex(element.position)
                     if(field == NaN)
@@ -284,13 +285,17 @@ export default class Game extends EventEmitter{
                     this.fields[field].classList.remove("corn")
                     this.corns.splice(index, 1)
                 }
+            } else {
+                alert('Kein Korn vorhanden');
             }
         })
+        console.log(`cornField: ${JSON.stringify(this.fields[this.getFieldIndex(position, this.terrain.dimension.height)])}`);
     }
     
     storeCorn(position) {
         if(this.player.corn <= 0){
-            swal("", "No corn in inventory", "info")
+            //swal("", "No corn in inventory", "info")
+            alert('Kein Korn im Maul');
             return;
         }
 
@@ -303,11 +308,11 @@ export default class Game extends EventEmitter{
             return;
         }
 
-        this.corns.push(new Corn(position))
-        this.fields[cornField].classList.add("corn")
-        this.fields[cornField].innerText = "1"
-        this.player.corn--
-        this.emit('cornChange')
+        this.corns.push(new Corn(position));
+        this.fields[cornField].classList.add("corn");
+        this.fields[cornField].innerText = "1";
+        this.player.corn--;
+        //this.emit('cornChange')
     }
 
     getCornFromPos(position){
