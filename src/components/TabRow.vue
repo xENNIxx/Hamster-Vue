@@ -15,9 +15,9 @@
             :tabIsActiveProp="false" />
     </div>
     <nav>
-        <button class="borderstyle p-1 m-1 bg-green-500" @click="addTab"> + </button>
-        <button class="borderstyle p-1 m-1 bg-red-500" @click="closeTab(this.externButtonId)"> - </button>
-        <button class="borderstyle p-1 m-1 bg-orange-500" @click="updateTitleAndProgramName"> % </button>
+        <button class="btn borderstyle p-1 m-1 w-7 h-1  bg-green-300" @click="addTab"> + </button>
+        <button class="btn borderstyle p-1 m-1 w-7 h-1  bg-red-300" @click="closeTab(this.externButtonId)"> - </button>
+        <button class="btn borderstyle p-1 m-1 w-7 h-1  bg-orange-300" @click="updateTitleAndProgramName"> % </button>
     </nav>
     <!--<button class="btn btn-primary" @click="clickAction">test</button>-->
 </template>
