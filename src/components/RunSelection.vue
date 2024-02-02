@@ -1,12 +1,10 @@
 <template>
-    <div>
-        <select v-model="selectedOpt">
-            <option v-for="opt in nameArr" :key="opt">
-                {{ opt }}
-            </option>
-        </select>
-    </div>
-    <button @click="send" class="btn">SendIdsToBackend</button>
+    <button @click="send" class="btn m-2">SendIdsToBackend</button>
+    <select v-model="selectedOpt">
+        <option v-for="opt in nameArr" :key="opt">
+            {{ opt }}
+        </option>
+    </select>
 </template>
 
 <script>

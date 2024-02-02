@@ -1,7 +1,8 @@
 <template>
     <button class="btn" @click="addDic">AddDic</button>
     <div v-for="dic in dics" :key="dic">
-      <a @click="openDic(dic)" class="m-1 bg bg-red-300 rounded-sm linkHoverDic">{{ dic }}</a>
+      <a v-if="this.isOpen[dic]" @click="openDic(dic)" class="m-1 linkHoverDic">v <b>{{ dic }}</b></a>
+      <a v-else @click="openDic(dic)" class="m-1 linkHoverDic">> <b>{{ dic }}</b></a>
       <div v-if="this.isOpen[dic]" class="ml-4">
         <div v-for="File in getFileNames(dic)" :key="File">
           <a @click="getAndFillInCurrentProgramName(File)" class="m-1 linkHoverFile">{{ File }}</a>

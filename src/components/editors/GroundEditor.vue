@@ -20,8 +20,8 @@
             />
             <br>
             <nav>
-              <button class="btn" @click="submitCode">Run</button>
-              <button class="btn" @click="sendDataToBackend">SaveAll</button>
+              <button class="btn m-2" @click="submitCode">Run</button>
+              <button class="btn m-2" @click="sendDataToBackend">SaveAll</button>
             </nav>
           </section>
           <div class="p-4">

@@ -6,10 +6,10 @@
                     @loadTer="loadTer($event)"
                     @seleted-terrain="selectedTerrainEvent"/>
                 <div class="playground grid" data-playground-></div>
-                <button class="start-btn btn" @click="start">Start</button>
-                <button class="btn" @click="print">Print</button>
-                <button class="btn" @click="cleanField">Cleanup</button>
-                <button class="btn" @click="reset">Reset Field</button>
+                <button class="start-btn btn bg-amber-600 m-2" @click="start">Start</button>
+                <button class="btn m-2" @click="print">Print</button>
+                <button class="btn m-2" @click="cleanField">Cleanup</button>
+                <button class="btn m-2" @click="reset">Reset Field</button>
             </div>
             <!-- class="inline-flex" -->
             <div class="m-5">
@@ -120,7 +120,7 @@ methods : {
     },
     start(){
         // this.game.handleResponse({0: '12', 1: '1', 2: '2', 3: '2', 4: '1', 5: '2', 6: '2', finished: 'working'})
-        this.game.handleResponse({0: '1', 1: '4', 2: '1',3: '1', finished: 'working'});
+        this.game.handleResponse({0: '1', 1: '2', 2: '2',3: '1', finished: 'working'});
     },
     print(){
         this.game.printCorns()
