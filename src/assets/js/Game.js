@@ -37,9 +37,12 @@ export default class Game extends EventEmitter{
 
     initCommands(){
         this.commandCreator.createCommand("1", () => {
-            console.log(`z: ${this.checkSpace()}`);
             if (this.checkSpace()) {
-                this.moveForward();
+                if (this.inBounce()) {
+                    this.moveForward();
+                } else {
+                    alert('error - out of bounce');
+                }
             } else {
                 alert('error - kein platz');
             } 
@@ -334,8 +337,8 @@ export default class Game extends EventEmitter{
             setTimeout(() => {
                 this.commandCreator.startAction(step)
             }, index * this.renderDelay)
-            
         });
+        
     }
 
     checkSpace() {
@@ -373,6 +376,32 @@ export default class Game extends EventEmitter{
         }
     }
 
+    inBounce() {
+        let currentDirection = this.getDigitFromDirection(this.player.direction);
+        switch(currentDirection) {
+            case 0: //up
+                if ((this.player.position.y - 1) < 0 ) {
+                    return false;
+                }
+                return true;
+            case 1: //right
+                if ((this.player.position.x + 1) >= this.terrain.dimension.width) {
+                    return false;
+                }
+                return true;
+            case 2: //down
+                if ((this.player.position.y + 1) >= this.terrain.dimension.height) {
+                    return false;
+                }
+                return true;
+            case 3: //left
+                if ((this.player.position.x - 1) < 0) {
+                    return false;
+                }
+                return true;
+        }
+    }
+
     moveForward(){
         let currentDirection = getPlayerDirection(this.getDigitFromDirection(this.player.direction));
         switch(currentDirection.toLowerCase()){
@@ -386,6 +415,7 @@ export default class Game extends EventEmitter{
                 this.player.position.y++;
                 break;
             case 'right':
+                console.log(`moveForwardPo: ${this.player.position.x}`);
                 this.player.position.x++;
                 break;
         }
