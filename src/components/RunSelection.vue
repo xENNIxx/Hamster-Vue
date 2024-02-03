@@ -36,7 +36,6 @@ export default {
             console.log(`prop: ${this.CurrentTabProp}`);
         },
         async send() {
-            // let bd_program = await axios.get(this.hostname + `program/getBasicData`);
             let bd_terrains = await axios.get(this.hostname + `terrainObject/getBasicData`);
             // console.log(`basicData: ${JSON.stringify(bd_terrains.data)}`);
             let currentTerrainId = this.getTerrainId(bd_terrains.data);
