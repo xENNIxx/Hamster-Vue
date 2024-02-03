@@ -28,29 +28,48 @@ export default {
             this.getTitle();
         },
         SelectedTerrainProp(n, o) {
-            console.log(`terrainProp: ${this.SelectedTerrainProp}`);
+            this.getTerrainId(this.SelectedTerrainProp);
         }
     },
     methods: {
         getTitle() {
             this.nameArr.push(this.CurrentTabProp);
-            console.log(`prop: ${this.CurrentTabProp}`);
         },
         async send() {
+            this.getProgramId();
+            if (this.idChecker()) {
+                let x = await axios.post(this.hostname + `run/runProgram/${this.programId}/${this.terrainId}`);
+                console.log(`sendStatus: ${x.status}`);
+            } else {
+                console.log('Es müssen ein Terrain und ein Programm ausgewählt sein.');
+            }
             
         },
-        getTerrainId() {
-            
-        }
-        /*
-        getProgramId() {
-            for (let i = 0; i < this.$g_Programs.length; i++) {
-                if () {
-
+        async getTerrainId(terrainName) {
+            let x = await axios.get(this.hostname + 'terrainObject/getBasicData');
+            let basic = x.data;
+            for (let i = 0; i < basic.length; i++) {
+                if (basic[i].terrainName == terrainName) {
+                    this.terrainId = basic[i].terrainId;
+                    console.log(`tId: ${this.terrainId}`);
                 }
             }
+        },
+        getProgramId() {
+            for (let i = 0; i < this.$g_Programs.length; i++) {
+                if (this.$g_Programs[i].programName == this.selectedOpt) {
+                    this.programId = this.$g_Programs[i].programId;
+                    console.log(`pId: ${this.programId}`);
+                }
+            }
+        },
+        idChecker() {
+            if (this.programId == 0 || this.programId == undefined || this.programId == null ||
+                this.terrainId == 0 || this.terrainId == undefined || this.terrainId == null) {
+                    return false;
+            }
+            return true;
         }
-        */
     }
 };
 </script>
