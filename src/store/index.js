@@ -80,11 +80,9 @@ export const createStore = (app) => {
           const serializedState = JSON.stringify(state); // Serialize the state data to JSON
           Cookies.set(key, serializedState, { expires: 3, secure: true });
         },
-        /*
         rehydrated: (store) => {
           store.dispatch('auth/checkLoginStatus');
         },
-        */
       }),
     ],
   });
