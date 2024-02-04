@@ -51,21 +51,19 @@ export default {
             for (let i = 0; i < basic.length; i++) {
                 if (basic[i].terrainName == terrainName) {
                     this.terrainId = basic[i].terrainId;
-                    console.log(`tId: ${this.terrainId}`);
                 }
             }
         },
         getProgramId() {
             for (let i = 0; i < this.$g_Programs.length; i++) {
                 if (this.$g_Programs[i].programName == this.selectedOpt) {
-                    this.programId = this.$g_Programs[i].programId;
-                    console.log(`pId: ${this.programId}`);
+                    this.programId = this.$g_Programs[i].programID;
                 }
             }
         },
         idChecker() {
-            if (this.programId == 0 || this.programId == undefined || this.programId == null ||
-                this.terrainId == 0 || this.terrainId == undefined || this.terrainId == null) {
+            if (this.programId < 0 || this.programId == undefined || this.programId == null ||
+                this.terrainId < 0 || this.terrainId == undefined || this.terrainId == null) {
                     return false;
             }
             return true;
