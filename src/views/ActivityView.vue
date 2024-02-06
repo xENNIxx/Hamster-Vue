@@ -35,10 +35,9 @@
             <div class="m-5">
                 <GroundEditorVue @submitted="submitCode($event)" />
             </div>
-            
+
         </div>
     </div>
-    {{this.$store.state.activity.hamster}}
 </template>
 
 <script>
@@ -102,6 +101,7 @@ export default {
     mounted() {
         this.game = this.newGame()
         this.game.on('cornChange', (event) => this.cornChanged(event))
+        this.loadTer(this.$store.state.activity.hamster)
         console.info("loaded game object")
         console.log(this.activity);
     },
@@ -149,8 +149,8 @@ export default {
             this.game = this.newGame()
         },
         loadTer(e) {
-            console.log(e);
-            this.game.createEntityObj(e);
+            console.log(`loadTerEvent: ${JSON.stringify(e)}`);
+            this.game.createEntityObj(e); //playground darstellen
             this.loaded_terrain_obj = e;
         },
         async submitCode(e) {

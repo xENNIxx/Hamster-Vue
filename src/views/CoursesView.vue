@@ -11,9 +11,8 @@
     <label class="swap swap-flip text-3xl">
       <!-- this hidden checkbox controls the state -->
       <input type="checkbox" @click="changeMode" />
-      <div class="swap-off">📝</div>
-      <div class="swap-on">👑</div>
-
+      <div class="swap-off"><i class="fas fa-tasks"></i></div>
+      <div class="swap-on"><i class="fas fa-crown"></i></div>
     </label>
 
     <div v-for="course in get" class="collapse bg-base-200 collapse-arrow w-1/2 m-5 shadow-md">
