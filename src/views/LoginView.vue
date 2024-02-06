@@ -1,9 +1,7 @@
 <template>
   <section>
     <div class="flex flex-col items-center justify-center">
-      <div
-        class="w-1/3 mt-44 bg-base-200 card-body card shadow p-5 "
-      >
+      <div class="w-1/3 mt-44 bg-base-200 card-body card shadow p-5 ">
         <h1 class="text-center text-xl">Login</h1>
         <div class="m-5 flex flex-col items-center justify-center gap-5">
           <input v-model="username" type="text" placeholder="Username/E-Mail" class="input"/>
@@ -88,6 +86,11 @@ export default {
           return JSON.stringify(response.data);
         })
         .then((json) => this.checkLogin(json))
+        // if successful, clear the input fields
+        .then(() => {
+          this.username = null; 
+          this.password = null;
+        })
         .catch((error) => {
             this.hasError = true
             this.errorText = "Fehler beim Login!";

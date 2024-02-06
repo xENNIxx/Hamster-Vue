@@ -102,7 +102,7 @@ export default {
     logOutResponse(e) {
       this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
       this.$router.push('/'); //Anwendung wird zu bestimmter route navigiert
-      console.log(e)
+     console.log(e)
       console.log(`logged in: ${this.isLoggedIn}`)
     },
     onClick() {
@@ -113,9 +113,10 @@ export default {
     }
   },
   mounted() {
+    /*
     this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
     this.$router.push('/'); //Anwendung wird zu bestimmter route navigiert
-
+    */
     window.addEventListener('mousemove', this.updateInteraction);
     window.addEventListener('keydown', this.updateInteraction);
     this.$store.dispatch('checkInactivity'); 
