@@ -10,8 +10,8 @@
           <p class="msg">No Territories found</p>
       </div>
     </section>
-    
-  </template>
+    <!--<button @click="getSelectedTerrainFromId(1)" class="btn">click</button>-->
+</template>
   
   <script>
 import { useThrottledRefHistory } from '@vueuse/core';
@@ -23,7 +23,8 @@ import axios from 'axios';
               terList: [],
               fullTerrainData: [],
               selectedTer: 'Select Terrain',
-              territories_there: false
+              territories_there: false,
+              test: {}
           }
       },
       emits: ['seletedTerrain']
@@ -44,54 +45,15 @@ import axios from 'axios';
                 // console.log(`terList: ${this.terList}`);
             },
             //normal-methods
-            loadTer(){
+            async loadTer(){
                 this.$emit('seletedTerrain', this.selectedTer);
                 if(this.checkValue(this.selectedTer) || this.selectedTer == "Select Terrain")
                     return;
-
                 let currentTerrainId = this.getTerrainIdFromName(this.selectedTer);
-                this.getSelectedTerrainFromId(currentTerrainId);
-                let json = {
-                    "terrainId" : 26,
-                    "terrainName" : "testTerrain",
-                    "width" : 10,
-                    "height" : 10,
-                    "defaultHamster" : {
-                        "hamster_id" : 3,
-                        "cntCornInMouth" : 5,
-                        "viewDirection" : "EAST",
-                        "xcord" : 1,
-                        "ycord" : 1
-                    },
-                    "customFields" : [
-                    {
-                        "field_id" : 15,
-                        "cntCorn" : 12,
-                        "wall" : false,
-                        "xcord" : 1,
-                        "ycord" : 4
-                    },
-                    {
-                        "field_id" : 16,
-                        "cntCorn" : 0,
-                        "wall" : true,
-                        "xcord" : 2,
-                        "ycord" : 2
-                    },
-                    {
-                        "field_id" : 17,
-                        "cntCorn" : 0,
-                        "wall" : true,
-                        "xcord" : 6,
-                        "ycord" : 2
-                    }
-                    ],
-                    "terrainPath" : "root/testPackage/"
-                }
-                //variable json beim emit übergeben und in PlaygroundView "zerlegen"
-                this.$emit('loadTer', json);
+                let x = await axios.get(this.hostname + `terrainObject/get/${currentTerrainId}`);
+                console.log(`raw: ${JSON.stringify(x.data)}`);
+                this.$emit('loadTer', x.data);
                 //this.$emit('loadTer', this.terList.find((ter) => ter.terrainName == this.selectedTer))
-                
             },
             getTerrainIdFromName(terrainName) {
                 for (let i = 0; i < this.fullTerrainData.length; i++) {
@@ -104,7 +66,9 @@ import axios from 'axios';
             //TODO
             async getSelectedTerrainFromId(terrainId) {
                 let data = await axios.get(this.hostname + `terrainObject/get/${terrainId}`);
-                // console.log(`terrainData: ${JSON.stringify(data.data)}`);
+                console.log(`data.data: ${JSON.stringify(data.data)}`);
+                this.test = data.data;
+                return data.data;
             }
       },
       beforeMount() {

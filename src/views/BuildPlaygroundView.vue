@@ -211,14 +211,14 @@ export default {
                         field_type = this.entity_symbols.CORN
                         this.hamster.cornAnzahl.push(Number(field.innerText))
                         this.hamster.corn.push([x, y])
-                        let fieldJSON = {'xCord': x, 'yCord': y,
+                        let fieldJSON = {'xcord': x, 'ycord': y,
                         'cntCorn': this.hamster.cornAnzahl[this.cornCounter], 'wall': false};
                         this.fields.push(fieldJSON);
                         this.cornCounter++;
                     } else if (classlist.contains("wall")) {
                         field_type = this.entity_symbols.WALL
                         this.hamster.wall.push([x, y])
-                        let fieldJSON = {'xCord': x, 'yCord': y,
+                        let fieldJSON = {'xcord': x, 'ycord': y,
                         'cntCorn': 0, 'wall': true};
                         this.fields.push(fieldJSON);
                     }
@@ -289,10 +289,10 @@ export default {
                 width: terrain.width,
                 height: terrain.height,
                 defaultHamster:
-                    {xCord: terrain.x, yCord: terrain.y, cntCornInMouth: terrain.cntCornInMouth, viewDirection: terrain.blickrichtung},
+                    {xcord: terrain.x, ycord: terrain.y, cntCornInMouth: terrain.cntCornInMouth, viewDirection: terrain.blickrichtung},
                 terrainPath: terrain.terrainPath,
                 customFields: this.fields};
-                
+            console.log(`x: ${terrain.x}; y: ${terrain.y}`);
             console.log(`terObj: ${JSON.stringify(terObj)}`);
             let status = await axios.post(this.hostname + `terrainObject/save`, terObj);
             console.log(`status: ${status.status}`);

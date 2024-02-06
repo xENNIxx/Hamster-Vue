@@ -150,7 +150,7 @@ export default class Game extends EventEmitter{
 
     //playground Darstellung -> wurde umgeschrieben (dokumentieren!)
     createEntityObj(terrainObj){
-        // console.log(`create: ${JSON.stringify(terrainObj)}`);
+        console.log(`create: ---------------------------------------->`);
         this.resetPlayground(terrainObj.width, terrainObj.height);
         let fields = this.container.querySelectorAll(".play-field");
 
