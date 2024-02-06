@@ -45,7 +45,7 @@ export class CommandCreator {
       console.error("UNKNOWN COMMAND:", id);
       return;
     }
-    console.log(command[0], id);
+    // console.log(command[0], id);
     command[0].startAction();
   }
 }

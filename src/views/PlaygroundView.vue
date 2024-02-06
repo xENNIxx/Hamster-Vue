@@ -120,7 +120,7 @@ methods : {
     },
     start(){
         // this.game.handleResponse({0: '12', 1: '1', 2: '2', 3: '2', 4: '1', 5: '2', 6: '2', finished: 'working'})
-        this.game.handleResponse({0: '1', 1: '4', 2: '1',3: '3',4: '1', finished: 'working'});
+        this.game.handleResponse({0: '1', 1: '1', 2: '1', 3: '1', 4: '1', 5: '1', 6: '1', finished: 'working'});
     },
     print(){
         this.game.printCorns()

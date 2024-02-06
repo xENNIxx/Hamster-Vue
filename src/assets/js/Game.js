@@ -9,6 +9,7 @@ export default class Game extends EventEmitter{
     renderDelay = 500;
     corns = [];
     walls = [];
+    valid = true;
     player = {
         position: new Vector2D(0, 0),
         direction: PLAYER_DIRECTION.RIGHT,
@@ -41,9 +42,11 @@ export default class Game extends EventEmitter{
                 if (this.inBounce()) {
                     this.moveForward();
                 } else {
+                    this.valid = false;
                     alert('error - out of bounce');
                 }
             } else {
+                this.valid = false;
                 alert('error - kein platz');
             } 
         }, "Move forward by one field")
@@ -339,12 +342,15 @@ export default class Game extends EventEmitter{
             swal("Ooops!","Response Error","error");
             return -1;
         }
+        console.log('hier');
         Object.values(response).forEach((step, index) => {
+            // alert(`valid: ${this.valid}`);
             setTimeout(() => {
-                this.commandCreator.startAction(step)
-            }, index * this.renderDelay)
+                if (this.valid) {
+                    this.commandCreator.startAction(step);
+                }
+            }, index * this.renderDelay);
         });
-        
     }
 
     checkSpace() {
