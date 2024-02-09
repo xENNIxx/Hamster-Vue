@@ -1,14 +1,14 @@
 <template>
-    <button @click="send" class="btn m-2">SendIdsToBackend</button>
     <select v-model="selectedOpt">
         <option v-for="opt in nameArr" :key="opt">
             {{ opt }}
         </option>
     </select>
+    <button @click="send" class="btn m-2">Run</button>
 </template>
 
 <script>
-import axios from 'axios';
+import axios, { all } from 'axios';
 
 export default {
     name: 'RunSelection',
@@ -31,15 +31,28 @@ export default {
             this.getTerrainId(this.SelectedTerrainProp);
         }
     },
+    mounted() {
+        //this.getAllProgramsFromDb();
+    },
     methods: {
+        async getAllProgramsFromDb() {
+            let allPrograms = await axios.get(this.hostname + 'program/getBasicData');
+            for (let i = 0; i < allPrograms.data.length; i++) {
+                let x = await axios.get(this.hostname + `program/get/${allPrograms[i].programId}`);
+                //this.$g_Programs.push(x.data);
+                //console.log(`id: ${allPrograms[i].programID}`);
+            }
+            console.log(`allPrograms: ${JSON.stringify(allPrograms.data)}`);
+        },
         getTitle() {
             this.nameArr.push(this.CurrentTabProp);
         },
         async send() {
+            this.getAllPrograms();
             this.getProgramId();
             if (this.idChecker()) {
-                let x = await axios.post(this.hostname + `run/runProgram/${this.programId}/${this.terrainId}`);
-                console.log(`sendStatus: ${x.status}`);
+                //let x = await axios.post(this.hostname + `run/runProgram/${this.programId}/${this.terrainId}`);
+                //console.log(`sendStatus: ${x.status}`);
             } else {
                 console.log('Es müssen ein Terrain und ein Programm ausgewählt sein.');
             }

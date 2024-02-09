@@ -8,8 +8,8 @@
                 <div class="playground grid" data-playground-></div>
                 <button class="start-btn btn bg-amber-600 m-2" @click="start">Start</button>
                 <button class="btn m-2" @click="print">Print</button>
-                <button class="btn m-2" @click="cleanField">Cleanup</button>
-                <button class="btn m-2" @click="reset">Reset Field</button>
+                <!--<button class="btn m-2" @click="cleanField">Cleanup</button>-->
+                <!--<button class="btn m-2" @click="reset">Reset Field</button>-->
             </div>
             <!-- class="inline-flex" -->
             <div class="m-5">

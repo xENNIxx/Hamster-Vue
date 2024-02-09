@@ -153,6 +153,7 @@ export default class Game extends EventEmitter{
 
     //playground Darstellung -> wurde umgeschrieben (dokumentieren!)
     createEntityObj(terrainObj){
+        this.valid = true;
         //terrainObj = JSON.parse(terrainObj);
         console.log(`createEntityObj: ${terrainObj}`);
         this.resetPlayground(terrainObj.width, terrainObj.height);

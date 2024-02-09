@@ -20,7 +20,9 @@
             />
             <br>
             <nav>
-              <button class="btn m-2" @click="submitCode">Run</button>
+              <RunSelection :-current-tab-prop="currentAddTab"
+                      :-selected-terrain-prop="SelectedTerrainProp"/>
+              <!--<button class="btn m-2" @click="submitCode">Run</button>-->
               <button class="btn m-2" @click="sendDataToBackend">SaveAll</button>
             </nav>
           </section>
@@ -29,10 +31,6 @@
                   :-tab-is-clicked-prop="tabIsClicked" />
           </div>
         </nav>
-      </div>
-      <div>
-        <RunSelection :-current-tab-prop="currentAddTab"
-                      :-selected-terrain-prop="SelectedTerrainProp"/>
       </div>
   </div>
 </template>
@@ -98,9 +96,17 @@
       },
       //normal-methods
       async sendDataToBackend() {
+        /*
+        let basicData = await axios.get(this.hostname + 'program/getBasicData');
+        let idArray = []
+        for (let i = 0; i < basicData.data.length; i++) {
+          idArray.push(basicData.data[i].programId);
+        }
+        console.log(`array: ${idArray}`);
+        */
         for (let i = 0; i < this.$g_Programs.length; i++) {
-          let postStatus = await axios.post(this.hostname + '/program/save', this.$g_Programs[i]);
-          console.log(`programPOST: ${postStatus}`);
+          let post = await axios.post(this.hostname + 'program/save', this.$g_Programs[i]);
+          console.log(`status: ${post.status}`);
         }
       },
       updateValue(event) {
