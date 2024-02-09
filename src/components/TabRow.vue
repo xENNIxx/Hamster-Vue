@@ -117,13 +117,18 @@ export default {
             return 'class ' + defaultTitel + ' {\n\n}';
         },
         pushIntoArrays(defaultTitel, defaultCode, path) {
-            let program = {'programID': this.tabCounter, 'programName': defaultTitel, 
+            let program = {'programId': this.tabCounter, 'programName': defaultTitel, 
                             'sourceCode': defaultCode, 'programPath': path};
-            this.$g_Programs.push(program);
+            //this.$g_Programs.push(program);
             let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
             this.tabs.push(currentTab);
+            this.saveCurrentProgramIntoDb(program);
             this.shiftArray(this.externButtonId, this.tabSequenz);
-            // console.log('pushIntoArrays');
+        },
+        async saveCurrentProgramIntoDb(program) {
+            let post = await axios.post(this.hostname + 'program/save', program);
+            console.log(`post status: ${post.status}`);
+            this.$g_Programs.push(post.data);
         },
         pushCurrentProgramIntoArray(program) {
             if (program == null || program == undefined) {
@@ -180,7 +185,7 @@ export default {
                 }
             }
             for (let i = 0; i < this.$g_Programs.length; i++) {
-                if (this.$g_Programs[i].programID == this.externButtonId) {
+                if (this.$g_Programs[i].programId == this.externButtonId) {
                     this.$g_Programs[i].programName = this.getDefaultTitel(input);
                     console.log(`currentProgram: ${this.$g_Programs[i].programName}`);
                 }

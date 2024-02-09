@@ -23,7 +23,7 @@
               <RunSelection :-current-tab-prop="currentAddTab"
                       :-selected-terrain-prop="SelectedTerrainProp"/>
               <!--<button class="btn m-2" @click="submitCode">Run</button>-->
-              <button class="btn m-2" @click="sendDataToBackend">SaveAll</button>
+              <button class="btn m-2" @click="sendFullDataToBackend">SaveAll</button>
             </nav>
           </section>
           <div class="p-4">
@@ -95,19 +95,15 @@
         this.currentAddTab = title;
       },
       //normal-methods
-      async sendDataToBackend() {
+      async sendFullDataToBackend() {
+        let x = await axios.get(this.hostname + 'program/getBasicData');
+        console.log(`data: ${JSON.stringify(x.data)}`);
         /*
-        let basicData = await axios.get(this.hostname + 'program/getBasicData');
-        let idArray = []
-        for (let i = 0; i < basicData.data.length; i++) {
-          idArray.push(basicData.data[i].programId);
-        }
-        console.log(`array: ${idArray}`);
-        */
         for (let i = 0; i < this.$g_Programs.length; i++) {
           let post = await axios.post(this.hostname + 'program/save', this.$g_Programs[i]);
           console.log(`status: ${post.status}`);
         }
+        */
       },
       updateValue(event) {
         this.value = event;
