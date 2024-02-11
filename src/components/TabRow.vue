@@ -34,7 +34,8 @@ export default {
             tabCounter: 0,
             externButtonId: 0, //TabId vom gerade aktiven Tab
             tabSequenz: [],
-            tabIsClicked: false
+            tabIsClicked: false,
+            idDic: {}
         }
     },
     components: {
@@ -53,15 +54,18 @@ export default {
         }
     },
     methods: {
+        /*
         async clickAction() {
             let x = await axios.get(this.hostname + 'program/get/1');
             console.log(`newData: ${JSON.stringify(x.data)}`);
         },
+        */
         //emit-methods
         handelEvent(buttonInformation = '') {
-            let arrInfos = buttonInformation.split('</#/>')
+            let arrInfos = buttonInformation.split('</#/>');
             this.externButtonId = arrInfos[0];
-            this.$emit('anyEvent', this.externButtonId);
+            this.$emit('anyEvent', this.idDic[this.externButtonId]);
+            console.log(`anyEvent: ${this.externButtonId}`);
             this.shiftArray(this.externButtonId, this.tabSequenz);
         },
         //normal-methods
@@ -81,6 +85,9 @@ export default {
                 alert('Dieser Ordner existiert nicht.');
             }
             console.log('addTab');
+        },
+        async getTrueProgramId() {
+            
         },
         checkIfDicExist(inputPath) {
             for (let i = 0; i < this.$g_Dics.length; i++) {
@@ -119,16 +126,21 @@ export default {
         pushIntoArrays(defaultTitel, defaultCode, path) {
             let program = {'programId': this.tabCounter, 'programName': defaultTitel, 
                             'sourceCode': defaultCode, 'programPath': path};
-            //this.$g_Programs.push(program);
-            let currentTab = {'id': this.tabCounter, 'title': defaultTitel, 'code': defaultCode};
-            this.tabs.push(currentTab);
             this.saveCurrentProgramIntoDb(program);
             this.shiftArray(this.externButtonId, this.tabSequenz);
         },
         async saveCurrentProgramIntoDb(program) {
             let post = await axios.post(this.hostname + 'program/save', program);
-            console.log(`post status: ${post.status}`);
-            this.$g_Programs.push(post.data);
+            // console.log(`post status: ${post.status}`);
+            // console.log(`post data: ${JSON.stringify(post.data)}`);
+            this.$g_Programs[post.data.programId] = post.data;
+            // console.log(`id: ${JSON.stringify(this.$g_Programs[post.data.programId])}`);
+            let currentTab = {'id': post.data.programId,
+                            'title': post.data.programName,
+                            'code': post.data.sourceCode};
+            this.tabs.push(currentTab);
+            this.idDic[post.data.programId] = program.programId;
+            console.log(`idDic: ${JSON.stringify(this.idDic)}`);
         },
         pushCurrentProgramIntoArray(program) {
             if (program == null || program == undefined) {

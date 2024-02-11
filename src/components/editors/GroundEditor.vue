@@ -23,7 +23,7 @@
               <RunSelection :-current-tab-prop="currentAddTab"
                       :-selected-terrain-prop="SelectedTerrainProp"/>
               <!--<button class="btn m-2" @click="submitCode">Run</button>-->
-              <button class="btn m-2" @click="sendFullDataToBackend">SaveAll</button>
+              <button class="btn m-2" @click="sendDataToBackend">Save</button>
             </nav>
           </section>
           <div class="p-4">
@@ -78,9 +78,8 @@
     methods: {
       //emit-methods
       handelEvent(buttonInformation = '') {
-        let arrInfos = buttonInformation.split('</#/>');
-        this.externButtonId = arrInfos[0];
-        this.code = this.$g_Programs[this.externButtonId].sourceCode;
+        console.log(`handelEvent: ${JSON.stringify(this.$g_Programs[buttonInformation])}`);
+        // this.code = this.$g_Programs[buttonInformation].sourceCode;
       },
       changeEvent(msg='') {
         console.log(`changeEvent ${msg}`)
@@ -95,15 +94,18 @@
         this.currentAddTab = title;
       },
       //normal-methods
-      async sendFullDataToBackend() {
-        let x = await axios.get(this.hostname + 'program/getBasicData');
-        console.log(`data: ${JSON.stringify(x.data)}`);
-        /*
+      async sendDataToBackend() {
+        console.log(`sendDataToBackend`);
+        let currentProgramName = this.$g_Programs[this.externButtonId].programName;
+        let currentProgram = {};
         for (let i = 0; i < this.$g_Programs.length; i++) {
-          let post = await axios.post(this.hostname + 'program/save', this.$g_Programs[i]);
-          console.log(`status: ${post.status}`);
+          if (currentProgramName == this.$g_Programs[i].programName) {
+            currentProgram = this.$g_Programs[i];
+          }
         }
-        */
+        currentProgram.sourceCode = this.code;
+        let update = await axios.post(this.hostname + 'program/update', currentProgram);
+        console.log(`update status: ${update.status}`);
       },
       updateValue(event) {
         this.value = event;
