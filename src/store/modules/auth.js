@@ -1,10 +1,12 @@
 
 const state = {
   isLoggedIn: false,
+  userRole: 0,  // 0 -> default; 1-> admin, 2 -> dev, 3-> teacher, 4 -> user
 };
 
 const getters = {
   isLoggedIn: (state) => state.isLoggedIn,
+  getUserRole: (state) => state.userRole,
 };
 
 const mutations = {
@@ -14,6 +16,9 @@ const mutations = {
   SET_USERNAME(state, value) {
     state.testv = value;
   },
+  SET_USERROLE(state, value) {
+    state.userRole = value;
+  }
 };
  
 const actions = {
@@ -26,7 +31,9 @@ const actions = {
   register({ commit }) {
     commit('SET_LOGGED_IN', true);
   },
-
+  role({commit}, role) {
+    commit('SET_USERROLE', role)
+  },
   checkLoginStatus({ commit, state }) {
     if (state.isLoggedIn) {
       commit('SET_LOGGED_IN', true);

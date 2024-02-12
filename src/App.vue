@@ -14,8 +14,14 @@
             Playground </router-link></li>
         <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/build"><i class="fas fa-hammer"></i>
             Build </router-link></li>
-        <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/courses"><i class="fas fa-book"></i>
-            Courses </router-link></li>
+        <li v-if="isLoggedIn">
+          <router-link v-if="getUserRole < 1  || getUserRole > 3" class="btn btn-ghost btn-sm m-2" to="/courses"><i class="fas fa-book"></i>
+            <!-- for teachers and higher -->
+            Courses 
+          </router-link>
+          <router-link v-else class="btn btn-ghost btn-sm m-2" to="/teachers/courses"><i class="fas fa-book"></i>
+            Courses </router-link>
+        </li>
         <li v-if="isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/profile"><i class="fas fa-user"></i>
             Profile </router-link></li>
         <li v-if="!isLoggedIn"><router-link class="btn btn-ghost btn-sm m-2" to="/login"><i
@@ -79,10 +85,13 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return this.$store.getters['auth/isLoggedIn']
+      return this.$store.getters['auth/isLoggedIn'];
+    },
+    getUserRole() {
+      return this.$store.getters['auth/getUserRole'];
     },
     getUsername() {
-      return this.$store.getters['inputData/username']
+      return this.$store.getters['inputData/username'];
     }
   },
   data() {
@@ -97,13 +106,13 @@ export default {
   methods: {
 
     updateInteraction() {
-      this.$store.commit('updateInteraction')
+      this.$store.commit('updateInteraction');
     },
     logOutResponse(e) {
-      this.$store.dispatch('auth/logout') //ruft logout methode in auth.js auf
+      this.$store.dispatch('auth/logout'); //ruft logout methode in auth.js auf
       this.$router.push('/'); //Anwendung wird zu bestimmter route navigiert
-     console.log(e)
-      console.log(`logged in: ${this.isLoggedIn}`)
+      console.log(e);
+      console.log(`logged in: ${this.isLoggedIn}`);
     },
     onClick() {
       //console.log(`before: ${this.getUsername}`);
