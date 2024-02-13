@@ -10,8 +10,8 @@
       </svg></button>
     <div v-for="course in get" class="bg-base-200 w-1/2 m-5 shadow-md rounded-2xl">
       <div class="flex justify-between min-h-15 p-4">
-        <p class="text-xl font-medium">{{ course.course_name }}</p>
-        <router-link :to="`/teachers/courses/${course.course_id}`" class="text-l">open</router-link>
+        <p class="text-xl font-medium">{{ course.name }}</p>
+        <router-link :to="`/teachers/courses/${course.id}`" class="text-l">open</router-link>
       </div>
     </div>
     <p v-if="get == null || get == ''" class="italic text-base-400 text-xs text-center mb-28">Noch keine Kurse erstellt</p>
@@ -19,7 +19,7 @@
     <p class="italic text-base-400 text-md text-center mt-4 mb-4">Neuer Kurs:</p>
     <div class="flex flex-row items-center">
       <router-link to="/teachers/courses/new" class="btn btn-sm btn-accent text-center px-2">Erstellen</router-link>
-      <button class="btn btn-circle ml-3">import</button>
+      <button class="btn btn-circle ml-3"><i class="fas fa-file-import"></i></button>
     </div>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
       this.hasError = false;
       
       // setup request
-      const link = this.hostname + "users/teachers/my-view";
+      const link = this.hostname + "teachers/my-view";
       axios.defaults.withCredentials = true;
       var config = {
         method: "get",
@@ -58,6 +58,7 @@ export default {
       try {
         const response = await axios(config);
         this.get = response.data;
+        console.log("courses:")
         console.log(response.data);
       } catch (error) {
         console.log(error.message);

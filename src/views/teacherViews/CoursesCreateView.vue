@@ -7,29 +7,16 @@
                 <div class="m-5 flex flex-col items-center justify-center gap-5">
                     <input v-model="coursename" type="text" placeholder="Name" class="input"/>
                     
-                    <p :class="{'text-error': hasError, 'text-success': !hasError}">{{ errorText }}</p>
+                    <p :class="{'text-error text-sm': hasError, 'text-success text-sm': !hasError}">{{ errorText }}</p>
 
-                    <button @click="createCourse" class="btn btn-primary" v-text="name"></button>
+                    <button v-if="!created" @click="createCourse" class="btn btn-primary" v-text="name"></button>
+                    <div v-else class="flex flex-row gap-2">
+                        <button @click="$router.push(`/teachers/courses`)" class="btn btn-outline btn-primary">Zur Übersicht</button>
+                        <button @click="$router.push(`/teachers/courses/${courseId}`)" class="btn btn-primary">Kurs anzeigen</button>
+                    </div>
 
                     <p class="italic text-slate-400 text-xs text-center mt-2 mb-0">Der Kurs wird direkt angelegt (wenn möglich)<br/> Schüler können anschließend über das Kurs-Menü hinzugefügt werden</p>
                 </div>
-
-                
-                <!-- UNUSED -->
-                <!-- <table>
-                    <thead>
-                        <tr>
-                            <th colspan="2">Ausgewählte Schüler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="student in selectedStudents">
-                            <td>{{student["username"]}}</td>
-                            <td><button class="" @click="excludeStudentFromSelected(student)">entfernen</button></td>
-                        </tr>
-                    </tbody>
-                </table> -->
-
             </div>
         </div>
     </section>
@@ -48,6 +35,8 @@ export default {
         coursename: '',
         errorText: '',
         hasError: false,
+        created: false,
+        test: undefined
       };
     },
     props: {
@@ -69,7 +58,7 @@ export default {
                 return;
             }
             // create course
-            let courseId = await this.initializeCourse();
+            this.test = await this.initializeCourse();
         },
         async initializeCourse() {
             // set variables to default
@@ -99,66 +88,30 @@ export default {
             };
     
             // call request and react
-            let response = axios(config)
+            let response = await axios(config)
                 .then((response) =>{
-                    this.hasError = false
+                    this.hasError = false;
                     this.errorText = "Kurs angelegt!";
-                    console.log("Kurs angelegt")
-                    
-                    return JSON.stringify(response.data);
+                    console.log("Kurs angelegt");
+                    this.created = true;
+                    return response.data;
+                })
+                // save id of the new course
+                .then((data) => {
+                    this.courseId = data;
                 })
                 .catch((error) => {
                     this.hasError = true
                     this.errorText = error.response.data;
                     // TODO: Fehlermeldung, kurs mit name schon vorhanden
-                    console.log("error")
+                    console.log("error");
                     console.log(JSON.stringify(error.data));
                 });
             
             return response;
         }
     },
-    computed: {
-        filteredStudents() {
-            return this.allStudents.filter(student => {
-                return student.username.toLowerCase().includes(this.searchedName.toLowerCase())
-            })
-        }
-    },
     beforeMount() {
     },
 }
 </script>
-    
-
-
-
-<style>
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.filtered-list {
-  position: absolute;
-  background-color: #000000;
-  min-width: 160px;
-  width: 100%;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.filtered-list button {
-  color: black;
-  padding: 12px 16px;
-  width: 100%;
-  text-decoration: none;
-  display: block;
-}
-
-.filtered-list button:hover {background-color: #303030;}
-
-.show {display: block;}
-</style>
