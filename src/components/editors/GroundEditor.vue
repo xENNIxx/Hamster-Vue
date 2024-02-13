@@ -65,7 +65,8 @@
           code: '',
           currentProgram: {},
           tabIsClicked: '',
-          currentAddTab: ''
+          currentAddTab: '',
+          trueArrId: 0
        }
     },
     mounted() {
@@ -79,14 +80,15 @@
       //emit-methods
       handelEvent(buttonInformation = '') {
         console.log(`handelEvent: ${JSON.stringify(this.$g_Programs[buttonInformation])}`);
-        // this.code = this.$g_Programs[buttonInformation].sourceCode;
+        this.trueArrId = buttonInformation;
+        this.code = this.$g_Programs[buttonInformation].sourceCode;
       },
       changeEvent(msg='') {
         console.log(`changeEvent ${msg}`)
         this.tabIsClicked = msg;
       },
-      getCurrentTab(program='') {
-        console.log(`getCurrentTab: ${program.programName}`);
+      getCurrentTab(program='') { 
+        console.log(`getCurrentTab: ${JSON.stringify(program)}`);
         this.currentProgram = program;
       },
       addTabEvent(title="") {
@@ -110,8 +112,7 @@
       updateValue(event) {
         this.value = event;
         this.$store.commit('setCodeFromEditor', event);
-        this.$g_Programs[this.externButtonId].sourceCode = this.code; //save code from current tab
-        console.log('hier');
+        this.$g_Programs[this.trueArrId].sourceCode = this.code; //save code from current tab
       },
       async submitCode(){
 
@@ -135,7 +136,8 @@
       },
       newTab() {
         this.tabs.push(this.tabCounter++)
-      }*/
+      }
+      */
     }
   }
 </script>

@@ -35,7 +35,6 @@ export default {
             externButtonId: 0, //TabId vom gerade aktiven Tab
             tabSequenz: [],
             tabIsClicked: false,
-            idDic: {}
         }
     },
     components: {
@@ -64,7 +63,8 @@ export default {
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>');
             this.externButtonId = arrInfos[0];
-            this.$emit('anyEvent', this.idDic[this.externButtonId]);
+            console.log(this.getTrueProgramId(this.externButtonId));
+            this.$emit('anyEvent', this.getTrueProgramId(this.externButtonId));
             console.log(`anyEvent: ${this.externButtonId}`);
             this.shiftArray(this.externButtonId, this.tabSequenz);
         },
@@ -86,8 +86,12 @@ export default {
             }
             console.log('addTab');
         },
-        async getTrueProgramId() {
-            
+        getTrueProgramId(exId) {
+            for (let i = 0; i < this.$g_Programs.length; i++) {
+                if (exId == this.$g_Programs[i].programId) {
+                    return this.$g_Programs[i].arrId;
+                }
+            }
         },
         checkIfDicExist(inputPath) {
             for (let i = 0; i < this.$g_Dics.length; i++) {
@@ -123,30 +127,28 @@ export default {
         getdefaultCode(defaultTitel) {
             return 'class ' + defaultTitel + ' {\n\n}';
         },
-        pushIntoArrays(defaultTitel, defaultCode, path) {
-            let program = {'programId': this.tabCounter, 'programName': defaultTitel, 
-                            'sourceCode': defaultCode, 'programPath': path};
-            this.saveCurrentProgramIntoDb(program);
-            this.shiftArray(this.externButtonId, this.tabSequenz);
-        },
-        async saveCurrentProgramIntoDb(program) {
+        async pushIntoArrays(defaultTitel, defaultCode, path) {
+            let program = {'programId': this.tabCounter,
+                            'programName': defaultTitel,
+                            'sourceCode': defaultCode,
+                            'programPath': path,
+                            'arrId': this.$g_Programs.length
+            };
             let post = await axios.post(this.hostname + 'program/save', program);
-            // console.log(`post status: ${post.status}`);
-            // console.log(`post data: ${JSON.stringify(post.data)}`);
-            this.$g_Programs[post.data.programId] = post.data;
-            // console.log(`id: ${JSON.stringify(this.$g_Programs[post.data.programId])}`);
-            let currentTab = {'id': post.data.programId,
-                            'title': post.data.programName,
-                            'code': post.data.sourceCode};
-            this.tabs.push(currentTab);
-            this.idDic[post.data.programId] = program.programId;
-            console.log(`idDic: ${JSON.stringify(this.idDic)}`);
+            this.$g_Programs.push(post.data);
+            let tab = {
+                'id': post.data.programId,
+                'title': post.data.programName,
+                'code': post.data.sourceCode
+            };
+            this.tabs.push(tab);
+            console.log(`bigArr: ${JSON.stringify(this.$g_Programs)}`);
+            this.shiftArray(this.externButtonId, this.tabSequenz);
         },
         pushCurrentProgramIntoArray(program) {
             if (program == null || program == undefined) {
                 console.log('program is null or undefined');
             } else if (!this.checkIfThisProgramIsInTabRow(program)) {
-                // console.log(`programId: ${program.programId}, programName: ${program.programName}`);
                 let currentTab = {'id': program.programId,
                                  'title': program.programName,
                                  'code': program.sourceCode};
