@@ -63,9 +63,8 @@ export default {
         handelEvent(buttonInformation = '') {
             let arrInfos = buttonInformation.split('</#/>');
             this.externButtonId = arrInfos[0];
-            console.log(this.getTrueProgramId(this.externButtonId));
+            console.log(`trueId: ${this.getTrueProgramId(this.externButtonId)}`);
             this.$emit('anyEvent', this.getTrueProgramId(this.externButtonId));
-            console.log(`anyEvent: ${this.externButtonId}`);
             this.shiftArray(this.externButtonId, this.tabSequenz);
         },
         //normal-methods
@@ -134,12 +133,13 @@ export default {
                             'programPath': path,
                             'arrId': this.$g_Programs.length
             };
-            let post = await axios.post(this.hostname + 'program/save', program);
-            this.$g_Programs.push(post.data);
+            // let post = await axios.post(this.hostname + 'program/save', program);
+            // console.log(`postData: ${JSON.stringify(post.data)}`);
+            this.$g_Programs.push(program);
             let tab = {
-                'id': post.data.programId,
-                'title': post.data.programName,
-                'code': post.data.sourceCode
+                'id': program.programId,
+                'title': program.programName,
+                'code': program.sourceCode
             };
             this.tabs.push(tab);
             console.log(`bigArr: ${JSON.stringify(this.$g_Programs)}`);
@@ -152,7 +152,7 @@ export default {
                 let currentTab = {'id': program.programId,
                                  'title': program.programName,
                                  'code': program.sourceCode};
-                console.log(`currentTab: ${currentTab.id}`);
+                // console.log(`currentTab: ${JSON.stringify(currentTab)}`);
                 this.tabs.push(currentTab);
             } else {
                 console.log(`Tab ${program.programName} ist bereits offen`);

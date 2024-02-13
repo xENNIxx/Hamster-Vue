@@ -79,9 +79,10 @@
     methods: {
       //emit-methods
       handelEvent(buttonInformation = '') {
-        console.log(`handelEvent: ${JSON.stringify(this.$g_Programs[buttonInformation])}`);
+        console.log(`handelEvent: ${buttonInformation}`);
         this.trueArrId = buttonInformation;
         this.code = this.$g_Programs[buttonInformation].sourceCode;
+        // console.log(`code: ${JSON.stringify(this.$g_Programs[buttonInformation])}`);
       },
       changeEvent(msg='') {
         console.log(`changeEvent ${msg}`)
