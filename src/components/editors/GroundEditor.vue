@@ -71,6 +71,7 @@
     },
     mounted() {
         this.value = this.code;
+        this.getDataFromBackend();
     },
     props: ['SelectedTerrainProp']
     ,
@@ -82,7 +83,7 @@
         console.log(`handelEvent: ${buttonInformation}`);
         this.trueArrId = buttonInformation;
         this.code = this.$g_Programs[buttonInformation].sourceCode;
-        // console.log(`code: ${JSON.stringify(this.$g_Programs[buttonInformation])}`);
+        console.log(`code: ${JSON.stringify(this.$g_Programs[buttonInformation])}`);
       },
       changeEvent(msg='') {
         console.log(`changeEvent ${msg}`)
@@ -97,6 +98,15 @@
         this.currentAddTab = title;
       },
       //normal-methods
+      async getDataFromBackend() {
+        console.log('getFromBackend');
+        let get = await axios.get(this.hostname + 'program/getBasicData');
+        // let programArr = [];
+        for (let i = 0; i < get.data.length; i++) {
+          //let p = await axios.get(this.hostname + `program/get/${get.data[i].programId}`);
+          console.log(`ids: ${get.data[i].programId}`);
+        }
+      },
       async sendDataToBackend() {
         console.log(`sendDataToBackend`);
         let currentProgramName = this.$g_Programs[this.externButtonId].programName;

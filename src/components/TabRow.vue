@@ -130,16 +130,23 @@ export default {
             let program = {'programId': this.tabCounter,
                             'programName': defaultTitel,
                             'sourceCode': defaultCode,
-                            'programPath': path,
-                            'arrId': this.$g_Programs.length
+                            'programPath': path
             };
-            // let post = await axios.post(this.hostname + 'program/save', program);
+            let post = await axios.post(this.hostname + 'program/save', program);
             // console.log(`postData: ${JSON.stringify(post.data)}`);
-            this.$g_Programs.push(program);
+            let trueProgram = {
+                'programId': post.data.programId,
+                'programName': post.data.programName,
+                'sourceCode': post.data.sourceCode,
+                'programPath': post.data.programPath, 
+                'arrId': this.$g_Programs.length
+            };
+            console.log(`trueProgram: ${JSON.stringify(trueProgram)}`);
+            this.$g_Programs.push(trueProgram);
             let tab = {
-                'id': program.programId,
-                'title': program.programName,
-                'code': program.sourceCode
+                'id': trueProgram.programId,
+                'title': trueProgram.programName,
+                'code': trueProgram.sourceCode
             };
             this.tabs.push(tab);
             console.log(`bigArr: ${JSON.stringify(this.$g_Programs)}`);

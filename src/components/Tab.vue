@@ -27,7 +27,6 @@ export default {
         getCode() {
             this.code = '';
             this.$emit('anyEvent', this.id + "</#/>" + this.code);
-            console.log(`tab: ${this.id}`);
         }
     }
 };
