@@ -63,9 +63,9 @@ const routes = [
     component: () => import('../views/teacherViews/CoursesDetailView.vue')
   },
   {
-    path: '/teachers/courses/:id/exercises',
-    name: 'teacher_course_exercises',
-    component: () => import('../views/teacherViews/CoursesExerciseView.vue')
+    path: '/teachers/courses/:id/activities',
+    name: 'teacher_course_activities',
+    component: () => import('../views/teacherViews/CoursesActivityView.vue')
   }
 ]
 
