@@ -8,7 +8,7 @@
       </svg></button>
 
       
-    <label class="swap swap-flip text-3xl">
+    <label class="swap swap-flip text-3xl text-primary">
       <!-- this hidden checkbox controls the state -->
       <input type="checkbox" @click="changeMode" />
       <div class="swap-off"><i class="fas fa-tasks"></i></div>
