@@ -13,7 +13,7 @@ const store = createStore(app)
 const rootApp = app.use(store)
 
 const HOSTNAME = "http://localhost:8080/api/"
-let g_Programs = {} //dictionary
+let g_Programs = []
 let g_Terrains = []
 let g_Dics = []
 app.config.globalProperties.hostname = HOSTNAME

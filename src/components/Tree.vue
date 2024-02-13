@@ -57,7 +57,7 @@ export default {
         for (let i = 0; i < this.$g_Programs.length; i++) {
           if (this.$g_Programs[i].programName == programName) {
             console.log(`id: ${this.$g_Programs[i].programID}`);
-            this.changeToProgramObjAndPushIntoArray(this.$g_Programs[i]);
+            this.changeToProgramObjAndPushIntoArray(this.$g_Programs[i]); 
           }
         }
       },
@@ -71,15 +71,13 @@ export default {
         return fileNames;
       },
       changeToProgramObjAndPushIntoArray(program) {
-        if (program == null || program == undefined) {
-          console.log('program is null or undefined');
-        } else {
-          let currentProgram = {'programId': program.programID,
+        let currentProgram = {'programId': program.programId,
                               'programName': program.programName,
-                              'sourcecode': program.sourcecode,
-                              'programPath': program.programPath}
-          this.$emit('currentProgramEvent', currentProgram);
-        }
+                              'sourcecode': program.sourceCode,
+                              'programPath': program.programPath,
+                              'arrId': program.arrId};
+        //console.log(`currentProgram: ${JSON.stringify(currentProgram)}`);
+        this.$emit('currentProgramEvent', currentProgram);
       },
       updateFileTreeNames() {
         for (let i = 0; i < this.$g_Dics.length; i++) {
