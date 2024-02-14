@@ -48,7 +48,7 @@ export default {
     ,
     watch: {
         CurrentProgramProp(n, o) {
-            console.log(`hier ----> ${this.CurrentProgramProp.programName}`);
+            // console.log(`hier ----> ${this.CurrentProgramProp.programName}`);
             this.pushCurrentProgramIntoArray(this.CurrentProgramProp);
         }
     },

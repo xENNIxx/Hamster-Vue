@@ -101,11 +101,12 @@
       async getDataFromBackend() {
         console.log('getFromBackend');
         let get = await axios.get(this.hostname + 'program/getBasicData');
-        // let programArr = [];
+        let programArr = [];
         for (let i = 0; i < get.data.length; i++) {
-          //let p = await axios.get(this.hostname + `program/get/${get.data[i].programId}`);
-          console.log(`ids: ${get.data[i].programId}`);
+          let p = await axios.get(this.hostname + `program/get/${get.data[i].programId}`);
+          programArr.push(p.data);
         }
+        console.log(`pArr: ${JSON.stringify(programArr)}`);
       },
       async sendDataToBackend() {
         console.log(`sendDataToBackend`);
