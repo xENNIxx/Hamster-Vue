@@ -28,7 +28,7 @@ const routes = [
   {
     path: '/build',
     name: "Build",
-    component: () => import('../views/BuildPlaygroundView.vue'),
+    component: () => import('../views/BuildTerrainView.vue'),
   },
   {
     path: '/courses',
