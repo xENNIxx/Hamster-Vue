@@ -534,7 +534,7 @@ export default {
       this.hasErr_addStudents = false;
       
       // setup request
-      const link = `${this.hostname}users/students?course_id=${this.courseId}`;
+      const link = `${this.hostname}students?course_id=${this.courseId}`;
       var data = JSON.stringify({
         users: this.addStudents.map((curStudent) => {return curStudent.id}),
       });

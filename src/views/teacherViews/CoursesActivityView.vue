@@ -304,7 +304,7 @@ export default {
         async postContest(link) {
            // setup request
             var data = {
-                exercise : {
+                contest : {
                     course_id: this.courseId,
                     name: this.actName,
                     details: this.details,
