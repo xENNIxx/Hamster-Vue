@@ -59,13 +59,23 @@ const routes = [
   },
   {
     path: '/teachers/courses/:id',
-    name: 'teacher_course_detail',
+    name: 'teacher_courses_detail',
     component: () => import('../views/teacherViews/CoursesDetailView.vue')
   },
   {
     path: '/teachers/courses/:id/activities',
-    name: 'teacher_course_activities',
+    name: 'teacher_courses_activities',
     component: () => import('../views/teacherViews/CoursesActivityView.vue')
+  },
+  // {
+  //   path: '/teachers/courses/:id/activities/:actId',
+  //   name: 'teacher_courses_activities_update',
+  //   component: () => import('../views/teacherViews/CoursesActivityView.vue')
+  // },
+  {
+    path: '/teachers/courses/:id/correct/:solId',
+    name: 'teacher_courses_correct',
+    component: () => import('../views/teacherViews/CorrectActivityView.vue')
   }
 ]
 

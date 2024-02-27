@@ -8,13 +8,13 @@
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="m1 14 3-3m-3 3 3 3m-3-3h16v-3m2-7-3 3m3-3-3-3m3 3H3v3" />
       </svg></button>
-    <div v-for="course in get" class="bg-base-200 w-1/2 m-5 shadow-md rounded-2xl">
+    <div v-for="course in courses" class="bg-base-200 w-1/2 m-5 shadow-md rounded-2xl">
       <div class="flex justify-between min-h-15 p-4">
         <p class="text-xl font-medium">{{ course.name }}</p>
-        <router-link :to="`/teachers/courses/${course.id}`" class="text-l">open</router-link>
+        <router-link :to="`/teachers/courses/${course.id}`" class="w-20 text-end"><i class="fas fa-chevron-right"></i></router-link>
       </div>
     </div>
-    <p v-if="get == null || get == ''" class="italic text-base-400 text-xs text-center mb-28">Noch keine Kurse erstellt</p>
+    <p v-if="courses == null || courses == ''" class="italic text-base-400 text-xs text-center mb-28">Noch keine Kurse erstellt</p>
     <!-- new course -->
     <p class="italic text-base-400 text-md text-center mt-4 mb-4">Neuer Kurs:</p>
     <div class="flex flex-row items-center">
@@ -30,18 +30,11 @@ export default {
   name: "TeacherCoursesView",
   data() {
     return {
-      get: null,
-      expDeadline: false,
-      errorText: '',
-      hasError: false,
+      courses: null,
     };
   },
   methods: {
     async refreshData() {
-      // set variables to default
-      this.errorText = '';
-      this.hasError = false;
-      
       // setup request
       const link = this.hostname + "teachers/my-view";
       axios.defaults.withCredentials = true;
@@ -57,7 +50,7 @@ export default {
       // call request
       try {
         const response = await axios(config);
-        this.get = response.data;
+        this.courses = response.data;
         console.log("courses:")
         console.log(response.data);
       } catch (error) {

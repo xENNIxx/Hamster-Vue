@@ -1,27 +1,24 @@
 <template>
-    <!-- defaultClick to simulate "window.onclick()"-->
-    <section @click="defaultClick">
-        <div class="flex flex-col items-center justify-center">
-            <div class="w-1/3 mt-44 bg-base-200 card-body card shadow p-5">
-                <h1 class="text-center text-xl">Neuen Kurs erstellen</h1>
-                <div class="m-5 flex flex-col items-center justify-center gap-5">
-                    <input v-model="coursename" type="text" placeholder="Name" class="input"/>
-                    
-                    <p :class="{'text-error text-sm': hasError, 'text-success text-sm': !hasError}">{{ errorText }}</p>
+    <div class="flex flex-col items-center justify-center">
+        <div class="w-1/3 mt-44 bg-base-200 card-body card shadow p-5">
+            <h1 class="text-center text-xl">Neuen Kurs erstellen</h1>
+            <div class="m-5 flex flex-col items-center justify-center gap-5">
+                <input v-model="coursename" type="text" placeholder="Name" class="input"/>
+                
+                <p :class="{'text-error text-sm': hasError, 'text-success text-sm': !hasError}">{{ errorText }}</p>
 
-                    <button v-if="!created" @click="createCourse" class="btn btn-primary" v-text="name"></button>
-                    <div v-else class="flex flex-row gap-2">
-                        <button @click="$router.push(`/teachers/courses`)" class="btn btn-outline btn-primary">Zur Übersicht</button>
-                        <button @click="$router.push(`/teachers/courses/${courseId}`)" class="btn btn-primary">Kurs anzeigen</button>
-                    </div>
-
-                    <p class="italic text-slate-400 text-xs text-center mt-2 mb-0">Der Kurs wird direkt angelegt (wenn möglich)<br/> Schüler können anschließend über das Kurs-Menü hinzugefügt werden</p>
+                <button v-if="!created" @click="createValidation" class="btn btn-primary" v-text="name"></button>
+                <div v-else class="flex flex-row gap-2">
+                    <button @click="$router.push(`/teachers/courses`)" class="btn btn-outline btn-primary">Zur Übersicht</button>
+                    <button @click="$router.push(`/teachers/courses/${courseId}`)" class="btn btn-primary">Kurs anzeigen</button>
                 </div>
+
+                <p class="italic text-slate-400 text-xs text-center mt-2 mb-0">Der Kurs wird direkt angelegt (wenn möglich)<br/> Schüler können anschließend über das Kurs-Menü hinzugefügt werden</p>
             </div>
         </div>
-    </section>
+    </div>
 </template>
-  
+
 <script>
 import axios from "axios";
 
@@ -31,12 +28,10 @@ export default {
 
     data() {
       return {
-        get: null,
         coursename: '',
         errorText: '',
         hasError: false,
         created: false,
-        test: undefined
       };
     },
     props: {
@@ -50,7 +45,7 @@ export default {
       },
     },
     methods: {
-        async createCourse(event) {
+        async createValidation() {
             // validate inputfield
             if (this.checkValue(this.coursename)){
                 this.hasError = true;
@@ -58,9 +53,9 @@ export default {
                 return;
             }
             // create course
-            this.test = await this.initializeCourse();
+            await this.createCourse();
         },
-        async initializeCourse() {
+        async createCourse() {
             // set variables to default
             this.hasError = false;
             this.errorText = "";
@@ -88,7 +83,7 @@ export default {
             };
     
             // call request and react
-            let response = await axios(config)
+            await axios(config)
                 .then((response) =>{
                     this.hasError = false;
                     this.errorText = "Kurs angelegt!";
@@ -107,8 +102,6 @@ export default {
                     console.log("error");
                     console.log(JSON.stringify(error.data));
                 });
-            
-            return response;
         }
     },
     beforeMount() {
