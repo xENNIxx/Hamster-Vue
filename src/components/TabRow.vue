@@ -197,7 +197,7 @@ export default {
                 }
             }
         },
-        updateTitleAndProgramName() {
+        async updateTitleAndProgramName() {
             const input = prompt('Gib hier den neuen Titel ein:', '');
             for (let i = 0; i < this.tabs.length; i++) {
                 if (this.tabs[i].id == this.externButtonId) {
@@ -208,7 +208,9 @@ export default {
             for (let i = 0; i < this.$g_Programs.length; i++) {
                 if (this.$g_Programs[i].programId == this.externButtonId) {
                     this.$g_Programs[i].programName = this.getDefaultTitel(input);
-                    console.log(`currentProgram: ${this.$g_Programs[i].programName}`);
+                    console.log(`currentProgram: ${JSON.stringify(this.$g_Programs[i])}`);
+                    let status = await axios.post(this.hostname + 'program/updateName', this.$g_Programs[i]);
+                    console.log(`update-status: ${status.status}`);
                 }
             }
             this.tabIsClicked = !this.tabIsClicked;

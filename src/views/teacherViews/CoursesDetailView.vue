@@ -186,8 +186,8 @@
               </div>
               <ul tabindex="0" class="dropdown-content z-[1] menu py-1 px-0 shadow bg-base-100 rounded-lg">
                 <li><button @click="activityFilter = 'all'" class="btn-ghost rounded-none w-full text-sm mb-1">all</button></li>
-                <li><button @click="activityFilter = 'exercises'" class="btn-ghost rounded-none w-full text-sm mt-1">exercises</button></li>
-                <li><button @click="activityFilter = 'contests'" class="btn-ghost rounded-none w-full text-sm">contests</button></li>
+                <li><button @click="activityFilter = 'exercise'" class="btn-ghost rounded-none w-full text-sm mt-1">exercises</button></li>
+                <li><button @click="activityFilter = 'contest'" class="btn-ghost rounded-none w-full text-sm">contests</button></li>
               </ul>
             </div>
 
@@ -267,7 +267,7 @@
                 <td>
                   <!-- CORRECT -->
                   <!-- ignore checkbox -->
-                  <input type="checkbox" :id="`${activity.name}_correct`" class="modal-toggle" />
+                  <input type="checkbox" :id="`${activity.name}_correct`" class="modal-toggle" @change="() => {if (activitySolutions == null) {getSolutionsOfActivity(activity.activity_id)}}" />
                   <!-- correcting modal -->
                   <div class="modal">
                     <div class="modal-box overflow-visible">
@@ -293,12 +293,23 @@
                         </ul>
                       </div>
                       
-                      
-                      <table>
-                        <thead></thead>
+                      <!-- student-table -->
+                      <table class="w-full">
+                        <thead>
+                          <tr>
+                            <th>Schüler</th>
+                            <th>Abgabedatum</th>
+                            <th>Aktion</th>
+                          </tr>
+                        </thead>
                         <tbody>
-                          <tr v-for="stu in students">
-                            
+                          <tr v-for="sol in activitySolutions">
+                            <td>{{  }}</td>
+                            <td>{{  }}</td>
+                            <td>
+                              <btn @click="" class="btn btn-error" :disabled="sol.feedback == null">Korrigieren</btn>
+                              <btn class="btn btn-success" :disabled="sol.feedback != null">Ansehen</btn>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -340,7 +351,7 @@
                   <input type="checkbox" class="checkbox checkbox-primary checkbox-xs"/>
                 </td>
                 <td>
-                  <button class="btn btn-ghost btn-circle btn-xs mr-6"><i class="fas fa-pen"></i></button>
+                  <router-link :to="`/teachers/courses/${courseId}/activities?actId=${activity.activity_id}`" class="btn btn-ghost btn-circle btn-xs mr-6"><i class="fas fa-pen"></i></router-link>
                 </td>
               </tr>
             </tbody>
@@ -407,16 +418,21 @@ export default {
         return this.activities;
       }
       else {
-        let filtered = this.activities.filter((act) => act.name == this.activityFilter);   // TODO: thomas, wie greift man auf typ zu
+        let filtered = this.activities.filter((act) => act.type == this.activityFilter);   // TODO: thomas, wie greift man auf typ zu
         return filtered
       }
     },
     filteredStudents() {
       let filteredStudents = this.allStudents.filter((curStudent) => curStudent.username.includes(this.addStudentsSearchFilter))
       return filteredStudents;
+    },
+    filteredStudentsByActivitySolutions() {  // return those students who have handed in a solution to an activity
+      // TODO
+      //let filtered = this.students.filter((curStudents) => this.activitySolutions.id.includes(curStudent.student_idstudenid))
     }
   },
   methods: {
+    // Get Data Methods
     async getCourseData() {
       // setup request
       const link = `${this.hostname}teachers/my-view?course_id=${this.courseId}`;
@@ -437,13 +453,12 @@ export default {
         this.activities = response.data.activities;
         this.students = response.data.students;
         // log
-        console.log("course data:")
+        console.log("course data:");
         console.log(response.data);
       } catch(error) {
-        console.log(error)
+        console.log(error);
       }
     },
-    // Get Data Methods
     async getAllStudents() {
       // setup request
       const link = `${this.hostname}students`;
@@ -534,7 +549,7 @@ export default {
       this.hasErr_addStudents = false;
       
       // setup request
-      const link = `${this.hostname}users/students?course_id=${this.courseId}`;
+      const link = `${this.hostname}students?course_id=${this.courseId}`;
       var data = JSON.stringify({
         users: this.addStudents.map((curStudent) => {return curStudent.id}),
       });
@@ -580,10 +595,6 @@ export default {
       // TODO: delete
     },
     // other methods
-    setColor(activty, student) {
-      // TODO: get color by "is activtiy done by this student"
-      return 'text-red-500';
-    },
     delStudentChange(student, index) {
 
       console.log(this.delStudents);
