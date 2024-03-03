@@ -83,7 +83,6 @@ export default {
             } else {
                 alert('Dieser Ordner existiert nicht.');
             }
-            console.log('addTab');
         },
         getTrueProgramId(exId) {
             for (let i = 0; i < this.$g_Programs.length; i++) {
