@@ -1,4 +1,3 @@
-//TODO: make diagonal placing
 <template>
     <section class="flex flex-col items-center justify-center">
         <div class="flex flex-col items-center justify-center">
