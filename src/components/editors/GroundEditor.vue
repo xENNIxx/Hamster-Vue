@@ -21,7 +21,8 @@
             <br>
             <nav>
               <RunSelection :-current-tab-prop="currentAddTab"
-                      :-selected-terrain-prop="SelectedTerrainProp"/>
+                      :-selected-terrain-prop="SelectedTerrainProp"
+                      @send-event="sendEvent" />
               <!--<button class="btn m-2" @click="submitCode">Run</button>-->
               <button class="btn m-2" @click="sendDataToBackend">Save</button>
             </nav>
@@ -75,7 +76,7 @@
     },
     props: ['SelectedTerrainProp']
     ,
-    emits: ['anyEvent']
+    emits: ['anyEvent', 'sendEvent']
     ,
     methods: {
       //emit-methods
@@ -93,9 +94,13 @@
         console.log(`getCurrentTab: ${JSON.stringify(program)}`);
         this.currentProgram = program;
       },
-      addTabEvent(title="") {
+      addTabEvent(title='') {
         console.log(`addTabEvent: ${title}`);
         this.currentAddTab = title;
+      },
+      sendEvent(json='') {
+        console.log(`sendEvent: ${JSON.stringify(json)}`);
+        this.$emit('sendEvent', json);
       },
       //normal-methods
       async getDataFromBackend() {

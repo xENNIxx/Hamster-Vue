@@ -4,11 +4,11 @@
             {{ opt }}
         </option>
     </select>
-    <button @click="send" class="btn m-2">Run</button>
+    <button @click="send" class="btn bg-amber-600 m-2">Run</button>
 </template>
 
 <script>
-import axios, { all } from 'axios';
+import axios from 'axios';
 
 export default {
     name: 'RunSelection',
@@ -20,8 +20,11 @@ export default {
             terrainId: 0
         }
     },
-    props: 
+    props:
         ['CurrentTabProp', 'SelectedTerrainProp']
+    ,
+    emits:
+        ['sendEvent']
     ,
     watch: {
         CurrentTabProp(n, o) {
@@ -38,9 +41,9 @@ export default {
         async getAllProgramsFromDb() {
             let allPrograms = await axios.get(this.hostname + 'program/getBasicData');
             for (let i = 0; i < allPrograms.data.length; i++) {
-                let x = await axios.get(this.hostname + `program/get/${allPrograms[i].programId}`);
+                let x = await axios.get(this.hostname + `program/get/${allPrograms[i].programID}`);
                 //this.$g_Programs.push(x.data);
-                //console.log(`id: ${allPrograms[i].programID}`);
+                console.log(`id: ${allPrograms[i].programID}`);
             }
             console.log(`allPrograms: ${JSON.stringify(allPrograms.data)}`);
         },
@@ -48,11 +51,14 @@ export default {
             this.nameArr.push(this.CurrentTabProp);
         },
         async send() {
-            this.getAllPrograms();
             this.getProgramId();
+            console.log(`ids: ${this.programId}/${this.terrainId}`);
             if (this.idChecker()) {
                 //let x = await axios.post(this.hostname + `run/runProgram/${this.programId}/${this.terrainId}`);
                 //console.log(`sendStatus: ${x.status}`);
+                //mock-string schicken
+                let hamsterCommands = {0: '1', 1: '1', finished: 'working'};
+                this.$emit('sendEvent', hamsterCommands);
             } else {
                 console.log('Es müssen ein Terrain und ein Programm ausgewählt sein.');
             }
@@ -70,13 +76,13 @@ export default {
         getProgramId() {
             for (let i = 0; i < this.$g_Programs.length; i++) {
                 if (this.$g_Programs[i].programName == this.selectedOpt) {
-                    this.programId = this.$g_Programs[i].programID;
+                    this.programId = this.$g_Programs[i].programId;
                 }
             }
         },
         idChecker() {
-            if (this.programId < 0 || this.programId == undefined || this.programId == null ||
-                this.terrainId < 0 || this.terrainId == undefined || this.terrainId == null) {
+            if (this.programId <= 0 || this.programId == undefined || this.programId == null ||
+                this.terrainId <= 0 || this.terrainId == undefined || this.terrainId == null) {
                     return false;
             }
             return true;

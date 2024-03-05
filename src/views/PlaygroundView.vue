@@ -6,14 +6,15 @@
                     @loadTer="loadTer($event)"
                     @seleted-terrain="selectedTerrainEvent"/>
                 <div class="playground grid" data-playground-></div>
-                <button class="start-btn btn bg-amber-600 m-2" @click="start">Start</button>
-                <button class="btn m-2" @click="print">Print</button>
+                <!--<button class="start-btn btn bg-amber-600 m-2" @click="start">Start</button>-->
+                <!--<button class="btn m-2" @click="print">Print</button>-->
                 <!--<button class="btn m-2" @click="cleanField">Cleanup</button>-->
                 <!--<button class="btn m-2" @click="reset">Reset Field</button>-->
             </div>
             <!-- class="inline-flex" -->
             <div class="m-5">
                 <GroundEditorVue @submitted="submitCode($event)"
+                                @send-event="sendEvent"
                                 :-selected-terrain-prop="selectedTerrain"/>
             </div>
         </div>
@@ -38,9 +39,6 @@ components: {
     PlaygroundTerritorySelectorVue,
     RestButton
 },
-props : {
-    
-},
 data() {
     return {
         terrain : {
@@ -60,7 +58,13 @@ data() {
         loaded_terrain_obj: {
             type: Object
         },
-        selectedTerrain: ''
+        selectedTerrain: '',
+        jsonCommands: {}
+    }
+},
+watch: {
+    jsonCommands(o, n) {
+        this.start();
     }
 },
 beforeMount() {
@@ -75,6 +79,10 @@ methods : {
     //emit-methods
     selectedTerrainEvent(terrain='') {
         this.selectedTerrain = terrain;
+    },
+    sendEvent(json='') {
+        console.log(`sendEvent: ${JSON.stringify(json)}`);
+        this.jsonCommands = json;
     },
     //normal-methods
     axiosMethod() {
@@ -119,8 +127,9 @@ methods : {
     putCodeIntoEditor() {
     },
     start(){
-        // this.game.handleResponse({0: '12', 1: '1', 2: '2', 3: '2', 4: '1', 5: '2', 6: '2', finished: 'working'})
-        this.game.handleResponse({0: '1', 1: '1', 2: '1', 3: '1', 4: '1', 5: '1', 6: '1', finished: 'working'});
+        // console.log(`start: ${JSON.stringify(this.jsonCommands)}`);
+        this.game.handleResponse(this.jsonCommands);
+    
     },
     print(){
         this.game.printCorns()
