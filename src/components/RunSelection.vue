@@ -52,15 +52,14 @@ export default {
         },
         async send() {
             this.getProgramId();
-            console.log(`ids: ${this.programId}/${this.terrainId}`);
+            // console.log(`ids: ${this.programId}/${this.terrainId}`);
             if (this.idChecker()) {
                 //let x = await axios.post(this.hostname + `run/runProgram/${this.programId}/${this.terrainId}`);
                 //console.log(`sendStatus: ${x.status}`);
-                //mock-string schicken
-                let hamsterCommands = {0: '1', 1: '1', finished: 'working'};
+                let hamsterCommands = {0: '1', 1: '2', finished: 'working'};
                 this.$emit('sendEvent', hamsterCommands);
             } else {
-                console.log('Es müssen ein Terrain und ein Programm ausgewählt sein.');
+                alert('Es müssen ein Terrain und ein Programm ausgewählt sein.')
             }
             
         },
