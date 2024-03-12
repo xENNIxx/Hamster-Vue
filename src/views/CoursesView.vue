@@ -121,6 +121,8 @@ export default {
     async changeMode() {
       this.competition = !this.competition;
 
+      if(this.get == null) return;
+
       for (var course of this.get) {
         var mode = { true: "exercise", false: "contest" }
         this.activities[course.course_id] = course.activities.filter(activity => activity.type == mode[this.competition])
