@@ -1,8 +1,7 @@
 <template>
 <div>
   <div class="flex flex-col items-center justify-center">
-    <div v-if="solution == null" class="w-1/3 mt-10 bg-base-200 card-body card shadow p-5">
-      <!-- <h1>{{ activity.name }}</h1> -->
+    <div v-if="solution != null && activity != null" class="w-1/3 mt-10 bg-base-200 card-body card shadow p-5">
       <h1 class="text-3xl font-medium text-center">{{ activity.name }}</h1>
 
       <!-- solution data -->
@@ -16,15 +15,18 @@
         <tbody>
           <tr>
             <td class="border border-content bg-base-100 p-2 font-bold">Schüler*in</td>
-            <td class="border border-content bg-base-100 p-2">{{  }}</td>
+            <td class="border border-content bg-base-100 p-2">{{ solution.student_name }}</td>
           </tr>
           <tr>
             <td class="border border-content bg-base-100 p-2 font-bold">Abgabedatum</td>
-            <td class="border border-content bg-base-100 p-2">{{ solution.submission_date }}</td>
+            <td class="border border-content bg-base-100 p-2" 
+              :class="{'text-error' : IsOverdue()}">
+              {{ new Date(solution.submission_date).toLocaleDateString("de-DE") }}
+            </td>
           </tr>
           <tr>
             <td class="border border-content bg-base-100 p-2 font-bold">Deadline</td>
-            <td class="border border-content bg-base-100 p-2">{{ activity.deadline }}</td>
+            <td class="border border-content bg-base-100 p-2">{{ new Date(activity.deadline).toLocaleDateString("de-DE") }}</td>
           </tr>
           <tr>
             <td class="border border-content bg-base-100 p-2 font-bold">Details</td>
@@ -62,10 +64,16 @@
       </div>
 
       <!-- action-buttons -->
-      <div class="flex flex-row gap-2 justify-end">
+      <div class="flex flex-row gap-2 justify-end mt-1">
         <button @click="$router.push(`/teachers/courses/${this.courseId}`)" class="btn btn-outline btn-primary">Zurück</button>
-        <button class="btn btn-primary" :disabled="feedback == null || feedback == ''">Senden</button>
+        
+        <button v-if="awaitFeedback" class="btn btn-primary"><span class="loading loading-spinner"></span></button>
+        <button v-else @click="feedbackSolution" class="btn btn-primary" :disabled="feedback == null || feedback == ''">Senden</button>
       </div>
+
+      <!-- messages -->
+      <p class="self-center mt-4" :class="{'text-error text-sm': hasError, 'text-success text-sm': !hasError}">{{ message }}</p>
+
     </div>
 
     <!-- PLAYGROUND -->
@@ -116,11 +124,12 @@ export default {
       activity: undefined,
       solutionId: undefined,
       solution: undefined,
-      stuName: undefined,
       // inputs
       feedback: undefined,
       // view
-      loadedAllData: false,
+      awaitfeedback: false,
+      hasError: false,
+      message: undefined,
     }
   },
   methods: {
@@ -138,18 +147,27 @@ export default {
       };
 
       // call request & react
-      try {
-        const response = await axios(config);
-        // assign data
-        this.solution = response.data.solution;
-        // log
-        console.log("solution data:");
-        console.log(response.data);
-      } catch(err) {
-        console.log(err);
-      }
+      axios(config)
+        .then((response) => {
+          this.solution = response.data;      
+          // log
+          console.log("solution data:");
+          console.log(response.data);
+          return response.data.activity_id;
+        })
+        // get additional data of activity
+        .then((id) => {
+          this.getActivity(id);
+        })
+        // if the solution has a feedback, save it in feedback-value for input-binding
+        .then(() => {
+          this.feedback = this.solution.feedback;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     },
-    async getActivty(id) {
+    async getActivity(id) {
       // prepare request
       const link = `${this.hostname}activities/${id}`;
       var config = {
@@ -172,14 +190,13 @@ export default {
           console.log(err);
         })
     },
-    async getStudentName(id) {
-      // prepare request
-      const link = `${this.hostname}/users`;
-
-      this.stuName =  "Hans";
-    },
     async feedbackSolution() {
-      // patch solution to add feedback
+      // patch solution to add or change feedback
+      
+      this.awaitFeedback = true;
+      
+      // set to default
+      this.message = "";
       // prepare request
       const link = `${this.hostname}solutions/${this.solutionId}/feedback`;
       var data = {
@@ -201,15 +218,20 @@ export default {
       // call request & react
       axios(config)
         .then((response) => {
-          console.log(response);
-          return response.data;
-        })
-        .then((data) => {
-          // TODO
+          console.log(response.data);
+
+          // return success-message
+          this.hasError = false;
+          this.message = "Feedback wurde hinzugefügt!";
         })
         .catch((err) => {
           console.log(err);
+
+          this.hasError = true;
+          this.message = "Feedback hinzufügen Fehlgeschlagen!";
         })
+
+        this.awaitFeedback = false;
     },
     // Playground-functionality
     start() {
@@ -230,6 +252,14 @@ export default {
     // DEBUG
     submitCode(event) {
       console.log("debug");
+    },
+    // other functionality
+    IsOverdue() {
+      let date = new Date(this.solution.submission_date);
+      let deadline = new Date(this.activity.deadline);
+
+      // when date is greater than the deadline, the activity is overdue
+      return date >= deadline;
     }
 
   },
@@ -244,13 +274,6 @@ export default {
 
     // get solution data from api
     await this.getSolution();
-    // get other data via solution
-    //await this.getStudentName(this.solution.student_id);
-    //await this.getActivty(this.solution.activity_id);
-    await this.getStudentName(1);
-    await this.getActivty(2);
   }
 }
-
-
 </script>

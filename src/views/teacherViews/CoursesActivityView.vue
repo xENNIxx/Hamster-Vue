@@ -9,11 +9,11 @@
                 <table class="border-collapse w-full">
                     <tr class="w-full">
                         <td class="w-1/2">
-                            <input v-model="actType" type="radio" id="exercise" name="act_type" value="1" class="hidden peer" :readonly="viewMode == 1">
+                            <input v-model="actType" type="radio" id="exercise" name="act_type" value="1" class="hidden peer" :disabled="viewMode == 1">
                             <label for="exercise" class="btn btn-ghost rounded-r-none w-full border border-spacing-0 border-primary-content peer-checked:bg-primary peer-checked:text-primary-content">Exercise</label>
                         </td>
                         <td class="w-1/2">
-                            <input v-model="actType" type="radio" id="contest" name="act_type" value="2" class="hidden peer" :readonly="viewMode == 1">
+                            <input v-model="actType" type="radio" id="contest" name="act_type" value="2" class="hidden peer" :disabled="viewMode == 1">
                             <label for="contest" class="btn btn-ghost rounded-l-none w-full border border-spacing-0 border-primary-content peer-checked:bg-primary peer-checked:text-primary-content">Contest</label>
                         </td>
                     </tr>
@@ -58,7 +58,7 @@
                     <!-- new territory btn -->
                     <tr>
                         <div class="tooltip tooltip-bottom" data-tip="create new Territory">
-                            <button class="btn btn-circle btn-sm py-0"><i class="fas fa-plus text-secondary"></i></button>
+                            <router-link to="/build" class="btn btn-circle btn-sm py-0"><i class="fas fa-plus text-secondary"></i></router-link>
                         </div>
                     </tr>
                 </table>
@@ -75,14 +75,10 @@
                                 <option disabled selected>-- Territorium laden --</option>
                                 <option v-for="ter in terList"  :value="ter.terrainId">{{ ter.terrainName }}</option>
                             </select>
-                            <p>{{ this.conTerritories[0] }}</p>
                         </td>
                         <td>
                             <p v-if="conTerritories[0] == null" class="text-error text-xs flex right-0 items-center"><i class="fas fa-exclamation-circle mr-1"></i> Nicht angelegt!</p>
                             <p v-else class="text-success text-xs flex right-0 items-center"><i class="fas fa-check-circle mr-1"></i> Angelegt</p>
-                            <!-- <div class="tooltip tooltip-bottom" data-tip="change selected Territory">
-                                <button class="btn btn-circle btn-sm py-0"><i class="fas fa-edit text-secondary"></i></button>
-                            </div> -->
                         </td>
                     </tr>
                     <!-- end territory -->
@@ -100,9 +96,6 @@
                         <td>
                             <p v-if="conTerritories[1] == null" class="text-error text-xs flex right-0 items-center"><i class="fas fa-exclamation-circle mr-1"></i> Nicht angelegt!</p>
                             <p v-else class="text-success text-xs flex right-0 items-center"><i class="fas fa-check-circle mr-1"></i> Angelegt</p>
-                            <!-- <div class="tooltip tooltip-bottom" data-tip="change selected Territory">
-                                <button class="btn btn-circle btn-sm py-0"><i class="fas fa-edit text-secondary"></i></button>
-                            </div> -->
                         </td>
                     </tr>
                     
@@ -149,7 +142,7 @@
                     <!-- new territory btn -->
                     <tr>
                         <div class="tooltip tooltip-bottom" data-tip="create new Territory">
-                            <button class="btn btn-circle btn-sm py-0"><i class="fas fa-plus text-secondary"></i></button>
+                            <router-link to="/build" class="btn btn-circle btn-sm py-0"><i class="fas fa-plus text-secondary"></i></router-link>
                         </div>
                     </tr>
                 </table>
@@ -165,15 +158,15 @@
                 </div>
 
                 <!-- submit button -->
-                <button v-if="created_id == null" @click="$router.push(`/teachers/courses/${this.courseId}`)" class="btn btn-outline btn-primary">Zurück zur Übersicht</button>
-                <button @click="createActivity" class="btn btn-primary" v-text="name" :disabled="!inputsFilled()"></button>
+                <button v-if="executed == true" @click="$router.push(`/teachers/courses/${this.courseId}`)" class="btn btn-outline btn-primary">Zurück zur Übersicht</button>
                 
+                <button v-else-if="viewMode == 1" @click="changeActivity" class="btn btn-primary" v-text="'Änderungen speichern'" :disabled="!inputsFilled()"></button>
+                <button v-else @click="createActivity" class="btn btn-primary" v-text="'Activity erstellen'" :disabled="!inputsFilled()"></button>
+
                 <p :class="{'text-error': hasError, 'text-success': !hasError}">{{ message }}</p>
             </div>
         </div>
-        <p>change gibt es im frontend nicht, damn</p>
     </div>
-
 </template>
 
 <script>
@@ -186,10 +179,9 @@ export default {
         return {
             // basic data
             courseId: undefined,
-            formType: undefined,    // new activity or edit an existing one
             hasError: false,
             message: '',
-            created_id: false,  // id of the activity, if created successfully
+            executed: false,  // for displaying a return-button, when statement was executed successfully
             // form inputs
             actType: 0,     //0=default/not set, 1=exercise, 2=contest
             actName: undefined,
@@ -225,12 +217,10 @@ export default {
             const link = `${this.hostname}activities/`;
             if (this.actType == 1) {
                 // Exercise
-                console.log("falsch diese")
                 await this.postExercise(link);
             }
             else if (this.actType == 2) {
                 // Contest
-                console.log("deiner rat")
                 await this.postContest(link);
             }
             else {
@@ -268,7 +258,7 @@ export default {
             // call request
             axios(config)
                 .then((response) => {
-                    this.created_id = response.data;
+                    this.executed = true;
                     this.hasError = false;
                     this.message = 'Anlegen erfolgreich';
                 })
@@ -286,14 +276,14 @@ export default {
                     course_id: this.courseId,
                     name: this.actName,
                     details: this.details,
-                    start: this.deadline,   // TODO: improve deadline/start naming
+                    start: this.deadline,
                     hidden: !this.isVisible,
                     start_terrain_id: this.conTerritories[0],
                     end_terrain_id: this.conTerritories[1],
                 }
             }
 
-            // if both optional territories are selected, overwrite data with object containing all 4 territories
+            // if both optional territories are selected, add them to data
             if (this.conTerritories[2] != null && this.conTerritories[3] != null) {
                 data.contest.hidden_start_terrain_id = this.conTerritories[2];
                 data.contest.hidden_end_terrain_id = this.conTerritories[3];
@@ -315,9 +305,75 @@ export default {
             // call request
             axios(config)
                 .then((response) => {
-                    this.created_id = response.data;
+                    this.executed = true;
                     this.hasError = false;
                     this.message = 'Anlegen erfolgreich';
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.hasError = true;
+                    this.message = "Etwas ist schiefgelaufen!";
+                })
+        },
+        async changeActivity() { 
+            // to avoid errors, only allow valid act_types
+            if (this.actType != 1 && this.actType != 2) {
+                // invalid type
+                this.hasError = true;
+                this.message = 'Kein zulässiger Aktivitäts-Typ';
+                console.log('invalid activtiy-type');
+                return;
+            }
+            
+            // set to default
+            this.message = "";
+
+            // setup request
+            const link = `${this.hostname}activities/${this.actId}`;
+            // general data
+            var data = {
+                name: this.actName,
+                details: this.details,
+                hidden: !this.isVisible,
+                start_terrain_id: this.conTerritories[0],
+                end_terrain_id: this.conTerritories[1],
+            }
+            // type specific data
+            if (this.actType == 1) {
+                // Exercise
+                //data.deadline = this.deadline;
+                data.terrain_id = this.excsTerritory;
+            }
+            else if (this.actType == 2) {
+                // Contest
+                //data.start = this.deadline;
+                data.start_terrain_id = this.conTerritories[0];
+                data.end_terrain_id = this.conTerritories[1];
+                // if both optional territories are selected, add them to data
+                if (this.conTerritories[2] != null && this.conTerritories[3] != null) {
+                    data.hidden_start_terrain_id = this.conTerritories[2];
+                    data.hidden_end_terrain_id = this.conTerritories[3];
+                }
+            }
+            var config = {
+                method: "patch",
+                url: link,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "application/json",
+                    Accept: "*/*",
+                },
+                withCredentials: true,
+                httpsAgent: new https.Agent({ rejectUnauthorized: true }),
+                data: data,
+            };
+
+            // call request
+            axios(config)
+                .then((response) => {
+                    this.executed = true;
+                    this.hasError = false;
+                    this.message = 'Änderung erfolgreich';
                 })
                 .catch((err) => {
                     console.log(err);
@@ -363,34 +419,54 @@ export default {
             axios(config)
                 .then((response) => {
                     // successful
-                    console.log(response.data);
-                    this.actvityToFormData(response.data);
+                    console.log(response);
+                    this.loadActvityToFormData(response.data);
                 })
                 .catch((err) => {
                     console.log(err);
                 })
         },
         // other
-        actvityToFormData(activity) {
+        loadActvityToFormData(activity) {
+            // type-specific data
+            if (activity.type == "exercise") {
+                this.actType = 1;
+
+                this.deadline = new Date(activity.deadline).toISOString().slice(0, 16);
+                this.excsTerritory = activity.terrain_id;
+            }
+            else if (activity.type == "contest") {
+                this.actType = 2;
+
+                this.deadline =  new Date(activity.start).toISOString().slice(0, 16);
+                this.conTerritories[0] = activity.start_terrain_id;
+                this.conTerritories[1] = activity.end_terrain_id;
+                this.conTerritories[2] = activity.hidden_start_terrain_id;
+                this.conTerritories[3] = activity.hidden_end_terrain_id;
+            }
+        
+            // general data
             this.actName = activity.name;
-            this.deadline = activity.deadline;
             this.details = activity.details;
             this.isVisible = !activity.hidden;
-            // TODO: territorium laden + contest/exercise unterscheidung
         },
         inputsFilled() {
             // check always required fields
-            if (this.actName != null && this.deadline != null) {
-                // exercise -> needs one territory
-                if (this.actType == 1 && this.excsTerritory != null) {
-                    return true;
-                }
-                // contest -> two territories
-                else if (this.actType == 2 && this.conTerritories[0] != null && this.conTerritories[1] != null) {
-                    return true;
-                }
+            if (this.actName == null || this.actName == "") {
+                return false;
             }
-            return false;
+            if (this.deadline == null || this.deadline == "") {
+                return false
+            }
+            // exercise -> needs one territory
+            if (this.actType == 1 && this.excsTerritory == null) {
+                return false;
+            }
+            // contest -> two territories required
+            else if (this.actType == 2 && (this.conTerritories[0] == null || this.conTerritories[1] == null)) {
+                return false;
+            }
+            return true;
         },
         createTerritory() {
             // createTerritory currently unused

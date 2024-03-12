@@ -216,9 +216,9 @@
                 <td class="font-bold">{{ activity.name }}</td>
                 <td>{{ new Date(activity.date).toLocaleDateString('de-DE') }}</td>
                 <td>
-                  {{ students.length }} / {{ students.length }} / {{ students.length }}
+                  {{ students.length - activity.submitted}} / {{ activity.submitted - activity.feedbacked }} / {{ activity.feedbacked }}
                   <!-- ignore checkbox -->
-                  <input type="checkbox" :id="`${activity.name}_info`" class="modal-toggle" />
+                  <input type="checkbox" :id="`${activity.name}_info`" class="modal-toggle" @change="getSolutionsOfActivity(activity.activity_id)" />
                   <!-- status modal -->
                   <div class="modal">
                     <div class="modal-box">
@@ -251,8 +251,8 @@
                             <td>{{ index }}</td>
                             <td>{{ student.username }}</td>
                             <td class="">
-                              <p v-if="true" class="text-lime-500"><i class="far fa-check-circle"></i></p>
-                              <p v-else-if="true" class="text-orange-500"><i class="fas fa-envelope"></i></p>
+                              <p v-if="checkSolutionStatus(student) == 2" class="text-lime-500"><i class="far fa-check-circle"></i></p>
+                              <p v-else-if="checkSolutionStatus(student) == 1" class="text-orange-500"><i class="fas fa-envelope"></i></p>
                               <p v-else class="text-red-500"><i class="fas fa-hourglass-end"></i></p>
                             </td>
                           </tr>
@@ -267,10 +267,10 @@
                 <td>
                   <!-- CORRECT -->
                   <!-- ignore checkbox -->
-                  <input type="checkbox" :id="`${activity.name}_correct`" class="modal-toggle" @change="() => {if (activitySolutions == null) {getSolutionsOfActivity(activity.activity_id)}}" />
+                  <input type="checkbox" :id="`${activity.name}_correct`" class="modal-toggle" @change="getSolutionsOfActivity(activity.activity_id)" />
                   <!-- correcting modal -->
                   <div class="modal">
-                    <div class="modal-box overflow-visible">
+                    <div class="modal-box min-w-[600px]">
                       <!-- modal head -->
                       <div class="flex flex-row justify-between mb-5">
                         <h3 class="font-bold text-lg">Aufgabe Korrigieren</h3>
@@ -288,27 +288,32 @@
                           {{ correct_filter }}
                         </div>
                         <ul tabindex="0" class="dropdown-content z-[1] menu w-40 py-1 px-0 shadow bg-base-100 rounded-lg">
-                          <li><button @click="correct_filter = 'Alle Abgaben'" class="btn-ghost rounded-none w-full text-sm mb-1">Alle Abgaben</button></li>
+                          <li><button @click="correct_filter = 'Alle'" class="btn-ghost rounded-none w-full text-sm mb-1">Alle Abgaben</button></li>
                           <li><button @click="correct_filter = 'Nicht Kontrolliert'" class="btn-ghost rounded-none w-full text-sm mt-1">Nicht Kontrolliert</button></li>
                         </ul>
                       </div>
                       
                       <!-- student-table -->
-                      <table class="w-full">
+                      <table class="w-full overflow-y-scroll">
                         <thead>
                           <tr>
                             <th>Schüler</th>
                             <th>Abgabedatum</th>
                             <th>Aktion</th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="sol in activitySolutions">
-                            <td>{{  }}</td>
-                            <td>{{  }}</td>
-                            <td>
-                              <btn @click="" class="btn btn-error" :disabled="sol.feedback == null">Korrigieren</btn>
-                              <btn class="btn btn-success" :disabled="sol.feedback != null">Ansehen</btn>
+                          <tr v-for="sol in filteredActivitySolutions">
+                            <td>{{ sol.student_name }}</td>
+                            <td>{{ new Date(sol.submission_date).toLocaleDateString('de-DE') }}</td>
+                            <td v-if="sol.feedback == null" class="min-w-24">
+                              <btn @click="$router.push(`/teachers/courses/${courseId}/correct/${sol.solution_id}`)" class="btn btn-error btn-sm mb-1 mr-2">Korrigieren</btn>
+                              <btn class="btn btn-success btn-sm" disabled>Ändern</btn>
+                            </td>
+                            <td v-else class="min-w-24">
+                              <btn class="btn btn-error btn-sm mb-1 mr-2" disabled>Korrigieren</btn>
+                              <btn @click="$router.push(`/teachers/courses/${courseId}/correct/${sol.solution_id}`)" class="btn btn-success btn-sm">Ändern</btn>
                             </td>
                           </tr>
                         </tbody>
@@ -323,7 +328,7 @@
                 
                     </div>
                   </div>
-                  <label class="btn btn-success btn-xs mr-8" :for="`${activity.name}_correct`">Korrigieren ({{ students.length }}/{{ students.length }})</label>
+                  <label class="btn btn-success btn-xs mr-8" :for="`${activity.name}_correct`">Korrigieren ({{ activity.feedbacked }}/{{ activity.submitted }})</label>
                   
 
                   <!-- DETAILS -->
@@ -340,7 +345,7 @@
                           <label :for="activity.name" class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-times"></i></label>
                         </div>
                       </div>
-                      <p v-if="activity.details == null || activity.details == null || activity.details == ''" class="italic text-slate-400 text-xs">keine Details eingetragen</p>
+                      <p v-if="activity.details == null" class="italic text-slate-400 text-xs">keine Details eingetragen</p>
                       <p v-else>{{ activity.details }}</p>
                       
                     </div>
@@ -348,7 +353,7 @@
                   <label class="btn btn-secondary btn-xs mr-5" :for="activity.name">Details</label>
                 </td>
                 <td>
-                  <input type="checkbox" class="checkbox checkbox-primary checkbox-xs"/>
+                  <input type="checkbox" class="checkbox checkbox-primary checkbox-xs" :checked="!activity.hidden" onclick="return false"/>
                 </td>
                 <td>
                   <router-link :to="`/teachers/courses/${courseId}/activities?actId=${activity.activity_id}`" class="btn btn-ghost btn-circle btn-xs mr-6"><i class="fas fa-pen"></i></router-link>
@@ -360,7 +365,6 @@
       </div>
     </div>
   </div>
-    
 </template>
   
 <script>
@@ -419,16 +423,20 @@ export default {
       }
       else {
         let filtered = this.activities.filter((act) => act.type == this.activityFilter);   // TODO: thomas, wie greift man auf typ zu
-        return filtered
+        return filtered;
       }
     },
     filteredStudents() {
       let filteredStudents = this.allStudents.filter((curStudent) => curStudent.username.includes(this.addStudentsSearchFilter))
       return filteredStudents;
     },
-    filteredStudentsByActivitySolutions() {  // return those students who have handed in a solution to an activity
-      // TODO
-      //let filtered = this.students.filter((curStudents) => this.activitySolutions.id.includes(curStudent.student_idstudenid))
+    filteredActivitySolutions() {
+      if (this.correct_filter == 'Nicht Kontrolliert') {
+        let filteredSolutions = this.activitySolutions.filter((curSolution) => curSolution.feedback == null);
+        return filteredSolutions;
+      }
+      return this.activitySolutions;
+      
     }
   },
   methods: {
@@ -495,13 +503,14 @@ export default {
       };
 
       // call request
-      try {
-        const response = await axios(config);
-        this.activitySolutions.push(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+      axios(config)
+        .then((response) => {
+          this.activitySolutions = Object.freeze(response.data);
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     },
     // "Action Methods" (post, patch, del)
     async changeCourseName() {
@@ -519,26 +528,24 @@ export default {
         headers: {
           "Access-Control-Allow-Credentials": true,
         },
-        withCredentials: true,
         httpsAgent: new https.Agent({ rejectUnauthorized: true }),
         data: data,
       };
 
       // call request
-      try {
-        const response = await axios(config);
-        console.log("patch coursename:");
-        console.log(response.data);
-        // react in view
-        this.coursename_default = this.coursename;
-        this.hasErr_changeCoursename = false;
-        this.msg_changeCoursename = "Kursnamen erfolgreich geändert";
-        this.changeCourseNameActive = false;
-      } catch (error) {
-        console.log(error);
-        this.hasErr_changeCoursename = true;
-        this.msg_changeCoursename = "Kursname konnte nicht geändert werden";
-      }
+      axios(config)
+        .then((response) => {
+          // react in view
+          this.coursename_default = this.coursename;
+          this.hasErr_changeCoursename = false;
+          this.msg_changeCoursename = "Kursnamen erfolgreich geändert";
+          this.changeCourseNameActive = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.hasErr_changeCoursename = true;
+          this.msg_changeCoursename = "Kursname konnte nicht geändert werden";
+        })
 
       this.changeCoursenameAwait = false;
     },
@@ -561,7 +568,7 @@ export default {
           "Content-Type": "application/json",
           Accept: "*/*",
         },
-        withCredentials: true,  // QUESTION: duplicate config?
+        withCredentials: true,
         httpsAgent: new https.Agent({ rejectUnauthorized: true }),
         data: data,
       };
@@ -576,15 +583,16 @@ export default {
 
         // change view 
         this.hasErr_addStudents = false;
-        this.msg_addStudents = "Students erfolgreich hinzugefügt";
+        this.msg_addStudents = "Schüler erfolgreich hinzugefügt";
         this.addStudents = [];
       } catch (error) {
         console.log(error);
-        this.msg_addStudents = "Fehler! Nicht alle Students konnten hinzugefügt werden!";
+        this.msg_addStudents = "Fehler! Nicht alle Schüler konnten hinzugefügt werden!";
         this.hasErr_addStudents = true;
       }
 
       this.addStudentsAwait = false;
+      this.getCourseData();
     },
     async delStudentsFromCourse() {
       // prepare variables/set defaults
@@ -592,7 +600,46 @@ export default {
       this.msg_delStudents = "";
       this.hasErr_delStudents = false;
 
-      // TODO: delete
+
+      let failed_delete = false; // true, if exceptions occured while removing one or more students 
+
+      // AXIOS-Request has to be done for every student individually
+      this.delStudents.forEach(student => {
+        // prepare request
+        const link = `${this.hostname}students/${student.id}?course_id=${this.courseId}`;
+        var config = {
+          method: "delete",
+          url: link,
+          headers: {
+            "Access-Control-Allow-Origin": true,
+          },
+          withCredentials: true,
+        };
+
+        // call request
+        axios(config)
+          .then((response) => {
+            // deleteing user has been successful
+          })
+          .catch((err) => {
+            failed_delete = true;
+            console.log(err);
+          }) 
+      });
+
+      // Message 
+      if (failed_delete) {
+        this.hasErr_delStudents = true;
+        this.msg_delStudents = "Fehler! Nicht alle Schüler konnten entfernt werden!";
+      }
+      else {
+        this.hasErr_delStudents = false;
+        this.msg_delStudents = "Schüler erfolgreich vom Kurs entfernt";
+      }
+      this.delStudentsAwait = false;
+
+      // update studentslist -> new request for course-data
+      this.getCourseData();
     },
     // other methods
     delStudentChange(student, index) {
@@ -607,7 +654,21 @@ export default {
         this.delStudents = this.delStudents.filter((curStudent) => curStudent != student);
       }
     },
-
+    checkSolutionStatus(student) { 
+      let sol = this.activitySolutions.filter((sol) => sol.student_name == student.username); // username is unique => returns only one object
+      if (sol.length != 0) {
+        // solution is corrected
+        if (sol[0].feedback != null) {
+          return 2;
+        }
+        // student handed in a solution
+        else if (sol[0].submitted) {
+          return 1
+        }
+      }
+      // student hasn't handed in yet
+      return 0
+    }
   },
   async beforeMount() {
     // get course_id from url-param
