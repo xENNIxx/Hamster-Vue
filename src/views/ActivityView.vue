@@ -27,9 +27,6 @@
             <div class="m-5">
                 <div class="playground grid" data-playground-></div>
                 <button class="start-btn btn" @click="start">Start</button>
-                <button class="btn" @click="print">Print</button>
-                <button class="btn" @click="cleanField">Cleanup</button>
-                <button class="btn" @click="reset">Reset Field</button>
             </div>
             <!-- class="inline-flex" -->
             <div class="m-5">
@@ -148,10 +145,10 @@ export default {
         reset() {
             this.game = this.newGame()
         },
-        loadTer(e) {
-            console.log(`loadTerEvent: ${JSON.stringify(e)}`);
-            this.game.createEntityObj(e); //playground darstellen
-            this.loaded_terrain_obj = e;
+        async loadTer(){
+                let x = await axios.get(this.hostname + `terrainObject/get/${this.$store.state.activity.terrain_id}`);
+                console.log(`raw: ${JSON.stringify(x.data)}`);
+                this.game.createEntityObj(x.data);
         },
         async submitCode(e) {
             for (let prop in this.loaded_terrain_obj) {
